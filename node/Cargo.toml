@@ -1,0 +1,37 @@
+[package]
+name = "sunshine-node"
+version = "0.1.0"
+authors = ["David Craven <david@craven.ch>"]
+description = "Substrate Node template"
+edition = "2018"
+homepage = "https://joinsunshine.com"
+repository = "https://github.com/sunshine-protocol/sunshine"
+
+[build-dependencies]
+substrate-build-script-utils = "2.0.0-rc4"
+
+[dependencies]
+futures = "0.3.5"
+log = "0.4.8"
+parking_lot = "0.11.0"
+structopt = "0.3.15"
+
+sc-basic-authorship = "0.8.0-rc4"
+sc-cli = "0.8.0-rc4"
+sc-client-api = "2.0.0-rc4"
+sc-consensus = "0.8.0-rc4"
+sc-consensus-aura = "0.8.0-rc4"
+sc-executor = "0.8.0-rc4"
+sc-finality-grandpa = "0.8.0-rc4"
+sc-network = "0.8.0-rc4"
+sc-service = "0.8.0-rc4"
+sc-transaction-pool = "2.0.0-rc4"
+sp-core = "2.0.0-rc4"
+sp-consensus = "0.8.0-rc4"
+sp-consensus-aura = "0.8.0-rc4"
+sp-finality-grandpa = "2.0.0-rc4"
+sp-inherents = "2.0.0-rc4"
+sp-runtime = "2.0.0-rc4"
+sp-transaction-pool = "2.0.0-rc4"
+
+sunshine-runtime = { path = "../runtime" }

@@ -2,6 +2,6 @@
 members = [
     #"cli",
     #"client",
-    #"node",
+    "node",
     "runtime",
 ]
