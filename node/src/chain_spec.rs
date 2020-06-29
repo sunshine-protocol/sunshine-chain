@@ -1,5 +1,5 @@
 use hex_literal::hex;
-use sc_service::ChainType;
+use sc_service::{ChainType, config::MultiaddrWithPeerId};
 //use sc_telemetry::TelemetryEndpoints;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::crypto::UncheckedInto;
@@ -158,12 +158,25 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
 }
 
 pub fn staging_chain_spec() -> ChainSpec {
+    let boot_nodes: Vec<_> = [
+        "12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f",
+        "12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv",
+        "12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M",
+    ]
+    .iter()
+    .map(|peer_id| {
+        MultiaddrWithPeerId {
+            peer_id: peer_id.parse().unwrap(),
+            multiaddr: "/ip4/127.0.0.1".parse().unwrap(),
+        }
+    })
+    .collect();
     ChainSpec::from_genesis(
         "Staging Testnet",
         "staging-testnet",
         ChainType::Live,
         staging_chain_spec_genesis,
-        vec![],
+        boot_nodes,
         //Some(TelemetryEndpoints::new(vec![(STAGING_TELEMETRY_URL.to_string(), 0)]).unwrap()),
         None,
         None,

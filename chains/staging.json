@@ -3,7 +3,9 @@
   "id": "staging-testnet",
   "chainType": "Live",
   "bootNodes": [
-    "/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWLpsNfZqcyDftekrGUJJN1WLiq1vbCbfuv8w7fT45FSAR"
+    "/ip4/127.0.0.1/p2p/12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f",
+    "/ip4/127.0.0.1/p2p/12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv",
+    "/ip4/127.0.0.1/p2p/12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M"
   ],
   "telemetryEndpoints": null,
   "protocolId": null,
