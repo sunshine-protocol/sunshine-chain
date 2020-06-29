@@ -6658,6 +6658,7 @@ name = "sunshine-node"
 version = "0.1.0"
 dependencies = [
  "futures 0.3.5",
+ "hex-literal",
  "log",
  "parking_lot 0.11.0",
  "sc-basic-authorship",

@@ -12,6 +12,7 @@ substrate-build-script-utils = "2.0.0-rc4"
 
 [dependencies]
 futures = "0.3.5"
+hex-literal = "0.2.1"
 log = "0.4.8"
 parking_lot = "0.11.0"
 structopt = "0.3.15"
