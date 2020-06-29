@@ -7,7 +7,7 @@ use ipfs_embed::{Config, Store};
 use keybase_keystore::KeyStore;
 use std::time::Duration;
 use substrate_subxt::sp_core::sr25519;
-use sunshine_client::{faucet, Runtime};
+use sunshine_client::{faucet, light, Runtime};
 
 mod command;
 
@@ -31,18 +31,21 @@ async fn run() -> Result<(), Error> {
     let keystore = KeyStore::open(root.join("keystore")).await?;
     let db = sled::open(root.join("db")).unwrap();
     let db_ipfs = db.open_tree("ipfs").unwrap();
+    let db_light = db.open_tree("substrate").unwrap();
 
-    #[cfg(not(feature = "light"))]
-    let subxt = substrate_subxt::ClientBuilder::new().build().await?;
-    #[cfg(feature = "light")]
-    let subxt = {
-        let db_light = db.open_tree("substrate").unwrap();
-        sunshine_client::light::build_light_client(db_light, include_bytes!("../chain-spec.json"))
-            .await
-            .unwrap()
-    };
+    let chain_spec_bytes = include_bytes!("../chain-spec.json");
+    let chain_spec = light::ChainSpec::from_json_bytes(&chain_spec_bytes[..]).unwrap();
 
-    let config = Config::from_tree(db_ipfs);
+    let mut config = Config::from_tree(db_ipfs);
+    config.network.bootstrap_nodes = chain_spec
+        .boot_nodes()
+        .iter()
+        .map(|x| (x.multiaddr.clone(), x.peer_id.clone()))
+        .collect();
+
+    let subxt = light::build_light_client(db_light, chain_spec)
+        .await
+        .unwrap();
     let store = Store::new(config).unwrap();
     let client = Client::new(keystore, subxt, store);
 

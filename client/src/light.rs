@@ -5,6 +5,7 @@ use sp_database::{Change, Database, Transaction};
 use std::sync::Arc;
 use substrate_subxt::client::{DatabaseConfig, Role, SubxtClient, SubxtClientConfig};
 use substrate_subxt::{Client, ClientBuilder};
+pub use sunshine_node::chain_spec::ChainSpec;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -13,20 +14,12 @@ pub enum Error {
     Subxt(#[from] substrate_subxt::Error),
     #[error(transparent)]
     ScService(#[from] sc_service::Error),
-    #[error("Invalid chain spec: {0}")]
-    ChainSpec(#[from] ChainSpecError),
 }
-
-#[derive(Debug, Error)]
-#[error("Invalid chain spec: {0}")]
-pub struct ChainSpecError(String);
 
 pub async fn build_light_client(
     tree: Tree,
-    chain_spec: &'static [u8],
+    chain_spec: ChainSpec,
 ) -> Result<Client<Runtime>, Error> {
-    let chain_spec = sunshine_node::chain_spec::ChainSpec::from_json_bytes(chain_spec)
-        .map_err(ChainSpecError)?;
     let config = SubxtClientConfig {
         impl_name: sunshine_node::IMPL_NAME,
         impl_version: sunshine_node::IMPL_VERSION,
