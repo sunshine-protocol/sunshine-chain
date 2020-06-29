@@ -2,11 +2,8 @@ use crate::command::*;
 use async_std::task;
 use clap::Clap;
 use exitfailure::ExitDisplay;
-use ipfs_embed::{Config, Store};
-use keybase_keystore::KeyStore;
 use std::time::Duration;
-use substrate_subxt::sp_core::sr25519;
-use sunshine_client::{faucet, light, Runtime};
+use sunshine_client::{build_client, faucet};
 use sunshine_identity_cli::{key::KeySetCommand, set_device_key, Command, Error};
 
 mod command;
@@ -15,8 +12,6 @@ mod command;
 async fn main() -> Result<(), ExitDisplay<Error>> {
     Ok(run().await?)
 }
-
-type Client = sunshine_client::identity::Client<Runtime, sr25519::Pair, Store>;
 
 async fn run() -> Result<(), Error> {
     env_logger::init();
@@ -28,26 +23,8 @@ async fn run() -> Result<(), Error> {
             .ok_or(Error::ConfigDirNotFound)?
             .join("sunshine")
     };
-    let keystore = KeyStore::open(root.join("keystore")).await?;
-    let db = sled::open(root.join("db")).unwrap();
-    let db_ipfs = db.open_tree("ipfs").unwrap();
-    let db_light = db.open_tree("substrate").unwrap();
 
-    let chain_spec_bytes = include_bytes!("../../chains/staging.json");
-    let chain_spec = light::ChainSpec::from_json_bytes(&chain_spec_bytes[..]).unwrap();
-
-    let mut config = Config::from_tree(db_ipfs);
-    config.network.bootstrap_nodes = chain_spec
-        .boot_nodes()
-        .iter()
-        .map(|x| (x.multiaddr.clone(), x.peer_id.clone()))
-        .collect();
-
-    let subxt = light::build_light_client(db_light, chain_spec)
-        .await
-        .unwrap();
-    let store = Store::new(config).unwrap();
-    let client = Client::new(keystore, subxt, store);
+    let client = build_client(&root).await.unwrap();
 
     let mut password_changes = if client.signer().await.is_ok() {
         let sub = client.subscribe_password_changes().await?;

@@ -6560,10 +6560,6 @@ dependencies = [
  "dirs2",
  "env_logger",
  "exitfailure",
- "ipfs-embed",
- "keybase-keystore",
- "sled",
- "substrate-subxt",
  "sunshine-client",
  "sunshine-identity-cli",
 ]
@@ -6572,6 +6568,8 @@ dependencies = [
 name = "sunshine-client"
 version = "0.1.0"
 dependencies = [
+ "ipfs-embed",
+ "keybase-keystore",
  "sc-service",
  "sled",
  "sp-database",

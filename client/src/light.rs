@@ -1,25 +1,14 @@
-use crate::Runtime;
 use sled::transaction::TransactionError;
 use sled::Tree;
 use sp_database::{Change, Database, Transaction};
 use std::sync::Arc;
 use substrate_subxt::client::{DatabaseConfig, Role, SubxtClient, SubxtClientConfig};
-use substrate_subxt::{Client, ClientBuilder};
 pub use sunshine_node::chain_spec::ChainSpec;
-use thiserror::Error;
-
-#[derive(Debug, Error)]
-pub enum Error {
-    #[error(transparent)]
-    Subxt(#[from] substrate_subxt::Error),
-    #[error(transparent)]
-    ScService(#[from] sc_service::Error),
-}
 
 pub async fn build_light_client(
     tree: Tree,
     chain_spec: ChainSpec,
-) -> Result<Client<Runtime>, Error> {
+) -> Result<SubxtClient, sc_service::Error> {
     let config = SubxtClientConfig {
         impl_name: sunshine_node::IMPL_NAME,
         impl_version: sunshine_node::IMPL_VERSION,
@@ -30,11 +19,7 @@ pub async fn build_light_client(
         role: Role::Light,
         chain_spec,
     };
-    let client = ClientBuilder::new()
-        .set_client(SubxtClient::new(config)?)
-        .build()
-        .await?;
-    Ok(client)
+    Ok(SubxtClient::new(config)?)
 }
 
 struct Key;
