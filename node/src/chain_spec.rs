@@ -39,6 +39,7 @@ fn seed_to_authority_keys(seed: &str) -> (AuraId, GrandpaId) {
 pub enum Chain {
     Dev,
     Local,
+    Staging,
     Json(PathBuf),
 }
 
@@ -47,6 +48,7 @@ impl Chain {
         Ok(match self {
             Self::Dev => dev_chain_spec(),
             Self::Local => local_chain_spec(),
+            Self::Staging => staging_chain_spec(),
             Self::Json(path) => ChainSpec::from_json_file(path)?,
         })
     }
@@ -58,7 +60,8 @@ impl FromStr for Chain {
     fn from_str(chain: &str) -> Result<Self, Self::Err> {
         Ok(match chain {
             "dev" => Chain::Dev,
-            "" | "local" => Chain::Local,
+            "local" => Chain::Local,
+            "" | "staging" => Chain::Staging,
             path => Chain::Json(PathBuf::from(path)),
         })
     }
