@@ -230,16 +230,16 @@ impl pallet_transaction_payment::Trait for Runtime {
     type FeeMultiplierUpdate = ();
 }
 
-impl pallet_identity::Trait for Runtime {
+impl sunshine_identity_pallet::Trait for Runtime {
     type Uid = u32;
-    type Cid = utils_identity::cid::CidBytes;
+    type Cid = sunshine_identity_utils::cid::CidBytes;
     type Mask = [u8; 32];
     type Gen = u16;
     type AccountData = pallet_balances::AccountData<Balance>;
     type Event = Event;
 }
 
-impl pallet_faucet::Trait for Runtime {
+impl sunshine_faucet_pallet::Trait for Runtime {
     const MINT_UNIT: Self::Balance = 1_000_000_000;
     type Event = Event;
 }
@@ -257,8 +257,8 @@ construct_runtime!(
         Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
         Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
-        Identity: pallet_identity::{Module, Call, Storage, Event<T>},
-        Faucet: pallet_faucet::{Module, Call, Event<T>, ValidateUnsigned},
+        Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
+        Faucet: sunshine_faucet_pallet::{Module, Call, Event<T>, ValidateUnsigned},
     }
 );
 

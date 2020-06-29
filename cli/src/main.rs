@@ -1,13 +1,13 @@
 use crate::command::*;
 use async_std::task;
 use clap::Clap;
-use cli_identity::{key::KeySetCommand, set_device_key, Command, Error};
 use exitfailure::ExitDisplay;
 use ipfs_embed::{Config, Store};
 use keybase_keystore::KeyStore;
 use std::time::Duration;
 use substrate_subxt::sp_core::sr25519;
 use sunshine_client::{faucet, light, Runtime};
+use sunshine_identity_cli::{key::KeySetCommand, set_device_key, Command, Error};
 
 mod command;
 

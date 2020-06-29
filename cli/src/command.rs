@@ -1,6 +1,6 @@
 use clap::Clap;
-use cli_identity::{account, device, id, key, wallet};
 use std::path::PathBuf;
+use sunshine_identity_cli::{account, device, id, key, wallet};
 
 #[derive(Clone, Debug, Clap)]
 pub struct Opts {

@@ -737,52 +737,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cli-identity"
-version = "0.1.0"
-dependencies = [
- "async-std",
- "async-trait",
- "clap 3.0.0-beta.1",
- "client-identity",
- "keybase-keystore",
- "libipld",
- "parity-scale-codec",
- "qr2term",
- "rpassword",
- "substrate-subxt",
- "textwrap 0.12.0",
- "thiserror",
-]
-
-[[package]]
-name = "client-faucet"
-version = "0.1.0"
-dependencies = [
- "client-identity",
- "parity-scale-codec",
- "substrate-subxt",
-]
-
-[[package]]
-name = "client-identity"
-version = "0.1.0"
-dependencies = [
- "async-std",
- "async-trait",
- "frame-support",
- "ipld-block-builder",
- "keybase-keystore",
- "libipld",
- "log",
- "parity-scale-codec",
- "serde",
- "serde_json",
- "substrate-subxt",
- "thiserror",
- "ureq",
-]
-
-[[package]]
 name = "cloudabi"
 version = "0.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2369,6 +2323,8 @@ dependencies = [
 [[package]]
 name = "keybase-keystore"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "176dd6380b2c946da31a829e8a59eec197f8f670f2c87eb214bf759645fea20b"
 dependencies = [
  "async-std",
  "bip39",
@@ -3482,19 +3438,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-faucet"
-version = "0.1.0"
-dependencies = [
- "frame-support",
- "frame-system",
- "pallet-balances",
- "parity-scale-codec",
- "sp-core",
- "sp-io",
- "sp-runtime",
-]
-
-[[package]]
 name = "pallet-finality-tracker"
 version = "2.0.0-rc4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3530,19 +3473,6 @@ dependencies = [
  "sp-session",
  "sp-staking",
  "sp-std",
-]
-
-[[package]]
-name = "pallet-identity"
-version = "0.1.0"
-dependencies = [
- "frame-support",
- "frame-system",
- "orml-utilities",
- "parity-scale-codec",
- "sp-core",
- "sp-io",
- "sp-runtime",
 ]
 
 [[package]]
@@ -6627,7 +6557,6 @@ version = "0.1.0"
 dependencies = [
  "async-std",
  "clap 3.0.0-beta.1",
- "cli-identity",
  "dirs2",
  "env_logger",
  "exitfailure",
@@ -6636,21 +6565,115 @@ dependencies = [
  "sled",
  "substrate-subxt",
  "sunshine-client",
+ "sunshine-identity-cli",
 ]
 
 [[package]]
 name = "sunshine-client"
 version = "0.1.0"
 dependencies = [
- "client-faucet",
- "client-identity",
  "sc-service",
  "sled",
  "sp-database",
  "substrate-subxt",
+ "sunshine-faucet-client",
+ "sunshine-identity-client",
+ "sunshine-identity-utils",
  "sunshine-node",
  "thiserror",
- "utils-identity",
+]
+
+[[package]]
+name = "sunshine-faucet-client"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c577542f022d362b48bb908aee45304b8004a914325a64dafb74f12a11ace844"
+dependencies = [
+ "parity-scale-codec",
+ "substrate-subxt",
+ "sunshine-identity-client",
+]
+
+[[package]]
+name = "sunshine-faucet-pallet"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b665d326b3d798a56bb995685204efb2909a2619ecaf20dcbe4b6bebc3acf725"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+]
+
+[[package]]
+name = "sunshine-identity-cli"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1dd8334a633dafdeb94d498c4b00de660846af8c5a7ae3fa1666f6ac36fc39ea"
+dependencies = [
+ "async-std",
+ "async-trait",
+ "clap 3.0.0-beta.1",
+ "keybase-keystore",
+ "libipld",
+ "parity-scale-codec",
+ "qr2term",
+ "rpassword",
+ "substrate-subxt",
+ "sunshine-identity-client",
+ "textwrap 0.12.0",
+ "thiserror",
+]
+
+[[package]]
+name = "sunshine-identity-client"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "62a6cf52c337c1a0aa6231960f904a8fd61d69f7b6aef40f50a1a92f8fe57377"
+dependencies = [
+ "async-std",
+ "async-trait",
+ "frame-support",
+ "ipld-block-builder",
+ "keybase-keystore",
+ "libipld",
+ "log",
+ "parity-scale-codec",
+ "serde",
+ "serde_json",
+ "substrate-subxt",
+ "thiserror",
+ "ureq",
+]
+
+[[package]]
+name = "sunshine-identity-pallet"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3a562bdf6c4ad4f0ed156571cb87bc9c0858520ca1d9662593bc82c16bade0a5"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "orml-utilities",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+]
+
+[[package]]
+name = "sunshine-identity-utils"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1bf2e49e93ef484c590a8b8369ed5403237fc3dec757d0257578c09c6ae578bf"
+dependencies = [
+ "libipld",
+ "parity-scale-codec",
+ "serde",
 ]
 
 [[package]]
@@ -6692,9 +6715,7 @@ dependencies = [
  "frame-system",
  "pallet-aura",
  "pallet-balances",
- "pallet-faucet",
  "pallet-grandpa",
- "pallet-identity",
  "pallet-randomness-collective-flip",
  "pallet-timestamp",
  "pallet-transaction-payment",
@@ -6713,7 +6734,9 @@ dependencies = [
  "sp-transaction-pool",
  "sp-version",
  "substrate-wasm-builder-runner",
- "utils-identity",
+ "sunshine-faucet-pallet",
+ "sunshine-identity-pallet",
+ "sunshine-identity-utils",
 ]
 
 [[package]]
@@ -7446,15 +7469,6 @@ dependencies = [
  "idna 0.2.0",
  "matches",
  "percent-encoding 2.1.0",
-]
-
-[[package]]
-name = "utils-identity"
-version = "0.1.0"
-dependencies = [
- "libipld",
- "parity-scale-codec",
- "serde",
 ]
 
 [[package]]

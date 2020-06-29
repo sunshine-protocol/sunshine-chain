@@ -18,9 +18,7 @@ frame-support = { version = "2.0.0-rc4", default-features = false }
 frame-system = { version = "2.0.0-rc4", default-features = false }
 pallet-aura = { version = "2.0.0-rc4", default-features = false }
 pallet-balances = { version = "2.0.0-rc4", default-features = false }
-pallet-faucet = { version = "0.1.0", default-features = false, path = "../../sunshine-identity/faucet/pallet" }
 pallet-grandpa = { version = "2.0.0-rc4", default-features = false }
-pallet-identity = { version = "0.1.0", default-features = false, path = "../../sunshine-identity/identity/pallet" }
 pallet-randomness-collective-flip = { version = "2.0.0-rc4", default-features = false }
 pallet-timestamp = { version = "2.0.0-rc4", default-features = false }
 pallet-transaction-payment = { version = "2.0.0-rc4", default-features = false }
@@ -36,7 +34,9 @@ sp-session = { version = "2.0.0-rc4", default-features = false }
 sp-std = { version = "2.0.0-rc4", default-features = false }
 sp-transaction-pool = { version = "2.0.0-rc4", default-features = false }
 sp-version = { version = "2.0.0-rc4", default-features = false }
-utils-identity = { version = "0.1.0", default-features = false, path = "../../sunshine-identity/identity/utils" }
+sunshine-faucet-pallet = { version = "0.1.0", default-features = false }
+sunshine-identity-pallet = { version = "0.1.0", default-features = false }
+sunshine-identity-utils = { version = "0.1.0", default-features = false }
 
 [features]
 default = ["std"]
@@ -48,9 +48,7 @@ std = [
     "frame-system/std",
     "pallet-aura/std",
     "pallet-balances/std",
-    "pallet-faucet/std",
     "pallet-grandpa/std",
-    "pallet-identity/std",
     "pallet-randomness-collective-flip/std",
     "pallet-timestamp/std",
     "pallet-transaction-payment/std",
@@ -66,5 +64,7 @@ std = [
     "sp-std/std",
     "sp-transaction-pool/std",
     "sp-version/std",
-    "utils-identity/std",
+    "sunshine-faucet-pallet/std",
+    "sunshine-identity-pallet/std",
+    "sunshine-identity-utils/std",
 ]
