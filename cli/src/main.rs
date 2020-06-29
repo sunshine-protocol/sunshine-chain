@@ -33,7 +33,7 @@ async fn run() -> Result<(), Error> {
     let db_ipfs = db.open_tree("ipfs").unwrap();
     let db_light = db.open_tree("substrate").unwrap();
 
-    let chain_spec_bytes = include_bytes!("../chain-spec.json");
+    let chain_spec_bytes = include_bytes!("../../chains/staging.json");
     let chain_spec = light::ChainSpec::from_json_bytes(&chain_spec_bytes[..]).unwrap();
 
     let mut config = Config::from_tree(db_ipfs);
