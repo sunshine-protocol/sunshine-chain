@@ -1,5 +1,5 @@
 use hex_literal::hex;
-use sc_service::{ChainType, config::MultiaddrWithPeerId};
+use sc_service::{config::MultiaddrWithPeerId, ChainType};
 //use sc_telemetry::TelemetryEndpoints;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::crypto::UncheckedInto;
@@ -9,8 +9,8 @@ use sp_runtime::traits::{IdentifyAccount, Verify};
 use std::path::PathBuf;
 use std::str::FromStr;
 use sunshine_runtime::{
-    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SystemConfig,
-    WASM_BINARY,
+    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, SessionConfig,
+    SessionKeys, Signature, SystemConfig, WASM_BINARY,
 };
 
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.getsunshine.com/submit/";
@@ -28,11 +28,17 @@ where
     seed_to_public::<TPublic>(seed).into().into_account()
 }
 
-fn seed_to_authority_keys(seed: &str) -> (AuraId, GrandpaId) {
+fn seed_to_authority_keys(seed: &str) -> (AccountId, AccountId, AuraId, GrandpaId) {
     (
+        seed_to_account_id::<sr25519::Public>(&format!("{}/stash", seed)),
+        seed_to_account_id::<sr25519::Public>(seed),
         seed_to_public::<AuraId>(seed),
         seed_to_public::<GrandpaId>(seed),
     )
+}
+
+fn session_keys(aura: AuraId, grandpa: GrandpaId) -> SessionKeys {
+    SessionKeys { aura, grandpa }
 }
 
 #[derive(Clone, Debug)]
@@ -77,7 +83,7 @@ pub fn dev_chain_spec() -> ChainSpec {
                 &[seed_to_authority_keys("//Alice")],
                 &[
                     seed_to_account_id::<sr25519::Public>("//Alice"),
-                    seed_to_account_id::<sr25519::Public>("//Alice//stash"),
+                    seed_to_account_id::<sr25519::Public>("//Alice/stash"),
                 ],
             )
         },
@@ -102,9 +108,9 @@ pub fn local_chain_spec() -> ChainSpec {
                 ],
                 &[
                     seed_to_account_id::<sr25519::Public>("//Alice"),
-                    seed_to_account_id::<sr25519::Public>("//Alice//stash"),
+                    seed_to_account_id::<sr25519::Public>("//Alice/stash"),
                     seed_to_account_id::<sr25519::Public>("//Bob"),
-                    seed_to_account_id::<sr25519::Public>("//Bob//stash"),
+                    seed_to_account_id::<sr25519::Public>("//Bob/stash"),
                 ],
             )
         },
@@ -128,7 +134,7 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
     ];
 
     // subkey inspect "$secret"/sunshine/1-3/stash
-    let _stash = &[
+    let stash = &[
         // 5FW5PEWgMtwGwnTPgDs5dC2a3b2cMPDhLX5P79kjs7aL7VxW
         hex!["980e4d3fb16f722e5f9af556fd4d0570d8012203db5de2b2c106b21590b26358"],
         // 5CJ6TDnS9uGDZ3MuDdZkFDGgFuRWiWAifvnhUEuChzXHR9wv
@@ -149,26 +155,40 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
 
     testnet_genesis(
         &[
-            (controller[0].unchecked_into(), session[0].unchecked_into()),
-            (controller[1].unchecked_into(), session[1].unchecked_into()),
-            (controller[2].unchecked_into(), session[2].unchecked_into()),
+            (
+                stash[0].into(),
+                controller[0].into(),
+                controller[0].unchecked_into(),
+                session[0].unchecked_into(),
+            ),
+            (
+                stash[1].into(),
+                controller[1].into(),
+                controller[1].unchecked_into(),
+                session[1].unchecked_into(),
+            ),
+            (
+                stash[2].into(),
+                controller[2].into(),
+                controller[2].unchecked_into(),
+                session[2].unchecked_into(),
+            ),
         ],
         &[],
     )
 }
 
 pub fn staging_chain_spec() -> ChainSpec {
+    // subkey generate-node-key
     let boot_nodes: Vec<_> = [
         "12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f",
         "12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv",
         "12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M",
     ]
     .iter()
-    .map(|peer_id| {
-        MultiaddrWithPeerId {
-            peer_id: peer_id.parse().unwrap(),
-            multiaddr: "/ip4/127.0.0.1".parse().unwrap(),
-        }
+    .map(|peer_id| MultiaddrWithPeerId {
+        peer_id: peer_id.parse().unwrap(),
+        multiaddr: "/ip4/127.0.0.1".parse().unwrap(),
     })
     .collect();
     ChainSpec::from_genesis(
@@ -186,7 +206,7 @@ pub fn staging_chain_spec() -> ChainSpec {
 }
 
 fn testnet_genesis(
-    initial_authorities: &[(AuraId, GrandpaId)],
+    initial_authorities: &[(AccountId, AccountId, AuraId, GrandpaId)],
     endowed_accounts: &[AccountId],
 ) -> GenesisConfig {
     GenesisConfig {
@@ -202,13 +222,25 @@ fn testnet_genesis(
                 .collect(),
         }),
         pallet_aura: Some(AuraConfig {
-            authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
+            authorities: initial_authorities.iter().map(|x| (x.2.clone())).collect(),
         }),
         pallet_grandpa: Some(GrandpaConfig {
             authorities: initial_authorities
                 .iter()
-                .map(|x| (x.1.clone(), 1))
+                .map(|x| (x.3.clone(), 1))
                 .collect(),
+        }),
+        pallet_session: Some(SessionConfig {
+            keys: initial_authorities
+                .iter()
+                .map(|x| {
+                    (
+                        x.0.clone(),
+                        x.0.clone(),
+                        session_keys(x.2.clone(), x.3.clone()),
+                    )
+                })
+                .collect::<Vec<_>>(),
         }),
     }
 }

@@ -20,6 +20,7 @@ pallet-aura = { version = "2.0.0-rc4", default-features = false }
 pallet-balances = { version = "2.0.0-rc4", default-features = false }
 pallet-grandpa = { version = "2.0.0-rc4", default-features = false }
 pallet-randomness-collective-flip = { version = "2.0.0-rc4", default-features = false }
+pallet-session = { version = "2.0.0-rc4", default-features = false }
 pallet-timestamp = { version = "2.0.0-rc4", default-features = false }
 pallet-transaction-payment = { version = "2.0.0-rc4", default-features = false }
 sp-api = { version = "2.0.0-rc4", default-features = false }
@@ -50,6 +51,7 @@ std = [
     "pallet-balances/std",
     "pallet-grandpa/std",
     "pallet-randomness-collective-flip/std",
+    "pallet-session/std",
     "pallet-timestamp/std",
     "pallet-transaction-payment/std",
     "sp-api/std",

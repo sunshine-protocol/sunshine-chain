@@ -6717,6 +6717,7 @@ dependencies = [
  "pallet-balances",
  "pallet-grandpa",
  "pallet-randomness-collective-flip",
+ "pallet-session",
  "pallet-timestamp",
  "pallet-transaction-payment",
  "parity-scale-codec",
