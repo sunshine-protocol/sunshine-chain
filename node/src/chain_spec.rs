@@ -9,7 +9,7 @@ use sp_runtime::traits::{IdentifyAccount, Verify};
 use std::path::PathBuf;
 use std::str::FromStr;
 use sunshine_runtime::{
-    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, SessionConfig,
+    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, //SessionConfig,
     SessionKeys, Signature, SystemConfig, WASM_BINARY,
 };
 
@@ -230,7 +230,7 @@ fn testnet_genesis(
                 .map(|x| (x.3.clone(), 1))
                 .collect(),
         }),
-        pallet_session: Some(SessionConfig {
+        /*pallet_session: Some(SessionConfig {
             keys: initial_authorities
                 .iter()
                 .map(|x| {
@@ -241,6 +241,6 @@ fn testnet_genesis(
                     )
                 })
                 .collect::<Vec<_>>(),
-        }),
+        }),*/
     }
 }

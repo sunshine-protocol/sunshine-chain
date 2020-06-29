@@ -1,7 +1,7 @@
 pub mod chain_spec;
 pub mod service;
 
-pub const IMPL_NAME: &str = "Sunshine Identity Test Node";
+pub const IMPL_NAME: &str = "Sunshine Node";
 pub const IMPL_VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 pub const AUTHOR: &str = env!("CARGO_PKG_AUTHORS");

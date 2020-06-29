@@ -85,8 +85,8 @@ pub mod opaque {
 
 /// This runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-    spec_name: create_runtime_str!("node-template"),
-    impl_name: create_runtime_str!("node-template"),
+    spec_name: create_runtime_str!("sunshine"),
+    impl_name: create_runtime_str!("sunshine"),
     authoring_version: 1,
     spec_version: 1,
     impl_version: 1,
@@ -237,6 +237,7 @@ impl_opaque_keys! {
     }
 }
 
+/*
 pub struct InfiniteSession;
 
 impl pallet_session::ShouldEndSession<BlockNumber> for InfiniteSession {
@@ -256,6 +257,7 @@ impl pallet_session::Trait for Runtime {
     type Keys = SessionKeys;
     type DisabledValidatorsThreshold = ();
 }
+*/
 
 impl sunshine_identity_pallet::Trait for Runtime {
     type Uid = u32;
@@ -284,7 +286,7 @@ construct_runtime!(
         Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
         Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
-        Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
+        //Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
         Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
         Faucet: sunshine_faucet_pallet::{Module, Call, Event<T>, ValidateUnsigned},
     }
