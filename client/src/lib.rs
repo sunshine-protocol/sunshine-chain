@@ -77,7 +77,7 @@ pub async fn build_client(
     let db_ipfs = db.open_tree("ipfs")?;
     let db_light = db.open_tree("substrate")?;
 
-    let chain_spec_bytes = include_bytes!("../../chains/dev.json");
+    let chain_spec_bytes = include_bytes!("../../chains/staging.json");
     let chain_spec =
         light::ChainSpec::from_json_bytes(&chain_spec_bytes[..]).map_err(ChainSpecError)?;
 

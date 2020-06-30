@@ -180,15 +180,15 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
 
 pub fn staging_chain_spec() -> ChainSpec {
     // subkey generate-node-key
-    let boot_nodes: Vec<_> = [
-        "12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f",
-        "12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv",
-        "12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M",
+    let boot_nodes = [
+        ("/ip4/172.28.1.1/tcp/30333", "12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f"),
+        ("/ip4/172.28.1.2/tcp/30333", "12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv"),
+        ("/ip4/172.28.1.3/tcp/30333", "12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M"),
     ]
     .iter()
-    .map(|peer_id| MultiaddrWithPeerId {
+    .map(|(multiaddr, peer_id)| MultiaddrWithPeerId {
+        multiaddr: multiaddr.parse().unwrap(),
         peer_id: peer_id.parse().unwrap(),
-        multiaddr: "/ip4/127.0.0.1".parse().unwrap(),
     })
     .collect();
     ChainSpec::from_genesis(

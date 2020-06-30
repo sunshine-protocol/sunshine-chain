@@ -1,0 +1,72 @@
+version: "3.8"
+services:
+    sunshine_1:
+        image: sunshineprotocol/sunshine
+        user: root
+        command: --base-path /sunshine --chain /chain.json --node-key-file /node-key --keystore-path /keystore --validator
+        ports:
+        - "30333:30333"
+        - "9933:9933"
+        - "9944:9944"
+        volumes:
+        - "./chains/staging.json:/chain.json"
+        - "./keys/node-key-1:/node-key"
+        - "./keys/keystore1:/keystore"
+        - "/tmp/sunshine1:/sunshine"
+        networks:
+            testing_net:
+                ipv4_address: 172.28.1.1
+    sunshine_2:
+        image: sunshineprotocol/sunshine
+        user: root
+        command: --base-path /sunshine --chain /chain.json --node-key-file /node-key --keystore-path /keystore --validator
+        ports:
+        - "30334:30333"
+        - "9955:9933"
+        - "9966:9944"
+        volumes:
+        - "./chains/staging.json:/chain.json"
+        - "./keys/node-key-2:/node-key"
+        - "./keys/keystore2:/keystore"
+        - "/tmp/sunshine2:/sunshine"
+        networks:
+            testing_net:
+                ipv4_address: 172.28.1.2
+    sunshine_3:
+        image: sunshineprotocol/sunshine
+        user: root
+        command: --base-path /sunshine --chain /chain.json --node-key-file /node-key --keystore-path /keystore --validator
+        ports:
+        - "30335:30333"
+        - "9977:9933"
+        - "9988:9944"
+        volumes:
+        - "./chains/staging.json:/chain.json"
+        - "./keys/node-key-3:/node-key"
+        - "./keys/keystore3:/keystore"
+        - "/tmp/sunshine3:/sunshine"
+        networks:
+            testing_net:
+                ipv4_address: 172.28.1.3
+
+    #telemetry-frontend:
+    #    image: sunshineprotocol/substrate-telemetry-frontend
+    #    command: yarn start:frontend
+    #    ports:
+    #    - "3000:3000"
+    #    volumes:
+    #    - /app/node_modules
+    #    - ./packages:/app/packages
+    #telemetry-backend:
+    #    image: sunshineprotocol/substrate-telemetry-backend
+    #    environment:
+    #    - PORT=8000
+    #    ports:
+    #    - "8000:8000"
+
+networks:
+    testing_net:
+        ipam:
+            driver: default
+            config:
+            - subnet: 172.28.0.0/16
