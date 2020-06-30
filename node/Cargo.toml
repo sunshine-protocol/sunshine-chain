@@ -25,7 +25,7 @@ sc-consensus-aura = "0.8.0-rc4"
 sc-executor = "0.8.0-rc4"
 sc-finality-grandpa = "0.8.0-rc4"
 sc-network = "0.8.0-rc4"
-sc-service = "0.8.0-rc4"
+sc-service = { version = "0.8.0-rc4", default-features = false }
 sc-transaction-pool = "2.0.0-rc4"
 sp-core = "2.0.0-rc4"
 sp-consensus = "0.8.0-rc4"
