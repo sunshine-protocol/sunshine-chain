@@ -10,8 +10,8 @@ services:
         - "9944:9944"
         volumes:
         - "./chains/staging.json:/chain.json"
-        - "./keys/node-key-1:/node-key"
-        - "./keys/keystore1:/keystore"
+        - "./secrets/node-key-1:/node-key"
+        - "./secrets/keystore1:/keystore"
         - "/tmp/sunshine1:/sunshine"
         networks:
             testing_net:
@@ -26,8 +26,8 @@ services:
         - "9966:9944"
         volumes:
         - "./chains/staging.json:/chain.json"
-        - "./keys/node-key-2:/node-key"
-        - "./keys/keystore2:/keystore"
+        - "./secrets/node-key-2:/node-key"
+        - "./secrets/keystore2:/keystore"
         - "/tmp/sunshine2:/sunshine"
         networks:
             testing_net:
@@ -42,8 +42,8 @@ services:
         - "9988:9944"
         volumes:
         - "./chains/staging.json:/chain.json"
-        - "./keys/node-key-3:/node-key"
-        - "./keys/keystore3:/keystore"
+        - "./secrets/node-key-3:/node-key"
+        - "./secrets/keystore3:/keystore"
         - "/tmp/sunshine3:/sunshine"
         networks:
             testing_net:
