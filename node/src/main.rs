@@ -1,4 +1,4 @@
-use sc_cli::{RunCmd, Subcommand, SubstrateCli};
+use sc_cli::{Database, RunCmd, Subcommand, SubstrateCli};
 use std::str::FromStr;
 use structopt::StructOpt;
 use sunshine_node::{chain_spec::Chain, new_full_start, service};
@@ -47,7 +47,9 @@ impl SubstrateCli for Cli {
 }
 
 fn main() -> sc_cli::Result<()> {
-    let cli = <Cli as SubstrateCli>::from_args();
+    let mut cli = <Cli as SubstrateCli>::from_args();
+    let db = cli.run.import_params.database_params.database.unwrap_or(Database::ParityDb);
+    cli.run.import_params.database_params.database = Some(db);
 
     match &cli.subcommand {
         Some(subcommand) => {
