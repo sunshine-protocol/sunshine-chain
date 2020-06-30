@@ -24,8 +24,8 @@ use sp_runtime::Perbill;
 use sp_runtime::{
     create_runtime_str, generic, impl_opaque_keys,
     traits::{
-        BlakeTwo256, Block as BlockT, IdentifyAccount, IdentityLookup, NumberFor, OpaqueKeys,
-        Saturating, Verify,
+        BlakeTwo256, Block as BlockT, IdentifyAccount, IdentityLookup, NumberFor, Saturating,
+        Verify,
     },
     transaction_validity::{TransactionSource, TransactionValidity},
     ApplyExtrinsicResult, MultiSignature,
@@ -237,28 +237,6 @@ impl_opaque_keys! {
     }
 }
 
-/*
-pub struct InfiniteSession;
-
-impl pallet_session::ShouldEndSession<BlockNumber> for InfiniteSession {
-    fn should_end_session(_now: BlockNumber) -> bool {
-        false
-    }
-}
-
-impl pallet_session::Trait for Runtime {
-    type Event = Event;
-    type ValidatorId = <Self as frame_system::Trait>::AccountId;
-    type ValidatorIdOf = ();
-    type ShouldEndSession = InfiniteSession;
-    type NextSessionRotation = ();
-    type SessionManager = ();
-    type SessionHandler = <SessionKeys as OpaqueKeys>::KeyTypeIdProviders;
-    type Keys = SessionKeys;
-    type DisabledValidatorsThreshold = ();
-}
-*/
-
 impl sunshine_identity_pallet::Trait for Runtime {
     type Uid = u32;
     type Cid = sunshine_identity_utils::cid::CidBytes;
@@ -286,7 +264,6 @@ construct_runtime!(
         Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
         Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
-        //Session: pallet_session::{Module, Call, Storage, Event, Config<T>},
         Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
         Faucet: sunshine_faucet_pallet::{Module, Call, Event<T>, ValidateUnsigned},
     }

@@ -48,7 +48,12 @@ impl SubstrateCli for Cli {
 
 fn main() -> sc_cli::Result<()> {
     let mut cli = <Cli as SubstrateCli>::from_args();
-    let db = cli.run.import_params.database_params.database.unwrap_or(Database::ParityDb);
+    let db = cli
+        .run
+        .import_params
+        .database_params
+        .database
+        .unwrap_or(Database::ParityDb);
     cli.run.import_params.database_params.database = Some(db);
 
     match &cli.subcommand {
