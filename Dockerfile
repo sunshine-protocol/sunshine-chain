@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-glibc AS glibc
+FROM frolvlad/alpine-glibc
 
 ARG VCS_REF
 ARG BUILD_DATE
