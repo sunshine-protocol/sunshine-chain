@@ -20,6 +20,9 @@ structopt = "0.3.15"
 sc-basic-authorship = "0.8.0-rc4"
 sc-cli = "0.8.0-rc4"
 sc-client-api = "2.0.0-rc4"
+# test-helpers is required due to a bug in substrate
+# https://github.com/paritytech/substrate/pull/6546
+sc-client-db = { version = "0.8.0-rc4", default-features = false, features = ["with-parity-db", "test-helpers"] }
 sc-consensus = "0.8.0-rc4"
 sc-consensus-aura = "0.8.0-rc4"
 sc-executor = "0.8.0-rc4"
