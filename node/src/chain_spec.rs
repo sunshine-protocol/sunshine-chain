@@ -9,8 +9,8 @@ use sp_runtime::traits::{IdentifyAccount, Verify};
 use std::path::PathBuf;
 use std::str::FromStr;
 use sunshine_runtime::{
-    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, //SessionConfig,
-    SessionKeys, Signature, SystemConfig, WASM_BINARY,
+    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SystemConfig,
+    WASM_BINARY,
 };
 
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.getsunshine.com/submit/";
@@ -35,10 +35,6 @@ fn seed_to_authority_keys(seed: &str) -> (AccountId, AccountId, AuraId, GrandpaI
         seed_to_public::<AuraId>(seed),
         seed_to_public::<GrandpaId>(seed),
     )
-}
-
-fn session_keys(aura: AuraId, grandpa: GrandpaId) -> SessionKeys {
-    SessionKeys { aura, grandpa }
 }
 
 #[derive(Clone, Debug)]
@@ -181,9 +177,18 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
 pub fn staging_chain_spec() -> ChainSpec {
     // subkey generate-node-key
     let boot_nodes = [
-        ("/ip4/172.28.1.1/tcp/30333", "12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f"),
-        ("/ip4/172.28.1.2/tcp/30333", "12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv"),
-        ("/ip4/172.28.1.3/tcp/30333", "12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M"),
+        (
+            "/ip4/172.28.1.1/tcp/30333",
+            "12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f",
+        ),
+        (
+            "/ip4/172.28.1.2/tcp/30333",
+            "12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv",
+        ),
+        (
+            "/ip4/172.28.1.3/tcp/30333",
+            "12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M",
+        ),
     ]
     .iter()
     .map(|(multiaddr, peer_id)| MultiaddrWithPeerId {
@@ -237,7 +242,7 @@ fn testnet_genesis(
                     (
                         x.0.clone(),
                         x.0.clone(),
-                        session_keys(x.2.clone(), x.3.clone()),
+                        SessionKeys { aura: x.2.clone(), grandpa: x.3.clone() },
                     )
                 })
                 .collect::<Vec<_>>(),
