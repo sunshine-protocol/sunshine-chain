@@ -3,9 +3,7 @@
   "id": "staging-testnet",
   "chainType": "Live",
   "bootNodes": [
-    "/ip4/172.28.1.1/tcp/30333/p2p/12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f",
-    "/ip4/172.28.1.2/tcp/30333/p2p/12D3KooWK2b6aJsBMkg3JRn4PbCZBXaGcB9mA1YtqQ7ZWpqg3cmv",
-    "/ip4/172.28.1.3/tcp/30333/p2p/12D3KooWRCioHfKYchRJAhd5ZEaZwVMYTNuNG7JDCHjGa3ozxS4M"
+    "/ip4/51.11.244.93/tcp/30333/p2p/12D3KooWAhftS4ujcxgJDoEaJ8hFaQTuc4Vk3jsthP2fBbh9tc8f"
   ],
   "telemetryEndpoints": null,
   "protocolId": null,
@@ -19,23 +17,13 @@
       },
       "palletAura": {
         "authorities": [
-          "5FCsDTobbck9vtfqGnyYbqbFw5YrtWyK6FaVZ1Sq2KWCVLit",
-          "5EjhaW3GzQ3d8JrbWv5iZMq6RDMssPxQLJZ3qQTPSgKF8Jxb",
-          "5F2AHzWa1V2R2X3Pk6Sq7RG9dqH5AV1FrZ15RS5P4m6ZAYmt"
+          "5FCsDTobbck9vtfqGnyYbqbFw5YrtWyK6FaVZ1Sq2KWCVLit"
         ]
       },
       "palletGrandpa": {
         "authorities": [
           [
             "5DUiDNXtr9WWQ6Sg9cpd5XDfbLRMXV9RQ3SfyEMsMj4yeB4Q",
-            1
-          ],
-          [
-            "5EX52w4Rzi66uPeXnz9kFVL7zva3bX3byM2MRs6exJTwNxXn",
-            1
-          ],
-          [
-            "5CZp81EdMJLjCyEVccuF2DDfXfb6vUgdQTfT5fQvdP9XjyF9",
             1
           ]
         ]
