@@ -924,6 +924,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive-new"
+version = "0.5.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "71f31892cd5c62e414316f2963c5689242c43d8e7bbcaaeca97e5e28c95d91d9"
+dependencies = [
+ "proc-macro2",
+ "quote 1.0.7",
+ "syn 1.0.33",
+]
+
+[[package]]
 name = "derive_more"
 version = "0.99.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3271,6 +3282,7 @@ dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
+ "serde",
  "sp-arithmetic",
  "sp-core",
  "sp-io",
@@ -6410,6 +6422,42 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "502d53007c02d7605a05df1c1a73ee436952781653da5d0bf57ad608f66932c1"
 
 [[package]]
+name = "sunshine-bank"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d8c68dd7b3e54f0c38376a2c328106b8a84670cbd542f55f7de0b82048642b09"
+dependencies = [
+ "clear_on_drop",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-runtime",
+ "sp-std",
+ "sunshine-org",
+ "sunshine-util",
+]
+
+[[package]]
+name = "sunshine-bounty"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "95e1c689e92b47aab37c0722ae229ebb657959c3dc9aedf52f7e24a5e53b85b8"
+dependencies = [
+ "clear_on_drop",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-runtime",
+ "sp-std",
+ "sunshine-bank",
+ "sunshine-org",
+ "sunshine-util",
+ "sunshine-vote",
+]
+
+[[package]]
 name = "sunshine-cli"
 version = "0.1.0"
 dependencies = [
@@ -6437,6 +6485,24 @@ dependencies = [
  "sunshine-identity-utils",
  "sunshine-node",
  "thiserror",
+]
+
+[[package]]
+name = "sunshine-court"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0d12cb0f03cac2e310a7d8b8b8c55d9f7753c4c7b87e29fdbf647fc7f3e5c03"
+dependencies = [
+ "clear_on_drop",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-runtime",
+ "sp-std",
+ "sunshine-org",
+ "sunshine-util",
+ "sunshine-vote",
 ]
 
 [[package]]
@@ -6564,6 +6630,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "sunshine-org"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "84a2d0218e33ed2ab22b33314886b5a0b0f6ff0dd05d566369589f403345367b"
+dependencies = [
+ "clear_on_drop",
+ "frame-support",
+ "frame-system",
+ "orml-utilities",
+ "pallet-balances",
+ "parity-scale-codec",
+ "serde",
+ "sp-runtime",
+ "sp-std",
+ "sunshine-util",
+]
+
+[[package]]
 name = "sunshine-runtime"
 version = "0.1.0"
 dependencies = [
@@ -6591,9 +6675,47 @@ dependencies = [
  "sp-transaction-pool",
  "sp-version",
  "substrate-wasm-builder-runner",
+ "sunshine-bank",
+ "sunshine-bounty",
+ "sunshine-court",
  "sunshine-faucet-pallet",
  "sunshine-identity-pallet",
  "sunshine-identity-utils",
+ "sunshine-org",
+ "sunshine-vote",
+]
+
+[[package]]
+name = "sunshine-util"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8af8e8c41fad0b6e3e76ed21dad67af5bbd197c81fcfac44bc2b42fdc9e830f3"
+dependencies = [
+ "clear_on_drop",
+ "derive-new",
+ "frame-support",
+ "orml-utilities",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "sunshine-vote"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "150c5cefec8bba8f61fe77effeeed6362e879b157f49a60f82f97fd8f1aa4cc8"
+dependencies = [
+ "clear_on_drop",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-runtime",
+ "sp-std",
+ "sunshine-org",
+ "sunshine-util",
 ]
 
 [[package]]

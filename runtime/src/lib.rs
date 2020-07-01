@@ -251,6 +251,51 @@ impl sunshine_faucet_pallet::Trait for Runtime {
     type Event = Event;
 }
 
+parameter_types! {
+    pub const ReservationLimit: u32 = 10000;
+}
+impl sunshine_org::Trait for Runtime {
+    type Event = Event;
+    type IpfsReference = sunshine_identity_utils::cid::CidBytes;
+    type OrgId = u64;
+    type Shares = u64;
+    type ReservationLimit = ReservationLimit;
+}
+impl sunshine_vote::Trait for Runtime {
+    type Event = Event;
+    type VoteId = u64;
+    type Signal = u64;
+}
+parameter_types! {
+    pub const MinimumDisputeAmount: u64 = 10;
+}
+impl sunshine_court::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+    type DisputeId = u64;
+    type MinimumDisputeAmount = MinimumDisputeAmount;
+}
+parameter_types! {
+    pub const MinimumTransfer: u64 = 10;
+    pub const MinimumInitialDeposit: u64 = 20;
+}
+impl sunshine_bank::Trait for Runtime {
+    type Event = Event;
+    type BankId = u64;
+    type Currency = Balances;
+    type MinimumTransfer = MinimumTransfer;
+    type MinimumInitialDeposit = MinimumInitialDeposit;
+}
+parameter_types! {
+    // minimum deposit to register an on-chain bank
+    pub const BountyLowerBound: u64 = 5;
+}
+impl sunshine_bounty::Trait for Runtime {
+    type Event = Event;
+    type BountyId = u64;
+    type BountyLowerBound = BountyLowerBound;
+}
+
 construct_runtime!(
     pub enum Runtime where
         Block = Block,
@@ -264,6 +309,11 @@ construct_runtime!(
         Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
         Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
+        Org: sunshine_org::{Module, Call, Config<T>, Storage, Event<T>},
+        Vote: sunshine_vote::{Module, Call, Storage, Event<T>},
+        Court: sunshine_court::{Module, Call, Storage, Event<T>},
+        Bank: sunshine_bank::{Module, Call, Storage, Event<T>},
+        Bounty: sunshine_bounty::{Module, Call, Storage, Event<T>},
         Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
         Faucet: sunshine_faucet_pallet::{Module, Call, Event<T>, ValidateUnsigned},
     }
