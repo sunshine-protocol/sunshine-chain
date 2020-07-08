@@ -269,11 +269,11 @@ impl sunshine_vote::Trait for Runtime {
 }
 
 parameter_types! {
-    pub const MinimumDisputeAmount: u64 = 10;
+    pub const MinimumDisputeAmount: Balances = 10;
 }
 impl sunshine_court::Trait for Runtime {
     type Event = Event;
-    type Currency = u64;
+    type Currency = Balances;
     type DisputeId = u64;
     type MinimumDisputeAmount = MinimumDisputeAmount;
 }
