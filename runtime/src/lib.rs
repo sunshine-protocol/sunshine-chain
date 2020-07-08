@@ -251,6 +251,33 @@ impl sunshine_faucet_pallet::Trait for Runtime {
     type Event = Event;
 }
 
+parameter_types! {
+    pub const ReservationLimit: u32 = 10000;
+}
+impl sunshine_org::Trait for Runtime {
+    type Event = Event;
+    type IpfsReference = sunshine_identity_utils::cid::CidBytes;
+    type OrgId = u64;
+    type Shares = u64;
+    type ReservationLimit = ReservationLimit;
+}
+
+impl sunshine_vote::Trait for Runtime {
+    type Event = Event;
+    type VoteId = u64;
+    type Signal = u64;
+}
+
+parameter_types! {
+    pub const MinimumDisputeAmount: u64 = 10;
+}
+impl sunshine_court::Trait for Runtime {
+    type Event = Event;
+    type Currency = u64;
+    type DisputeId = u64;
+    type MinimumDisputeAmount = MinimumDisputeAmount;
+}
+
 construct_runtime!(
     pub enum Runtime where
         Block = Block,
@@ -266,6 +293,10 @@ construct_runtime!(
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
         Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
         Faucet: sunshine_faucet_pallet::{Module, Call, Event<T>, ValidateUnsigned},
+        Org: sunshine_org::{Module, Call, Config<T>, Storage, Event<T>},
+        Vote: sunshine_vote::{Module, Call, Storage, Event<T>},
+        Court: sunshine_court::{Module, Call, Storage, Event<T>},
+
     }
 );
 
