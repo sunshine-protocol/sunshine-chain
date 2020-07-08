@@ -269,13 +269,45 @@ impl sunshine_vote::Trait for Runtime {
 }
 
 parameter_types! {
-    pub const MinimumDisputeAmount: Balances = 10;
+    pub const MinimumDisputeAmount: u128 = 10;
 }
 impl sunshine_court::Trait for Runtime {
     type Event = Event;
     type Currency = Balances;
     type DisputeId = u64;
     type MinimumDisputeAmount = MinimumDisputeAmount;
+}
+
+parameter_types! {
+    pub const TransactionFee: u128 = 3;
+    pub const TreasuryModuleId: sp_runtime::ModuleId = sp_runtime::ModuleId(*b"py/trsry");
+}
+impl sunshine_donate::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+    type TransactionFee = TransactionFee;
+    type Treasury = TreasuryModuleId;
+}
+
+parameter_types! {
+    pub const MaxTreasuryPerOrg: u32 = 50;
+    pub const MinimumInitialDeposit: u128 = 20;
+}
+impl sunshine_bank::Trait for Runtime {
+    type Event = Event;
+    type SpendId = u64;
+    type Currency = Balances;
+    type MaxTreasuryPerOrg = MaxTreasuryPerOrg;
+    type MinimumInitialDeposit = MinimumInitialDeposit;
+}
+
+parameter_types! {
+    pub const BountyLowerBound: u128 = 5;
+}
+impl sunshine_bounty::Trait for Runtime {
+    type Event = Event;
+    type BountyId = u64;
+    type BountyLowerBound = BountyLowerBound;
 }
 
 construct_runtime!(
@@ -296,7 +328,9 @@ construct_runtime!(
         Org: sunshine_org::{Module, Call, Config<T>, Storage, Event<T>},
         Vote: sunshine_vote::{Module, Call, Storage, Event<T>},
         Court: sunshine_court::{Module, Call, Storage, Event<T>},
-
+        Donate: sunshine_donate::{Module, Call, Event<T>},
+        Bank: sunshine_bank::{Module, Call, Storage, Event<T>},
+        Bounty: sunshine_bounty::{Module, Call, Storage, Event<T>},
     }
 );
 
