@@ -267,28 +267,38 @@ impl sunshine_vote::Trait for Runtime {
     type Signal = u64;
 }
 parameter_types! {
-    pub const MinimumDisputeAmount: u64 = 10;
+    pub const MinimumDisputeAmount: Balance = 10;
 }
 impl sunshine_court::Trait for Runtime {
     type Event = Event;
-    type Currency = Balances;
+    type Currency = Balance;
     type DisputeId = u64;
     type MinimumDisputeAmount = MinimumDisputeAmount;
 }
 parameter_types! {
-    pub const MinimumTransfer: u64 = 10;
-    pub const MinimumInitialDeposit: u64 = 20;
+    pub const TransactionFee: Balance = 3;
+    pub const TreasuryModuleId: sp_runtime::ModuleId = sp_runtime::ModuleId(*b"py/trsry");
+}
+impl sunshine_donate::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balance;
+    type TransactionFee = TransactionFee;
+    type Treasury = TreasuryModuleId;
+}
+parameter_types! {
+    pub const MaxTreasuryPerOrg: u32 = 50;
+    pub const MinimumInitialDeposit: Balance = 20;
 }
 impl sunshine_bank::Trait for Runtime {
     type Event = Event;
-    type BankId = u64;
-    type Currency = Balances;
-    type MinimumTransfer = MinimumTransfer;
+    type SpendId = u64;
+    type Currency = Balance;
+    type MaxTreasuryPerOrg = MaxTreasuryPerOrg;
     type MinimumInitialDeposit = MinimumInitialDeposit;
 }
 parameter_types! {
     // minimum deposit to register an on-chain bank
-    pub const BountyLowerBound: u64 = 5;
+    pub const BountyLowerBound: Balance = 5;
 }
 impl sunshine_bounty::Trait for Runtime {
     type Event = Event;
@@ -312,6 +322,7 @@ construct_runtime!(
         Org: sunshine_org::{Module, Call, Config<T>, Storage, Event<T>},
         Vote: sunshine_vote::{Module, Call, Storage, Event<T>},
         Court: sunshine_court::{Module, Call, Storage, Event<T>},
+        Donate: sunshine_donate::{Module, Call, Event<T>},
         Bank: sunshine_bank::{Module, Call, Storage, Event<T>},
         Bounty: sunshine_bounty::{Module, Call, Storage, Event<T>},
         Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
