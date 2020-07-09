@@ -230,6 +230,11 @@ impl pallet_transaction_payment::Trait for Runtime {
     type FeeMultiplierUpdate = ();
 }
 
+impl pallet_sudo::Trait for Runtime {
+    type Event = Event;
+    type Call = Call;
+}
+
 impl_opaque_keys! {
     pub struct SessionKeys {
         pub grandpa: Grandpa,
@@ -316,6 +321,7 @@ construct_runtime!(
         NodeBlock = opaque::Block,
         UncheckedExtrinsic = UncheckedExtrinsic
     {
+        Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
         System: frame_system::{Module, Call, Config, Storage, Event<T>},
         RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
         Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},

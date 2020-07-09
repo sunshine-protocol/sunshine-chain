@@ -10,7 +10,7 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use sunshine_runtime::{
     AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SystemConfig,
-    WASM_BINARY,
+    WASM_BINARY, OrgConfig, SudoConfig,
 };
 
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.getsunshine.com/submit/";
@@ -81,6 +81,12 @@ pub fn dev_chain_spec() -> ChainSpec {
                     seed_to_account_id::<sr25519::Public>("//Alice"),
                     seed_to_account_id::<sr25519::Public>("//Alice/stash"),
                 ],
+                sunshine_identity_utils::cid::CidBytes::default(),
+                &[
+                    seed_to_account_id::<sr25519::Public>("//Alice"),
+                    seed_to_account_id::<sr25519::Public>("//Bob"),
+                ],
+                seed_to_account_id::<sr25519::Public>("//Alice"),
             )
         },
         vec![],
@@ -108,6 +114,12 @@ pub fn local_chain_spec() -> ChainSpec {
                     seed_to_account_id::<sr25519::Public>("//Bob"),
                     seed_to_account_id::<sr25519::Public>("//Bob/stash"),
                 ],
+                sunshine_identity_utils::cid::CidBytes::default(),
+                &[
+                    seed_to_account_id::<sr25519::Public>("//Alice"),
+                    seed_to_account_id::<sr25519::Public>("//Bob"),
+                ],
+                seed_to_account_id::<sr25519::Public>("//Alice"),
             )
         },
         vec![],
@@ -171,6 +183,9 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
             ),*/
         ],
         &[],
+        sunshine_identity_utils::cid::CidBytes::default(),
+        &[],
+        controller[0].into(),
     )
 }
 
@@ -213,6 +228,9 @@ pub fn staging_chain_spec() -> ChainSpec {
 fn testnet_genesis(
     initial_authorities: &[(AccountId, AccountId, AuraId, GrandpaId)],
     endowed_accounts: &[AccountId],
+    first_org_value_constitution: sunshine_identity_utils::cid::CidBytes,
+    first_org_flat_membership: &[AccountId],
+    root_key: AccountId,
 ) -> GenesisConfig {
     GenesisConfig {
         frame_system: Some(SystemConfig {
@@ -234,6 +252,12 @@ fn testnet_genesis(
                 .iter()
                 .map(|x| (x.3.clone(), 1))
                 .collect(),
+        }),
+        pallet_sudo: Some(SudoConfig { key: root_key }),
+        sunshine_org: Some(OrgConfig {
+            first_organization_supervisor: root_key.clone(),
+            first_organization_value_constitution: first_org_value_constitution,
+            first_organization_flat_membership: first_org_flat_membership,
         }),
         /*pallet_session: Some(SessionConfig {
             keys: initial_authorities

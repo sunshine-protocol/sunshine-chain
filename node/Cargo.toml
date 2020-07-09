@@ -38,4 +38,5 @@ sp-inherents = "2.0.0-rc4"
 sp-runtime = "2.0.0-rc4"
 sp-transaction-pool = "2.0.0-rc4"
 
+sunshine-identity-utils = { version = "0.1.0", default-features = false }
 sunshine-runtime = { version = "0.1.0", path = "../runtime" }

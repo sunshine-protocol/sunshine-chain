@@ -23,4 +23,11 @@ sunshine-node = { version = "0.1.0", path = "../node", optional = true }
 sunshine-faucet-client = "0.1.0"
 sunshine-identity-client = "0.1.0"
 sunshine-identity-utils = "0.1.0"
+sunshine-util = { version = "0.0.6", default-features=false}
+sunshine-org = { version = "0.0.6", default-features=false }
+sunshine-vote = { version = "0.0.6", default-features=false}
+sunshine-court = { version = "0.0.6", default-features=false}
+sunshine-donate = { version = "0.0.6", default-features=false}
+sunshine-bank = { version = "0.0.6", default-features=false}
+sunshine-bounty = { version = "0.0.6", default-features=false}
 thiserror = "1.0.20"
