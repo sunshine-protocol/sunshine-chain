@@ -253,11 +253,11 @@ fn testnet_genesis(
                 .map(|x| (x.3.clone(), 1))
                 .collect(),
         }),
-        pallet_sudo: Some(SudoConfig { key: root_key }),
+        pallet_sudo: Some(SudoConfig { key: root_key.clone() }),
         sunshine_org: Some(OrgConfig {
-            first_organization_supervisor: root_key.clone(),
+            first_organization_supervisor: root_key,
             first_organization_value_constitution: first_org_value_constitution,
-            first_organization_flat_membership: first_org_flat_membership,
+            first_organization_flat_membership: first_org_flat_membership.to_vec(),
         }),
         /*pallet_session: Some(SessionConfig {
             keys: initial_authorities
