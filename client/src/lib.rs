@@ -7,6 +7,7 @@ use substrate_subxt::system::System;
 use substrate_subxt::{sp_core, sp_runtime, ClientBuilder};
 use sunshine_faucet_client::Faucet;
 use sunshine_identity_client::{Client, Identity};
+use sunshine_bounty_client::{Org, Vote, Donate, Bank, Bounty};
 use sunshine_identity_utils::cid::CidBytes;
 use thiserror::Error;
 
@@ -46,6 +47,32 @@ impl Identity for Runtime {
     type Gen = u16;
     type IdAccountData = AccountData<<Self as Balances>::Balance>;
 }
+
+// // if uncommented, local Client is unhappy because identity::Client is not 
+// // generic over a Runtime that has these bounds
+// impl Org for Runtime {
+//     type IpfsReference = CidBytes;
+//     type OrgId = u64;
+//     type Shares = u64;
+// }
+
+// impl Vote for Runtime {
+//     type VoteId = u64;
+//     type Signal = u64;
+// }
+
+// impl Donate for Runtime {
+//     type DCurrency = u128;
+// }
+
+// impl Bank for Runtime {
+//     type SpendId = u64;
+//     type Currency = u128;
+// }
+
+// impl Bounty for Runtime {
+//     type BountyId = u64;
+// }
 
 impl Faucet for Runtime {}
 

@@ -6593,6 +6593,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "sunshine-bounty-client"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "74121fdad7915ed5f0480bb6f0c3ae4424cbc176a456dbb91a219926db10a284"
+dependencies = [
+ "async-std",
+ "async-trait",
+ "frame-support",
+ "ipfs-embed",
+ "ipld-block-builder",
+ "keybase-keystore",
+ "libipld",
+ "pallet-indices",
+ "parity-scale-codec",
+ "serde",
+ "serde_json",
+ "sled",
+ "sp-core",
+ "sp-runtime",
+ "substrate-subxt",
+ "sunshine-bank",
+ "sunshine-bounty",
+ "sunshine-identity-utils",
+ "sunshine-org",
+ "sunshine-util",
+ "sunshine-vote",
+ "thiserror",
+]
+
+[[package]]
 name = "sunshine-cli"
 version = "0.1.0"
 dependencies = [
@@ -6615,17 +6645,11 @@ dependencies = [
  "sled",
  "sp-database",
  "substrate-subxt",
- "sunshine-bank",
- "sunshine-bounty",
- "sunshine-court",
- "sunshine-donate",
+ "sunshine-bounty-client",
  "sunshine-faucet-client",
  "sunshine-identity-client",
  "sunshine-identity-utils",
  "sunshine-node",
- "sunshine-org",
- "sunshine-util",
- "sunshine-vote",
  "thiserror",
 ]
 
