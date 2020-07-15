@@ -1,5 +1,6 @@
 use clap::Clap;
 use std::path::PathBuf;
+use sunshine_faucet_cli::MintCommand;
 use sunshine_identity_cli::{account, device, id, key, wallet};
 
 #[derive(Clone, Debug, Clap)]
@@ -8,6 +9,8 @@ pub struct Opts {
     pub cmd: SubCommand,
     #[clap(short = "p", long = "path")]
     pub path: Option<PathBuf>,
+    #[clap(short = "c", long = "chain-spec")]
+    pub chain_spec: Option<PathBuf>,
 }
 
 #[derive(Clone, Debug, Clap)]
@@ -43,6 +46,7 @@ pub struct AccountCommand {
 pub enum AccountSubCommand {
     Create(account::AccountCreateCommand),
     Password(account::AccountPasswordCommand),
+    Mint(MintCommand),
 }
 
 #[derive(Clone, Debug, Clap)]
