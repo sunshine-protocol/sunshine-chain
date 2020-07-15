@@ -112,7 +112,7 @@ impl Client<libipld::mem::MemStore> {
         use sunshine_core::{Key as _, SecretString};
         use tempdir::TempDir;
 
-        let tmp = TempDir::new("sunshine-identity-").expect("failed to create tempdir");
+        let tmp = TempDir::new("sunshine-client-").expect("failed to create tempdir");
         let chain = ClientBuilder::new()
             .set_client(test_node.clone())
             .build()
@@ -219,18 +219,18 @@ pub mod mock {
 
     pub fn test_node() -> (TestNode, TempDir) {
         env_logger::try_init().ok();
-        let tmp = TempDir::new("sunshine-identity-").expect("failed to create tempdir");
+        let tmp = TempDir::new("sunshine-node-").expect("failed to create tempdir");
         let config = SubxtClientConfig {
-            impl_name: "test-client",
-            impl_version: "0.1.0",
-            author: "sunshine",
-            copyright_start_year: 2020,
+            impl_name: sunshine_node::IMPL_NAME,
+            impl_version: sunshine_node::IMPL_VERSION,
+            author: sunshine_node::AUTHOR,
+            copyright_start_year: sunshine_node::COPYRIGHT_START_YEAR,
             db: DatabaseConfig::RocksDb {
                 path: tmp.path().into(),
                 cache_size: 128,
             },
-            builder: test_node::service::new_full,
-            chain_spec: test_node::chain_spec::development_config(),
+            builder: sunshine_node::service::new_full,
+            chain_spec: sunshine_node::chain_spec::development_config(),
             role: Role::Authority(AccountKeyring::Alice),
         };
         let client = SubxtClient::new(config).unwrap().into();
