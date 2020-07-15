@@ -1,24 +1,25 @@
-use ipfs_embed::{Config, Store};
-use keybase_keystore::KeyStore;
+use ipfs_embed::{Config, Store as OffchainStore};
+use ipld_block_builder::{derive_cache, Codec, IpldCache};
+use libipld::store::Store;
 use std::path::Path;
+use substrate_keybase_keystore::Keystore;
 use substrate_subxt::balances::{AccountData, Balances};
 use substrate_subxt::sp_runtime::traits::{IdentifyAccount, Verify};
 use substrate_subxt::system::System;
-use substrate_subxt::{sp_core, sp_runtime, ClientBuilder};
+use substrate_subxt::ClientBuilder;
+use substrate_subxt::{sp_core, sp_runtime};
+use sunshine_core::{ChainClient, ChainSigner, Keystore as _, OffchainSigner};
 use sunshine_faucet_client::Faucet;
-use sunshine_identity_client::{Client, Identity};
+use sunshine_identity_client::{Claim, Identity};
 use sunshine_identity_utils::cid::CidBytes;
 use thiserror::Error;
 
-pub use substrate_subxt::balances;
-pub use substrate_subxt::system;
 pub use sunshine_faucet_client as faucet;
 pub use sunshine_identity_client as identity;
-#[cfg(feature = "light")]
-pub mod light;
+mod light;
 
-pub type AccountId = <<sp_runtime::MultiSignature as Verify>::Signer as IdentifyAccount>::AccountId;
-pub type Uid = u32;
+type AccountId = <<sp_runtime::MultiSignature as Verify>::Signer as IdentifyAccount>::AccountId;
+type Uid = u32;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Runtime;
@@ -54,67 +55,185 @@ impl substrate_subxt::Runtime for Runtime {
     type Extra = substrate_subxt::DefaultExtra<Self>;
 }
 
-#[cfg(not(feature = "light"))]
-pub async fn build_client(
-    root: &Path,
-) -> Result<Client<Runtime, sp_core::sr25519::Pair, Store>, Error> {
-    let keystore = KeyStore::open(root.join("keystore")).await?;
-    let db = sled::open(root.join("db"))?;
-    let db_ipfs = db.open_tree("ipfs")?;
-
-    let config = Config::from_tree(db_ipfs);
-    let subxt = ClientBuilder::new().build().await?;
-    let store = Store::new(config)?;
-    Ok(Client::new(keystore, subxt, store))
+pub struct Client<S = OffchainStore> {
+    keystore: Keystore<Runtime, sp_core::sr25519::Pair>,
+    chain: substrate_subxt::Client<Runtime>,
+    offchain: OffchainClient<S>,
 }
 
-#[cfg(feature = "light")]
-pub async fn build_client(
-    root: &Path,
-) -> Result<Client<Runtime, sp_core::sr25519::Pair, Store>, Error> {
-    let keystore = KeyStore::open(root.join("keystore")).await?;
-    let db = sled::open(root.join("db"))?;
-    let db_ipfs = db.open_tree("ipfs")?;
-    let db_light = db.open_tree("substrate")?;
+impl Client<OffchainStore> {
+    pub async fn new(root: &Path, chain_spec: Option<&Path>) -> Result<Self, Error> {
+        let keystore = Keystore::open(root.join("keystore")).await?;
+        let db = sled::open(root.join("db"))?;
+        let db_ipfs = db.open_tree("ipfs")?;
 
-    let chain_spec_bytes = include_bytes!("../../chains/staging.json");
-    let chain_spec =
-        light::ChainSpec::from_json_bytes(&chain_spec_bytes[..]).map_err(ChainSpecError)?;
+        let (chain, chain_spec) = if let Some(chain_spec) = chain_spec {
+            let db_light = db.open_tree("substrate")?;
+            let (light_client, chain_spec) =
+                light::build_light_client(db_light, chain_spec).await?;
+            let client = ClientBuilder::new()
+                .set_client(light_client)
+                .build()
+                .await?;
+            (client, Some(chain_spec))
+        } else {
+            let client = ClientBuilder::new().build().await?;
+            (client, None)
+        };
 
-    let mut config = Config::from_tree(db_ipfs);
-    config.network.bootstrap_nodes = chain_spec
-        .boot_nodes()
-        .iter()
-        .map(|x| (x.multiaddr.clone(), x.peer_id.clone()))
-        .collect();
+        let mut config = Config::from_tree(db_ipfs);
+        if let Some(chain_spec) = chain_spec {
+            config.network.bootstrap_nodes = chain_spec
+                .boot_nodes()
+                .iter()
+                .map(|x| (x.multiaddr.clone(), x.peer_id.clone()))
+                .collect();
+        }
+        let store = OffchainStore::new(config)?;
+        let offchain = OffchainClient::new(store);
 
-    let light_client = light::build_light_client(db_light, chain_spec).await?;
-    let subxt = ClientBuilder::new()
-        .set_client(light_client)
-        .build()
-        .await?;
-    let store = Store::new(config)?;
-    Ok(Client::new(keystore, subxt, store))
+        Ok(Self {
+            keystore,
+            chain,
+            offchain,
+        })
+    }
 }
+
+#[cfg(feature = "mock")]
+impl Client<libipld::mem::MemStore> {
+    pub async fn mock(
+        test_node: &mock::TestNode,
+        account: sp_keyring::AccountKeyring,
+    ) -> (Self, tempdir::TempDir) {
+        use libipld::mem::MemStore;
+        use substrate_keybase_keystore::Key;
+        use substrate_subxt::ClientBuilder;
+        use sunshine_core::{Key as _, SecretString};
+        use tempdir::TempDir;
+
+        let tmp = TempDir::new("sunshine-identity-").expect("failed to create tempdir");
+        let chain = ClientBuilder::new()
+            .set_client(test_node.clone())
+            .build()
+            .await
+            .unwrap();
+        let offchain = OffchainClient::new(MemStore::default());
+        let mut keystore = Keystore::open(tmp.path().join("keystore")).await.unwrap();
+        let key = Key::from_suri(&account.to_seed()).unwrap();
+        let password = SecretString::new("password".to_string());
+        keystore
+            .set_device_key(&key, &password, false)
+            .await
+            .unwrap();
+        (
+            Self {
+                keystore,
+                chain,
+                offchain,
+            },
+            tmp,
+        )
+    }
+}
+
+impl<S: Store + Send + Sync> ChainClient<Runtime> for Client<S> {
+    type Keystore = Keystore<Runtime, sp_core::sr25519::Pair>;
+    type OffchainClient = OffchainClient<S>;
+    type Error = Error;
+
+    fn keystore(&self) -> &Self::Keystore {
+        &self.keystore
+    }
+
+    fn keystore_mut(&mut self) -> &mut Self::Keystore {
+        &mut self.keystore
+    }
+
+    fn chain_client(&self) -> &substrate_subxt::Client<Runtime> {
+        &self.chain
+    }
+
+    fn chain_signer(&self) -> Result<&(dyn ChainSigner<Runtime> + Send + Sync), Self::Error> {
+        self.keystore
+            .chain_signer()
+            .ok_or(Error::Keystore(substrate_keybase_keystore::Error::Locked))
+    }
+
+    fn offchain_client(&self) -> &Self::OffchainClient {
+        &self.offchain
+    }
+
+    fn offchain_signer(&self) -> Result<&dyn OffchainSigner<Runtime>, Self::Error> {
+        self.keystore
+            .offchain_signer()
+            .ok_or(Error::Keystore(substrate_keybase_keystore::Error::Locked))
+    }
+}
+
+pub struct OffchainClient<S> {
+    claims: IpldCache<S, Codec, Claim>,
+}
+
+impl<S: Store> OffchainClient<S> {
+    pub fn new(store: S) -> Self {
+        Self {
+            claims: IpldCache::new(store, Codec::new(), 64),
+        }
+    }
+}
+
+derive_cache!(OffchainClient, claims, Codec, Claim);
 
 #[derive(Debug, Error)]
 pub enum Error {
     #[error(transparent)]
-    Sled(#[from] sled::Error),
+    Keystore(#[from] substrate_keybase_keystore::Error),
     #[error(transparent)]
-    Ipfs(#[from] ipfs_embed::Error),
+    Chain(#[from] substrate_subxt::Error),
     #[error(transparent)]
-    Keystore(#[from] keybase_keystore::Error),
+    Offchain(#[from] ipfs_embed::Error),
     #[error(transparent)]
-    Subxt(#[from] substrate_subxt::Error),
-    #[cfg(feature = "light")]
+    Ipld(#[from] libipld::error::Error),
     #[error(transparent)]
-    Light(#[from] sc_service::Error),
-    #[cfg(feature = "light")]
+    Light(#[from] light::Error),
     #[error(transparent)]
-    ChainSpec(#[from] ChainSpecError),
+    Db(#[from] sled::Error),
+    #[error(transparent)]
+    Identity(#[from] sunshine_identity_client::Error),
 }
 
-#[derive(Debug, Error)]
-#[error("{0}")]
-pub struct ChainSpecError(String);
+impl From<codec::Error> for Error {
+    fn from(error: codec::Error) -> Self {
+        Self::Chain(error.into())
+    }
+}
+
+#[cfg(feature = "mock")]
+pub mod mock {
+    pub use sp_keyring::AccountKeyring;
+    use substrate_subxt::client::{DatabaseConfig, Role, SubxtClient, SubxtClientConfig};
+    pub use tempdir::TempDir;
+
+    pub type TestNode = jsonrpsee::Client;
+
+    pub fn test_node() -> (TestNode, TempDir) {
+        env_logger::try_init().ok();
+        let tmp = TempDir::new("sunshine-identity-").expect("failed to create tempdir");
+        let config = SubxtClientConfig {
+            impl_name: "test-client",
+            impl_version: "0.1.0",
+            author: "sunshine",
+            copyright_start_year: 2020,
+            db: DatabaseConfig::RocksDb {
+                path: tmp.path().into(),
+                cache_size: 128,
+            },
+            builder: test_node::service::new_full,
+            chain_spec: test_node::chain_spec::development_config(),
+            role: Role::Authority(AccountKeyring::Alice),
+        };
+        let client = SubxtClient::new(config).unwrap().into();
+        (client, tmp)
+    }
+}

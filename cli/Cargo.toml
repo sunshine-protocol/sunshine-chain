@@ -4,10 +4,6 @@ version = "0.1.0"
 authors = ["David Craven <david@craven.ch>"]
 edition = "2018"
 
-[features]
-default = ["light"]
-light = ["sunshine-client/light"]
-
 [dependencies]
 async-std = { version = "=1.5.0", features = ["attributes"] }
 exitfailure = "0.5.1"
@@ -15,4 +11,6 @@ clap = "3.0.0-beta.1"
 dirs = "3.0.1"
 env_logger = "0.7.1"
 sunshine-client = { version = "0.1.0", path = "../client" }
-sunshine-identity-cli = "0.1.0"
+sunshine-core = "0.2.0"
+sunshine-faucet-cli = "0.2.0"
+sunshine-identity-cli = "0.2.0"
