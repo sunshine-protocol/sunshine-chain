@@ -15,7 +15,7 @@ light = [
 [dependencies]
 ipfs-embed = "0.1.1"
 keybase-keystore = "0.1.0"
-sled = "0.32.0"
+sled = "0.32.1"
 sc-service = { version = "0.8.0-rc4", optional = true, default-features = false }
 sp-database = { version = "2.0.0-rc4", optional = true }
 substrate-subxt = { version = "0.10.1", features = ["client"] }

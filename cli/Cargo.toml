@@ -12,7 +12,7 @@ light = ["sunshine-client/light"]
 async-std = { version = "=1.5.0", features = ["attributes"] }
 exitfailure = "0.5.1"
 clap = "3.0.0-beta.1"
-dirs2 = "3.0.1"
+dirs = "3.0.1"
 env_logger = "0.7.1"
 sunshine-client = { version = "0.1.0", path = "../client" }
 sunshine-identity-cli = "0.1.0"
