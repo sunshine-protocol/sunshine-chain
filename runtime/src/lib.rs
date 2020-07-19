@@ -41,8 +41,11 @@ pub type Balance = u128;
 pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 pub type BlockId = generic::BlockId<Block>;
 pub type BlockNumber = u32;
+pub type BountyId = u64;
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Call, SignedExtra>;
+pub type Cid = sunshine_identity_utils::cid::CidBytes;
 pub type DigestItem = generic::DigestItem<Hash>;
+pub type DisputeId = u64;
 pub type Executive = frame_executive::Executive<
     Runtime,
     Block,
@@ -53,6 +56,9 @@ pub type Executive = frame_executive::Executive<
 pub type Index = u32;
 pub type Hash = sp_core::H256;
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
+pub type OrgId = u64;
+pub type ShareId = u64;
+pub type Signal = u64;
 pub type SignedBlock = generic::SignedBlock<Block>;
 pub type Signature = MultiSignature;
 pub type SignedExtra = (
@@ -64,7 +70,9 @@ pub type SignedExtra = (
     frame_system::CheckWeight<Runtime>,
     pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
 );
+pub type SpendId = u64;
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
+pub type VoteId = u64;
 
 pub mod opaque {
     use super::*;
@@ -218,6 +226,11 @@ impl pallet_balances::Trait for Runtime {
     type DustRemoval = ();
 }
 
+impl pallet_sudo::Trait for Runtime {
+    type Event = Event;
+    type Call = Call;
+}
+
 parameter_types! {
     pub const TransactionByteFee: Balance = 1;
 }
@@ -230,25 +243,80 @@ impl pallet_transaction_payment::Trait for Runtime {
     type FeeMultiplierUpdate = ();
 }
 
-impl_opaque_keys! {
-    pub struct SessionKeys {
-        pub grandpa: Grandpa,
-        pub aura: Aura,
-    }
+parameter_types! {
+    pub const MaxTreasuryPerOrg: u32 = 50;
+    pub const MinimumInitialDeposit: Balance = 20;
+}
+impl sunshine_bank::Trait for Runtime {
+    type Event = Event;
+    type SpendId = SpendId;
+    type Currency = Balances;
+    type MaxTreasuryPerOrg = MaxTreasuryPerOrg;
+    type MinimumInitialDeposit = MinimumInitialDeposit;
+}
+
+parameter_types! {
+    pub const BountyLowerBound: Balance = 5;
+}
+impl sunshine_bounty::Trait for Runtime {
+    type Event = Event;
+    type BountyId = BountyId;
+    type BountyLowerBound = BountyLowerBound;
+}
+
+parameter_types! {
+    pub const MinimumDisputeAmount: Balance = 10;
+}
+impl sunshine_court::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+    type DisputeId = DisputeId;
+    type MinimumDisputeAmount = MinimumDisputeAmount;
+}
+
+impl sunshine_donate::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+}
+
+impl sunshine_faucet_pallet::Trait for Runtime {
+    const MINT_UNIT: Self::Balance = 1_000_000_000;
+    type Event = Event;
 }
 
 impl sunshine_identity_pallet::Trait for Runtime {
     type Uid = u32;
-    type Cid = sunshine_identity_utils::cid::CidBytes;
+    type Cid = Cid;
     type Mask = [u8; 32];
     type Gen = u16;
     type AccountData = pallet_balances::AccountData<Balance>;
     type Event = Event;
 }
 
-impl sunshine_faucet_pallet::Trait for Runtime {
-    const MINT_UNIT: Self::Balance = 1_000_000_000;
+parameter_types! {
+    pub const ReservationLimit: u32 = 10000;
+}
+impl sunshine_org::Trait for Runtime {
     type Event = Event;
+    type IpfsReference = Cid;
+    type OrgId = OrgId;
+    type Shares = ShareId;
+    type ReservationLimit = ReservationLimit;
+}
+
+parameter_types! {
+    pub const TreasuryModuleId: sp_runtime::ModuleId = sp_runtime::ModuleId(*b"py/trsry");
+}
+impl sunshine_treasury::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+    type TreasuryAddress = TreasuryModuleId;
+}
+
+impl sunshine_vote::Trait for Runtime {
+    type Event = Event;
+    type VoteId = VoteId;
+    type Signal = Signal;
 }
 
 construct_runtime!(
@@ -257,15 +325,24 @@ construct_runtime!(
         NodeBlock = opaque::Block,
         UncheckedExtrinsic = UncheckedExtrinsic
     {
-        System: frame_system::{Module, Call, Config, Storage, Event<T>},
-        RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
-        Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
+
         Aura: pallet_aura::{Module, Config<T>, Inherent(Timestamp)},
-        Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
         Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
-        TransactionPayment: pallet_transaction_payment::{Module, Storage},
-        Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
+        Bank: sunshine_bank::{Module, Call, Storage, Event<T>},
+        Bounty: sunshine_bounty::{Module, Call, Storage, Event<T>},
+        Court: sunshine_court::{Module, Call, Storage, Event<T>},
+        Donate: sunshine_donate::{Module, Call, Event<T>},
         Faucet: sunshine_faucet_pallet::{Module, Call, Event<T>, ValidateUnsigned},
+        Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
+        Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
+        Org: sunshine_org::{Module, Call, Config<T>, Storage, Event<T>},
+        RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
+        Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
+        System: frame_system::{Module, Call, Config, Storage, Event<T>},
+        Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
+        TransactionPayment: pallet_transaction_payment::{Module, Storage},
+        Treasury: sunshine_treasury::{Module, Call, Config<T>, Storage, Event<T>},
+        Vote: sunshine_vote::{Module, Call, Storage, Event<T>},
     }
 );
 

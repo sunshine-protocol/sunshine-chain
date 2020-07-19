@@ -6,9 +6,11 @@ use std::time::Duration;
 use sunshine_client::{identity::IdentityClient, Client, Error as ClientError};
 use sunshine_core::{ChainClient, Keystore};
 use sunshine_faucet_cli::{Command as _, MintCommand};
-use sunshine_identity_cli::{key::KeySetCommand, set_device_key, Command as _, Error};
+use sunshine_identity_cli::{key::KeySetCommand, set_device_key, Command as _};
 
 mod command;
+mod error;
+use error::Error;
 
 #[async_std::main]
 async fn main() -> Result<(), ExitDisplay<Error<ClientError>>> {
@@ -60,28 +62,79 @@ async fn run() -> Result<(), Error<ClientError>> {
                 println!("your user id is {}", uid);
                 Ok(())
             }
-            KeySubCommand::Unlock(cmd) => cmd.exec(&mut client).await,
-            KeySubCommand::Lock(cmd) => cmd.exec(&mut client).await,
+            KeySubCommand::Unlock(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            KeySubCommand::Lock(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
         },
         SubCommand::Account(AccountCommand { cmd }) => match cmd {
-            AccountSubCommand::Create(cmd) => cmd.exec(&mut client).await,
-            AccountSubCommand::Password(cmd) => cmd.exec(&mut client).await,
+            AccountSubCommand::Create(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            AccountSubCommand::Password(cmd) => {
+                cmd.exec(&mut client).await.map_err(Error::Identity)
+            }
             AccountSubCommand::Mint(cmd) => cmd.exec(&mut client).await.map_err(Error::Client),
         },
         SubCommand::Device(DeviceCommand { cmd }) => match cmd {
-            DeviceSubCommand::Add(cmd) => cmd.exec(&mut client).await,
-            DeviceSubCommand::Remove(cmd) => cmd.exec(&mut client).await,
-            DeviceSubCommand::List(cmd) => cmd.exec(&mut client).await,
-            DeviceSubCommand::Paperkey(cmd) => cmd.exec(&mut client).await,
+            DeviceSubCommand::Add(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            DeviceSubCommand::Remove(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            DeviceSubCommand::List(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            DeviceSubCommand::Paperkey(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
         },
         SubCommand::Id(IdCommand { cmd }) => match cmd {
-            IdSubCommand::List(cmd) => cmd.exec(&mut client).await,
-            IdSubCommand::Prove(cmd) => cmd.exec(&mut client).await,
-            IdSubCommand::Revoke(cmd) => cmd.exec(&mut client).await,
+            IdSubCommand::List(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            IdSubCommand::Prove(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            IdSubCommand::Revoke(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
         },
         SubCommand::Wallet(WalletCommand { cmd }) => match cmd {
-            WalletSubCommand::Balance(cmd) => cmd.exec(&mut client).await,
-            WalletSubCommand::Transfer(cmd) => cmd.exec(&mut client).await,
+            WalletSubCommand::Balance(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+            WalletSubCommand::Transfer(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
+        },
+        SubCommand::Org(OrgCommand { cmd }) => match cmd {
+            OrgSubCommand::IssueShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::BurnShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::BatchIssueShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::BatchBurnShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::ReserveShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::UnreserveShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::LockShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::UnlockShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::RegisterFlatOrg(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::RegisterWeightedOrg(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+        },
+        SubCommand::Vote(VoteCommand { cmd }) => match cmd {
+            VoteSubCommand::CreateSignalThresholdVote(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            VoteSubCommand::CreatePercentThresholdVote(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            VoteSubCommand::CreateUnanimousConsentVote(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            VoteSubCommand::SubmitVote(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+        },
+        SubCommand::Bounty(BountyCommand { cmd }) => match cmd {
+            BountySubCommand::PostBounty(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            BountySubCommand::ApplyForBounty(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            BountySubCommand::TriggerApplicationReview(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            BountySubCommand::SudoApproveApplication(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            BountySubCommand::PollApplication(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            BountySubCommand::SubmitMilestone(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            BountySubCommand::TriggerMilestoneReview(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            BountySubCommand::SudoApproveMilestone(cmd) => {
+                cmd.exec(&client).await.map_err(Error::Bounty)
+            }
+            BountySubCommand::PollMilestone(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
         },
         SubCommand::Run => loop {
             if let Some(sub) = password_changes.as_mut() {

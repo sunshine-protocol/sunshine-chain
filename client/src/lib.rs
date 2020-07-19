@@ -8,12 +8,16 @@ use substrate_subxt::sp_runtime::traits::{IdentifyAccount, Verify};
 use substrate_subxt::system::System;
 use substrate_subxt::ClientBuilder;
 use substrate_subxt::{sp_core, sp_runtime};
+use sunshine_bounty_client::{
+    bank::Bank, bounty::Bounty, donate::Donate, org::Org, vote::Vote, BountyBody, TextBlock,
+};
 use sunshine_core::{ChainClient, ChainSigner, Keystore as _, OffchainSigner};
 use sunshine_faucet_client::Faucet;
 use sunshine_identity_client::{Claim, Identity};
 use sunshine_identity_utils::cid::CidBytes;
 use thiserror::Error;
 
+pub use sunshine_bounty_client as bounty_client;
 pub use sunshine_faucet_client as faucet;
 pub use sunshine_identity_client as identity;
 mod light;
@@ -49,6 +53,43 @@ impl Identity for Runtime {
 }
 
 impl Faucet for Runtime {}
+
+impl Org for Runtime {
+    type IpfsReference = CidBytes;
+    type OrgId = u64;
+    type Shares = u64;
+    type Constitution = TextBlock;
+}
+
+impl Vote for Runtime {
+    type VoteId = u64;
+    type Signal = u64;
+    type Percent = sp_runtime::Permill;
+    type VoteTopic = TextBlock;
+    type VoterView = sunshine_bounty_utils::vote::VoterView;
+    type VoteJustification = TextBlock;
+}
+
+impl Donate for Runtime {
+    type DCurrency = u128;
+}
+
+impl Bank for Runtime {
+    type SpendId = u64;
+    type Currency = u128;
+}
+
+impl Bounty for Runtime {
+    type BountyId = u64;
+    type VoteCommittee = sunshine_bounty_utils::court::ResolutionMetadata<
+        Self::OrgId,
+        Self::Signal,
+        Self::BlockNumber,
+    >;
+    type BountyPost = BountyBody;
+    type BountyApplication = TextBlock;
+    type MilestoneSubmission = BountyBody;
+}
 
 impl substrate_subxt::Runtime for Runtime {
     type Signature = sp_runtime::MultiSignature;
@@ -173,17 +214,23 @@ impl<S: Store + Send + Sync> ChainClient<Runtime> for Client<S> {
 
 pub struct OffchainClient<S> {
     claims: IpldCache<S, Codec, Claim>,
+    bounties: IpldCache<S, Codec, BountyBody>,
+    texts: IpldCache<S, Codec, TextBlock>,
 }
 
 impl<S: Store> OffchainClient<S> {
     pub fn new(store: S) -> Self {
         Self {
-            claims: IpldCache::new(store, Codec::new(), 64),
+            claims: IpldCache::new(store.clone(), Codec::new(), 64),
+            bounties: IpldCache::new(store.clone(), Codec::new(), 64),
+            texts: IpldCache::new(store, Codec::new(), 64),
         }
     }
 }
 
 derive_cache!(OffchainClient, claims, Codec, Claim);
+derive_cache!(OffchainClient, bounties, Codec, BountyBody);
+derive_cache!(OffchainClient, texts, Codec, TextBlock);
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -201,6 +248,8 @@ pub enum Error {
     Db(#[from] sled::Error),
     #[error(transparent)]
     Identity(#[from] sunshine_identity_client::Error),
+    #[error(transparent)]
+    Bounty(#[from] sunshine_bounty_client::Error),
 }
 
 impl From<codec::Error> for Error {

@@ -25,6 +25,8 @@ sp-database = "2.0.0-rc4"
 substrate-subxt = { version = "0.10.1", features = ["client"] }
 substrate-keybase-keystore = "0.2.0"
 sunshine-core = "0.2.0"
+sunshine-bounty-client = { git = "https://github.com/sunshine-protocol/sunshine-bounty.git" }
+sunshine-bounty-utils = { git = "https://github.com/sunshine-protocol/sunshine-bounty.git" }
 sunshine-faucet-client = "0.2.0"
 sunshine-identity-client = "0.2.0"
 sunshine-identity-utils = "0.2.0"
