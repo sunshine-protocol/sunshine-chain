@@ -218,6 +218,11 @@ impl pallet_balances::Trait for Runtime {
     type DustRemoval = ();
 }
 
+impl pallet_sudo::Trait for Runtime {
+    type Event = Event;
+    type Call = Call;
+}
+
 parameter_types! {
     pub const TransactionByteFee: Balance = 1;
 }
@@ -230,11 +235,45 @@ impl pallet_transaction_payment::Trait for Runtime {
     type FeeMultiplierUpdate = ();
 }
 
-impl_opaque_keys! {
-    pub struct SessionKeys {
-        pub grandpa: Grandpa,
-        pub aura: Aura,
-    }
+parameter_types! {
+    pub const MaxTreasuryPerOrg: u32 = 50;
+    pub const MinimumInitialDeposit: u64 = 20;
+}
+impl sunshine_bank::Trait for Runtime {
+    type Event = Event;
+    type SpendId = u64;
+    type Currency = Balances;
+    type MaxTreasuryPerOrg = MaxTreasuryPerOrg;
+    type MinimumInitialDeposit = MinimumInitialDeposit;
+}
+
+parameter_types! {
+    pub const BountyLowerBound: u64 = 5;
+}
+impl sunshine_bounty::Trait for Runtime {
+    type Event = Event;
+    type BountyId = u64;
+    type BountyLowerBound = BountyLowerBound;
+}
+
+parameter_types! {
+    pub const MinimumDisputeAmount: Balance = 10;
+}
+impl sunshine_court::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+    type DisputeId = u64;
+    type MinimumDisputeAmount = MinimumDisputeAmount;
+}
+
+impl sunshine_donate::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+}
+
+impl sunshine_faucet_pallet::Trait for Runtime {
+    const MINT_UNIT: Self::Balance = 1_000_000_000;
+    type Event = Event;
 }
 
 impl sunshine_identity_pallet::Trait for Runtime {
@@ -246,9 +285,30 @@ impl sunshine_identity_pallet::Trait for Runtime {
     type Event = Event;
 }
 
-impl sunshine_faucet_pallet::Trait for Runtime {
-    const MINT_UNIT: Self::Balance = 1_000_000_000;
+parameter_types! {
+    pub const ReservationLimit: u32 = 10000;
+}
+impl sunshine_org::Trait for Runtime {
     type Event = Event;
+    type IpfsReference = sunshine_identity_utils::cid::CidBytes;
+    type OrgId = u64;
+    type Shares = u64;
+    type ReservationLimit = ReservationLimit;
+}
+
+parameter_types! {
+    pub const TreasuryModuleId: sp_runtime::ModuleId = sp_runtime::ModuleId(*b"py/trsry");
+}
+impl sunshine_treasury::Trait for Runtime {
+    type Event = Event;
+    type Currency = Balances;
+    type TreasuryAddress = TreasuryModuleId;
+}
+
+impl sunshine_vote::Trait for Runtime {
+    type Event = Event;
+    type VoteId = u64;
+    type Signal = u64;
 }
 
 construct_runtime!(
@@ -257,6 +317,7 @@ construct_runtime!(
         NodeBlock = opaque::Block,
         UncheckedExtrinsic = UncheckedExtrinsic
     {
+        Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
         System: frame_system::{Module, Call, Config, Storage, Event<T>},
         RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
         Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
@@ -266,6 +327,13 @@ construct_runtime!(
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
         Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
         Faucet: sunshine_faucet_pallet::{Module, Call, Event<T>, ValidateUnsigned},
+        Org: sunshine_org::{Module, Call, Config<T>, Storage, Event<T>},
+        Vote: sunshine_vote::{Module, Call, Storage, Event<T>},
+        Court: sunshine_court::{Module, Call, Storage, Event<T>},
+        Treasury: sunshine_treasury::{Module, Call, Config<T>, Storage, Event<T>},
+        Donate: sunshine_donate::{Module, Call, Event<T>},
+        Bank: sunshine_bank::{Module, Call, Storage, Event<T>},
+        Bounty: sunshine_bounty::{Module, Call, Storage, Event<T>},
     }
 );
 
