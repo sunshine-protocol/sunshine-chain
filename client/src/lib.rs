@@ -17,6 +17,7 @@ use sunshine_identity_client::{Claim, Identity};
 use sunshine_identity_utils::cid::CidBytes;
 use thiserror::Error;
 
+pub use sunshine_bounty_client as bounty_client;
 pub use sunshine_faucet_client as faucet;
 pub use sunshine_identity_client as identity;
 mod light;
@@ -247,6 +248,8 @@ pub enum Error {
     Db(#[from] sled::Error),
     #[error(transparent)]
     Identity(#[from] sunshine_identity_client::Error),
+    #[error(transparent)]
+    Bounty(#[from] sunshine_bounty_client::Error),
 }
 
 impl From<codec::Error> for Error {

@@ -6673,6 +6673,7 @@ dependencies = [
  "sunshine-core",
  "sunshine-faucet-cli",
  "sunshine-identity-cli",
+ "thiserror",
 ]
 
 [[package]]
