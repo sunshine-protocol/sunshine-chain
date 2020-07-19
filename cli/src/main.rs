@@ -88,65 +88,53 @@ async fn run() -> Result<(), Error<ClientError>> {
             WalletSubCommand::Transfer(cmd) => cmd.exec(&mut client).await.map_err(Error::Identity),
         },
         SubCommand::Org(OrgCommand { cmd }) => match cmd {
-            OrgSubCommand::IssueShares(cmd) => cmd.exec(&mut client).await.map_err(Error::Bounty),
-            OrgSubCommand::BurnShares(cmd) => cmd.exec(&mut client).await.map_err(Error::Bounty),
-            OrgSubCommand::BatchIssueShares(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
-            }
-            OrgSubCommand::BatchBurnShares(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
-            }
-            OrgSubCommand::ReserveShares(cmd) => cmd.exec(&mut client).await.map_err(Error::Bounty),
-            OrgSubCommand::UnreserveShares(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
-            }
-            OrgSubCommand::LockShares(cmd) => cmd.exec(&mut client).await.map_err(Error::Bounty),
-            OrgSubCommand::UnlockShares(cmd) => cmd.exec(&mut client).await.map_err(Error::Bounty),
-            OrgSubCommand::RegisterFlatOrg(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
-            }
+            OrgSubCommand::IssueShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::BurnShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::BatchIssueShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::BatchBurnShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::ReserveShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::UnreserveShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::LockShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::UnlockShares(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            OrgSubCommand::RegisterFlatOrg(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
             OrgSubCommand::RegisterWeightedOrg(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
         },
         SubCommand::Vote(VoteCommand { cmd }) => match cmd {
             VoteSubCommand::CreateSignalThresholdVote(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
             VoteSubCommand::CreatePercentThresholdVote(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
             VoteSubCommand::CreateUnanimousConsentVote(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
-            VoteSubCommand::SubmitVote(cmd) => cmd.exec(&mut client).await.map_err(Error::Bounty),
+            VoteSubCommand::SubmitVote(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
         },
         SubCommand::Bounty(BountyCommand { cmd }) => match cmd {
-            BountySubCommand::PostBounty(cmd) => cmd.exec(&mut client).await.map_err(Error::Bounty),
-            BountySubCommand::ApplyForBounty(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
-            }
+            BountySubCommand::PostBounty(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
+            BountySubCommand::ApplyForBounty(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
             BountySubCommand::TriggerApplicationReview(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
             BountySubCommand::SudoApproveApplication(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
             BountySubCommand::PollApplication(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
             BountySubCommand::SubmitMilestone(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
             BountySubCommand::TriggerMilestoneReview(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
             BountySubCommand::SudoApproveMilestone(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
+                cmd.exec(&client).await.map_err(Error::Bounty)
             }
-            BountySubCommand::PollMilestone(cmd) => {
-                cmd.exec(&mut client).await.map_err(Error::Bounty)
-            }
+            BountySubCommand::PollMilestone(cmd) => cmd.exec(&client).await.map_err(Error::Bounty),
         },
         SubCommand::Run => loop {
             if let Some(sub) = password_changes.as_mut() {
