@@ -10,6 +10,7 @@ exitfailure = "0.5.1"
 clap = "3.0.0-beta.1"
 dirs = "3.0.1"
 env_logger = "0.7.1"
+sunshine-bounty-cli = { git = "https://github.com/sunshine-protocol/sunshine-bounty.git" }
 sunshine-client = { version = "0.1.0", path = "../client" }
 sunshine-core = "0.2.0"
 sunshine-faucet-cli = "0.2.0"

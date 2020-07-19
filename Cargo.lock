@@ -6610,6 +6610,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "sunshine-bounty-cli"
+version = "0.1.0"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#bbb74adff826d91cc33149ec23f88d7df64965b3"
+dependencies = [
+ "clap 3.0.0-beta.1",
+ "libipld",
+ "parity-scale-codec",
+ "substrate-subxt",
+ "sunshine-bounty-client",
+ "sunshine-bounty-utils",
+ "sunshine-core",
+ "sunshine-identity-utils",
+ "thiserror",
+]
+
+[[package]]
 name = "sunshine-bounty-client"
 version = "0.2.0"
 source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#bbb74adff826d91cc33149ec23f88d7df64965b3"
@@ -6652,6 +6668,7 @@ dependencies = [
  "dirs",
  "env_logger",
  "exitfailure",
+ "sunshine-bounty-cli",
  "sunshine-client",
  "sunshine-core",
  "sunshine-faucet-cli",
@@ -6677,6 +6694,7 @@ dependencies = [
  "substrate-keybase-keystore",
  "substrate-subxt",
  "sunshine-bounty-client",
+ "sunshine-bounty-utils",
  "sunshine-core",
  "sunshine-faucet-client",
  "sunshine-identity-client",
@@ -7549,7 +7567,7 @@ version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3bfd5b7557925ce778ff9b9ef90e3ade34c524b5ff10e239c69a42d546d2af56"
 dependencies = [
- "rand 0.7.3",
+ "rand 0.3.23",
 ]
 
 [[package]]
