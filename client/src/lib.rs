@@ -38,7 +38,7 @@ impl System for Runtime {
     type Address = AccountId;
     type Header = sp_runtime::generic::Header<Self::BlockNumber, Self::Hashing>;
     type Extrinsic = sp_runtime::OpaqueExtrinsic;
-    type AccountData = AccountData<u128>;
+    type AccountData = ();
 }
 
 impl Balances for Runtime {
