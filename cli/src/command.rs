@@ -1,6 +1,6 @@
 use clap::Clap;
 use std::path::PathBuf;
-use sunshine_bounty_cli::{bounty, org, shares, vote};
+use sunshine_bounty_cli::{bank, bounty, donate, org, shares, vote};
 use sunshine_faucet_cli::MintCommand;
 use sunshine_identity_cli::{account, device, id, key, wallet};
 
@@ -23,6 +23,8 @@ pub enum SubCommand {
     Wallet(WalletCommand),
     Org(OrgCommand),
     Vote(VoteCommand),
+    Donate(DonateCommand),
+    Bank(BankCommand),
     Bounty(BountyCommand),
     Run,
 }
@@ -124,8 +126,30 @@ pub struct VoteCommand {
 pub enum VoteSubCommand {
     CreateSignalThresholdVote(vote::VoteCreateSignalThresholdCommand),
     CreatePercentThresholdVote(vote::VoteCreatePercentThresholdCommand),
-    CreateUnanimousConsentVote(vote::VoteCreateUnanimousConsentCommand),
     SubmitVote(vote::VoteSubmitCommand),
+}
+
+#[derive(Clone, Debug, Clap)]
+pub struct DonateCommand {
+    #[clap(subcommand)]
+    pub cmd: DonateSubCommand,
+}
+
+#[derive(Clone, Debug, Clap)]
+pub enum DonateSubCommand {
+    PropDonate(donate::PropDonateCommand),
+    EqualDonate(donate::EqualDonateCommand),
+}
+
+#[derive(Clone, Debug, Clap)]
+pub struct BankCommand {
+    #[clap(subcommand)]
+    pub cmd: BankSubCommand,
+}
+
+#[derive(Clone, Debug, Clap)]
+pub enum BankSubCommand {
+    OpenAccount(bank::BankOpenOrgAccountCommand),
 }
 
 #[derive(Clone, Debug, Clap)]
@@ -137,12 +161,12 @@ pub struct BountyCommand {
 #[derive(Clone, Debug, Clap)]
 pub enum BountySubCommand {
     PostBounty(bounty::BountyPostCommand),
-    ApplyForBounty(bounty::BountyApplicationCommand),
-    TriggerApplicationReview(bounty::BountyTriggerApplicationReviewCommand),
-    SudoApproveApplication(bounty::BountySudoApproveApplicationCommand),
-    PollApplication(bounty::BountyPollApplicationCommand),
-    SubmitMilestone(bounty::BountySubmitMilestoneCommand),
-    TriggerMilestoneReview(bounty::BountyTriggerMilestoneReviewCommand),
-    SudoApproveMilestone(bounty::BountySudoApproveMilestoneCommand),
-    PollMilestone(bounty::BountyPollMilestoneCommand),
+    ContributeToBounty(bounty::BountyContributeCommand),
+    SubmitForBounty(bounty::BountySubmitCommand),
+    ApproveApplication(bounty::BountyApproveCommand),
+    // storage helpers
+    GetBounty(bounty::GetBountyCommand),
+    GetSubmission(bounty::GetSubmissionCommand),
+    GetOpenBounties(bounty::GetOpenBountiesCommand),
+    GetOpenSubmissions(bounty::GetOpenSubmissionsCommand),
 }

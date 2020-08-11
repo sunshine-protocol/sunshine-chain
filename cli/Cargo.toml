@@ -5,14 +5,12 @@ authors = ["David Craven <david@craven.ch>"]
 edition = "2018"
 
 [dependencies]
-async-std = { version = "=1.5.0", features = ["attributes"] }
-exitfailure = "0.5.1"
+async-std = { version = "1.6.2", features = ["attributes"] }
 clap = "3.0.0-beta.1"
 dirs = "3.0.1"
 env_logger = "0.7.1"
 sunshine-bounty-cli = { git = "https://github.com/sunshine-protocol/sunshine-bounty.git" }
 sunshine-client = { version = "0.1.0", path = "../client" }
-sunshine-core = "0.2.0"
-sunshine-faucet-cli = "0.2.0"
-sunshine-identity-cli = "0.2.0"
-thiserror = "1.0.20"
+sunshine-cli-utils = { git = "https://github.com/sunshine-protocol/sunshine-core" }
+sunshine-faucet-cli = { git = "https://github.com/sunshine-protocol/sunshine-identity" }
+sunshine-identity-cli = { git = "https://github.com/sunshine-protocol/sunshine-identity" }

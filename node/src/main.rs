@@ -1,7 +1,8 @@
-use sc_cli::{Database, RunCmd, Subcommand, SubstrateCli};
+use sc_cli::{Database, RunCmd, RuntimeVersion, Subcommand, SubstrateCli};
+use sc_service::{ChainSpec, Role, ServiceParams};
 use std::str::FromStr;
 use structopt::StructOpt;
-use sunshine_node::{chain_spec::Chain, new_full_start, service};
+use sunshine_node::{chain_spec::Chain, service};
 
 #[derive(Debug, StructOpt)]
 pub struct Cli {
@@ -13,36 +14,40 @@ pub struct Cli {
 }
 
 impl SubstrateCli for Cli {
-    fn impl_name() -> &'static str {
-        sunshine_node::IMPL_NAME
+    fn impl_name() -> String {
+        sunshine_node::IMPL_NAME.into()
     }
 
-    fn impl_version() -> &'static str {
-        sunshine_node::IMPL_VERSION
+    fn impl_version() -> String {
+        sunshine_node::IMPL_VERSION.into()
     }
 
-    fn description() -> &'static str {
-        sunshine_node::DESCRIPTION
+    fn description() -> String {
+        sunshine_node::DESCRIPTION.into()
     }
 
-    fn author() -> &'static str {
-        sunshine_node::AUTHOR
+    fn author() -> String {
+        sunshine_node::AUTHOR.into()
     }
 
-    fn support_url() -> &'static str {
-        sunshine_node::SUPPORT_URL
+    fn support_url() -> String {
+        sunshine_node::SUPPORT_URL.into()
     }
 
     fn copyright_start_year() -> i32 {
         sunshine_node::COPYRIGHT_START_YEAR
     }
 
-    fn executable_name() -> &'static str {
-        sunshine_node::EXECUTABLE_NAME
+    fn executable_name() -> String {
+        sunshine_node::EXECUTABLE_NAME.into()
     }
 
     fn load_spec(&self, chain: &str) -> Result<Box<dyn sc_service::ChainSpec>, String> {
         Ok(Box::new(Chain::from_str(chain)?.to_chain_spec()?))
+    }
+
+    fn native_runtime_version(_: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
+        &sunshine_runtime::VERSION
     }
 }
 
@@ -59,15 +64,26 @@ fn main() -> sc_cli::Result<()> {
     match &cli.subcommand {
         Some(subcommand) => {
             let runner = cli.create_runner(subcommand)?;
-            runner.run_subcommand(subcommand, |config| Ok(new_full_start!(config).0))
+            runner.run_subcommand(subcommand, |config| {
+                let ServiceParams {
+                    client,
+                    backend,
+                    task_manager,
+                    import_queue,
+                    ..
+                } = service::new_full_params(config)?.0;
+                Ok((client, backend, import_queue, task_manager))
+            })
         }
         None => {
             let runner = cli.create_runner(&cli.run)?;
-            runner.run_node(
-                service::new_light,
-                service::new_full,
-                sunshine_runtime::VERSION,
-            )
+            runner.run_node_until_exit(|config| {
+                match config.role {
+                    Role::Light => service::new_light(config),
+                    _ => service::new_full(config),
+                }
+                .map(|service| service.0)
+            })
         }
     }
 }

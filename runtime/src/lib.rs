@@ -28,7 +28,7 @@ use sp_runtime::{
         Verify,
     },
     transaction_validity::{TransactionSource, TransactionValidity},
-    ApplyExtrinsicResult, MultiSignature,
+    ApplyExtrinsicResult, ModuleId, MultiSignature,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -38,12 +38,13 @@ use sp_version::RuntimeVersion;
 pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
 pub type Address = AccountId;
 pub type Balance = u128;
+pub type BankId = u64;
 pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 pub type BlockId = generic::BlockId<Block>;
 pub type BlockNumber = u32;
 pub type BountyId = u64;
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Call, SignedExtra>;
-pub type Cid = sunshine_identity_utils::cid::CidBytes;
+pub type Cid = sunshine_pallet_utils::cid::CidBytes;
 pub type DigestItem = generic::DigestItem<Hash>;
 pub type DisputeId = u64;
 pub type Executive = frame_executive::Executive<
@@ -71,6 +72,7 @@ pub type SignedExtra = (
     pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
 );
 pub type SpendId = u64;
+pub type SubmissionId = u64;
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
 pub type VoteId = u64;
 
@@ -184,6 +186,8 @@ impl frame_system::Trait for Runtime {
     type OnKilledAccount = ();
     /// The data to be stored in an account.
     type AccountData = ();
+    /// Weight information for the extrinsics of the pallet.
+    type SystemWeightInfo = ();
 }
 
 parameter_types! {
@@ -195,6 +199,7 @@ impl pallet_timestamp::Trait for Runtime {
     type Moment = u64;
     type OnTimestampSet = Aura;
     type MinimumPeriod = MinimumPeriod;
+    type WeightInfo = ();
 }
 
 impl pallet_aura::Trait for Runtime {
@@ -224,6 +229,7 @@ impl pallet_balances::Trait for Runtime {
     type ExistentialDeposit = ExistentialDeposit;
     type AccountStore = Identity;
     type DustRemoval = ();
+    type WeightInfo = ();
 }
 
 impl pallet_sudo::Trait for Runtime {
@@ -244,24 +250,34 @@ impl pallet_transaction_payment::Trait for Runtime {
 }
 
 parameter_types! {
+    pub const BigBank: ModuleId = ModuleId(*b"big/bank");
     pub const MaxTreasuryPerOrg: u32 = 50;
-    pub const MinimumInitialDeposit: Balance = 20;
+    pub const MinimumDeposit: Balance = 20;
 }
 impl sunshine_bank::Trait for Runtime {
     type Event = Event;
-    type SpendId = SpendId;
     type Currency = Balances;
+    type BigBank = BigBank;
+    type BankId = BankId;
+    type SpendId = SpendId;
     type MaxTreasuryPerOrg = MaxTreasuryPerOrg;
-    type MinimumInitialDeposit = MinimumInitialDeposit;
+    type MinDeposit = MinimumDeposit;
 }
 
 parameter_types! {
-    pub const BountyLowerBound: Balance = 5;
+    pub const Foundation: ModuleId = ModuleId(*b"fundacon");
+    pub const MinDeposit: u128 = 10;
+    pub const MinContribution: u128 = 5;
 }
 impl sunshine_bounty::Trait for Runtime {
     type Event = Event;
+    type IpfsReference = Cid;
+    type Currency = Balances;
     type BountyId = BountyId;
-    type BountyLowerBound = BountyLowerBound;
+    type SubmissionId = SubmissionId;
+    type Foundation = Foundation;
+    type MinDeposit = MinDeposit;
+    type MinContribution = MinContribution;
 }
 
 parameter_types! {
@@ -301,7 +317,6 @@ impl sunshine_org::Trait for Runtime {
     type IpfsReference = Cid;
     type OrgId = OrgId;
     type Shares = ShareId;
-    type ReservationLimit = ReservationLimit;
 }
 
 parameter_types! {
@@ -326,7 +341,7 @@ construct_runtime!(
         UncheckedExtrinsic = UncheckedExtrinsic
     {
 
-        Aura: pallet_aura::{Module, Config<T>, Inherent(Timestamp)},
+        Aura: pallet_aura::{Module, Config<T>, Inherent},
         Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
         Bank: sunshine_bank::{Module, Call, Storage, Event<T>},
         Bounty: sunshine_bounty::{Module, Call, Storage, Event<T>},
@@ -434,7 +449,7 @@ impl_runtime_apis! {
             Grandpa::grandpa_authorities()
         }
 
-        fn submit_report_equivocation_extrinsic(
+        fn submit_report_equivocation_unsigned_extrinsic(
             _equivocation_proof: fg_primitives::EquivocationProof<
                 <Block as BlockT>::Hash,
                 NumberFor<Block>,
