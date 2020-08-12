@@ -10,7 +10,7 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use sunshine_runtime::{
     AccountId, AuraConfig, Balance, BalancesConfig, BlockNumber, Cid, GenesisConfig, GrandpaConfig,
-    OrgConfig, Signature, SudoConfig, SystemConfig, TreasuryConfig, WASM_BINARY,
+    OrgConfig, Signature, SystemConfig, TreasuryConfig, WASM_BINARY,
 };
 
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.getsunshine.com/submit/";
@@ -78,13 +78,13 @@ pub fn dev_chain_spec() -> ChainSpec {
             testnet_genesis(
                 // initial authorities
                 &[seed_to_authority_keys("//Alice")],
-                // root key
-                seed_to_account_id::<sr25519::Public>("//Alice"),
                 // endowed accounts
                 &[
                     seed_to_account_id::<sr25519::Public>("//Alice"),
                     seed_to_account_id::<sr25519::Public>("//Alice/stash"),
                 ],
+                // first org supervisor
+                seed_to_account_id::<sr25519::Public>("//Alice"),
                 // first org value constitution
                 Cid::default(),
                 // flat share membership
@@ -116,8 +116,6 @@ pub fn local_chain_spec() -> ChainSpec {
                     seed_to_authority_keys("//Alice"),
                     seed_to_authority_keys("//Bob"),
                 ],
-                // root key
-                seed_to_account_id::<sr25519::Public>("//Alice"),
                 // endowed accounts
                 &[
                     seed_to_account_id::<sr25519::Public>("//Alice"),
@@ -125,6 +123,8 @@ pub fn local_chain_spec() -> ChainSpec {
                     seed_to_account_id::<sr25519::Public>("//Bob"),
                     seed_to_account_id::<sr25519::Public>("//Bob/stash"),
                 ],
+                // first org supervisor
+                seed_to_account_id::<sr25519::Public>("//Alice"),
                 // first org value constitution
                 Cid::default(),
                 // flat share membership
@@ -197,20 +197,20 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
                 session[2].unchecked_into(),
             ),*/
         ],
-        // root key
-        seed_to_account_id::<sr25519::Public>("Alice"),
         // endowed accounts
         &[],
+        // first org supervisor
+        seed_to_account_id::<sr25519::Public>("//Alice"),
         // first org value constitution
         Cid::default(),
         // first org flat membership
         &[
-            seed_to_account_id::<sr25519::Public>("Alice"),
-            seed_to_account_id::<sr25519::Public>("Bob"),
-            seed_to_account_id::<sr25519::Public>("Charlie"),
-            seed_to_account_id::<sr25519::Public>("Dave"),
-            seed_to_account_id::<sr25519::Public>("Eve"),
-            seed_to_account_id::<sr25519::Public>("Ferdie"),
+            seed_to_account_id::<sr25519::Public>("//Alice"),
+            seed_to_account_id::<sr25519::Public>("//Bob"),
+            seed_to_account_id::<sr25519::Public>("//Charlie"),
+            seed_to_account_id::<sr25519::Public>("//Dave"),
+            seed_to_account_id::<sr25519::Public>("//Eve"),
+            seed_to_account_id::<sr25519::Public>("//Ferdie"),
         ],
         // treasury mint rate
         (10, 10),
@@ -255,8 +255,8 @@ pub fn staging_chain_spec() -> ChainSpec {
 
 fn testnet_genesis(
     initial_authorities: &[(AccountId, AccountId, AuraId, GrandpaId)],
-    root_key: AccountId,
     endowed_accounts: &[AccountId],
+    first_org_supervisor: AccountId,
     first_org_value_constitution: Cid,
     first_org_flat_membership: &[AccountId],
     treasury_mint_rate: (BlockNumber, Balance),
@@ -266,14 +266,6 @@ fn testnet_genesis(
             code: WASM_BINARY.to_vec(),
             changes_trie_config: Default::default(),
         }),
-        sunshine_org: Some(OrgConfig {
-            first_organization_supervisor: root_key.clone(),
-            first_organization_value_constitution: first_org_value_constitution,
-            first_organization_flat_membership: first_org_flat_membership.to_vec(),
-        }),
-        pallet_aura: Some(AuraConfig {
-            authorities: initial_authorities.iter().map(|x| (x.2.clone())).collect(),
-        }),
         pallet_balances: Some(BalancesConfig {
             balances: endowed_accounts
                 .iter()
@@ -281,13 +273,20 @@ fn testnet_genesis(
                 .map(|k| (k, 1 << 60))
                 .collect(),
         }),
+        pallet_aura: Some(AuraConfig {
+            authorities: initial_authorities.iter().map(|x| (x.2.clone())).collect(),
+        }),
         pallet_grandpa: Some(GrandpaConfig {
             authorities: initial_authorities
                 .iter()
                 .map(|x| (x.3.clone(), 1))
                 .collect(),
         }),
-        pallet_sudo: Some(SudoConfig { key: root_key }),
+        sunshine_org: Some(OrgConfig {
+            first_organization_supervisor: first_org_supervisor,
+            first_organization_value_constitution: first_org_value_constitution,
+            first_organization_flat_membership: first_org_flat_membership.to_vec(),
+        }),
         sunshine_treasury: Some(TreasuryConfig {
             minting_interval: treasury_mint_rate.0,
             mint_amount: treasury_mint_rate.1,

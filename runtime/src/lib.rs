@@ -232,11 +232,6 @@ impl pallet_balances::Trait for Runtime {
     type WeightInfo = ();
 }
 
-impl pallet_sudo::Trait for Runtime {
-    type Event = Event;
-    type Call = Call;
-}
-
 parameter_types! {
     pub const TransactionByteFee: Balance = 1;
 }
@@ -352,7 +347,6 @@ construct_runtime!(
         Identity: sunshine_identity_pallet::{Module, Call, Storage, Event<T>},
         Org: sunshine_org::{Module, Call, Config<T>, Storage, Event<T>},
         RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
-        Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
         System: frame_system::{Module, Call, Config, Storage, Event<T>},
         Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
