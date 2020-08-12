@@ -683,6 +683,7 @@ checksum = "c74d84029116787153e02106bf53e66828452a4b325cc8652b788b5967c0a0b6"
 dependencies = [
  "num-integer",
  "num-traits 0.2.12",
+ "serde",
  "time",
 ]
 
@@ -1089,6 +1090,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 
 [[package]]
+name = "dtoa"
+version = "0.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "134951f4028bdadb9b84baf4232681efbf277da25144b9b0ad65df75946c422b"
+
+[[package]]
 name = "ed25519"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1116,6 +1123,15 @@ name = "either"
 version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cd56b59865bce947ac5958779cfa508f6c3b9497cc762b7e24a12d11ccde2c4f"
+
+[[package]]
+name = "encoding_rs"
+version = "0.8.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8ac63f94732332f44fe654443c46f6375d1939684c17b0afb6cb56b0456e171"
+dependencies = [
+ "cfg-if",
+]
 
 [[package]]
 name = "enum-primitive-derive"
@@ -1265,6 +1281,21 @@ name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
+
+[[package]]
+name = "foreign-types"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f6f339eb8adc052cd2ca78910fda869aefa38d22d5cb648e6485e4d3fc06f3b1"
+dependencies = [
+ "foreign-types-shared",
+]
+
+[[package]]
+name = "foreign-types-shared"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b"
 
 [[package]]
 name = "fork-tree"
@@ -2017,6 +2048,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "hyper-tls"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d979acc56dcb5b8dddba3917601745e877576475aa046df3226eabdecef78eed"
+dependencies = [
+ "bytes 0.5.6",
+ "hyper 0.13.7",
+ "native-tls",
+ "tokio 0.2.22",
+ "tokio-tls",
+]
+
+[[package]]
+name = "hyperx"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "81d7ed6ec7d25c4de28b999a5693f14609a8b756137b1b4cb4927d119f59ef25"
+dependencies = [
+ "base64 0.11.0",
+ "bytes 0.5.6",
+ "http 0.2.1",
+ "httparse",
+ "language-tags",
+ "log",
+ "mime",
+ "percent-encoding 2.1.0",
+ "time",
+ "unicase",
+]
+
+[[package]]
 name = "idna"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2403,6 +2465,12 @@ dependencies = [
  "parity-util-mem",
  "parking_lot 0.10.2",
 ]
+
+[[package]]
+name = "language-tags"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a91d884b6667cd606bb5a69aa0c99ba811a115fc68915e7056ec08a46e93199a"
 
 [[package]]
 name = "lazy_static"
@@ -3014,6 +3082,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "mime"
+version = "0.3.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a60c7ce501c71e03a9c9c0d35b861413ae925bd979cc7a4e30d060069aaac8d"
+
+[[package]]
+name = "mime_guess"
+version = "2.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2684d4c2e97d99848d30b324b00c8fcc7e5c897b7cbb5819b09e7c90e8baf212"
+dependencies = [
+ "mime",
+ "unicase",
+]
+
+[[package]]
 name = "miniz_oxide"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3185,6 +3269,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "native-tls"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2b0d88c06fe90d5ee94048ba40409ef1d9315d86f6f38c2efdaad4fb50c58b2d"
+dependencies = [
+ "lazy_static",
+ "libc",
+ "log",
+ "openssl",
+ "openssl-probe",
+ "openssl-sys",
+ "schannel",
+ "security-framework 0.4.4",
+ "security-framework-sys 0.4.3",
+ "tempfile",
+]
+
+[[package]]
 name = "net2"
 version = "0.2.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3322,6 +3424,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1ab52be62400ca80aa00285d25253d7f7c437b7375c4de678f5405d3afe82ca5"
 
 [[package]]
+name = "octocrab"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "63d3ac5571f6f610e3b58713bbeaa9ddb5532e89ab3467165b91d7ecb258c275"
+dependencies = [
+ "arc-swap",
+ "async-trait",
+ "base64 0.12.3",
+ "bytes 0.5.6",
+ "chrono",
+ "hyperx",
+ "once_cell",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_path_to_error",
+ "snafu",
+ "url 2.1.1",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3343,10 +3466,37 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "624a8340c38c1b80fd549087862da4ba43e08858af025b236e509b6649fc13d5"
 
 [[package]]
+name = "openssl"
+version = "0.10.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8d575eff3665419f9b83678ff2815858ad9d11567e082f5ac1814baba4e2bcb4"
+dependencies = [
+ "bitflags",
+ "cfg-if",
+ "foreign-types",
+ "lazy_static",
+ "libc",
+ "openssl-sys",
+]
+
+[[package]]
 name = "openssl-probe"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77af24da69f9d9341038eba93a073b1fdaaa1b788221b00a69bce9e762cb32de"
+
+[[package]]
+name = "openssl-sys"
+version = "0.9.58"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a842db4709b604f0fe5d1170ae3565899be2ad3d9cbc72dedc789ac0511f78de"
+dependencies = [
+ "autocfg 1.0.0",
+ "cc",
+ "libc",
+ "pkg-config",
+ "vcpkg",
+]
 
 [[package]]
 name = "orml-utilities"
@@ -4458,6 +4608,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "reqwest"
+version = "0.10.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "12427a5577082c24419c9c417db35cfeb65962efc7675bb6b0d5f1f9d315bfe6"
+dependencies = [
+ "base64 0.12.3",
+ "bytes 0.5.6",
+ "encoding_rs",
+ "futures-core",
+ "futures-util",
+ "http 0.2.1",
+ "http-body 0.3.1",
+ "hyper 0.13.7",
+ "hyper-tls",
+ "ipnet",
+ "js-sys",
+ "lazy_static",
+ "log",
+ "mime",
+ "mime_guess",
+ "native-tls",
+ "percent-encoding 2.1.0",
+ "pin-project-lite",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "tokio 0.2.22",
+ "tokio-tls",
+ "url 2.1.1",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "winreg",
+]
+
+[[package]]
 name = "retain_mut"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4591,7 +4777,7 @@ dependencies = [
  "openssl-probe",
  "rustls 0.18.0",
  "schannel",
- "security-framework",
+ "security-framework 1.0.0",
 ]
 
 [[package]]
@@ -5476,6 +5662,19 @@ dependencies = [
 
 [[package]]
 name = "security-framework"
+version = "0.4.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "64808902d7d99f78eaddd2b4e2509713babc3dc3c85ad6f4c447680f3c01e535"
+dependencies = [
+ "bitflags",
+ "core-foundation",
+ "core-foundation-sys",
+ "libc",
+ "security-framework-sys 0.4.3",
+]
+
+[[package]]
+name = "security-framework"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad502866817f0575705bd7be36e2b2535cc33262d493aa733a2ec862baa2bc2b"
@@ -5484,7 +5683,17 @@ dependencies = [
  "core-foundation",
  "core-foundation-sys",
  "libc",
- "security-framework-sys",
+ "security-framework-sys 1.0.0",
+]
+
+[[package]]
+name = "security-framework-sys"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "17bf11d99252f512695eb468de5516e5cf75455521e69dfe343f3b74e4748405"
+dependencies = [
+ "core-foundation-sys",
+ "libc",
 ]
 
 [[package]]
@@ -5553,6 +5762,27 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
+]
+
+[[package]]
+name = "serde_path_to_error"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "913be57cc4ce01e57709c49d3f9a73e0019ae0ba26c4063d7bc15351d68f3593"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "serde_urlencoded"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9ec5d77e2d4c73717816afac02670d5c4f534ea95ed430442cad02e7a6e32c97"
+dependencies = [
+ "dtoa",
+ "itoa",
+ "serde",
+ "url 2.1.1",
 ]
 
 [[package]]
@@ -5738,6 +5968,28 @@ dependencies = [
  "socket2",
  "wepoll-sys-stjepang",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "snafu"
+version = "0.6.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c7f5aed652511f5c9123cf2afbe9c244c29db6effa2abb05c866e965c82405ce"
+dependencies = [
+ "backtrace",
+ "doc-comment",
+ "snafu-derive",
+]
+
+[[package]]
+name = "snafu-derive"
+version = "0.6.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ebf8f7d5720104a9df0f7076a8682024e958bba0fe9848767bb44f251f3648e9"
+dependencies = [
+ "proc-macro2",
+ "quote 1.0.7",
+ "syn 1.0.38",
 ]
 
 [[package]]
@@ -6623,7 +6875,7 @@ checksum = "502d53007c02d7605a05df1c1a73ee436952781653da5d0bf57ad608f66932c1"
 [[package]]
 name = "sunshine-bank"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6638,9 +6890,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "sunshine-bors"
+version = "0.0.1"
+dependencies = [
+ "dirs",
+ "env_logger",
+ "ipld-block-builder",
+ "substrate-subxt",
+ "sunshine-bounty-client",
+ "sunshine-bounty-gbot",
+ "sunshine-client",
+ "sunshine-client-utils",
+ "tokio 0.2.22",
+]
+
+[[package]]
 name = "sunshine-bounty"
 version = "0.2.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6654,7 +6921,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-cli"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clap 3.0.0-beta.1",
  "libipld",
@@ -6669,7 +6936,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-client"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "async-std",
  "frame-support",
@@ -6685,9 +6952,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sunshine-bounty-gbot"
+version = "0.0.1"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+dependencies = [
+ "octocrab",
+ "thiserror",
+]
+
+[[package]]
 name = "sunshine-bounty-utils"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "derive-new",
@@ -6784,7 +7060,7 @@ dependencies = [
 [[package]]
 name = "sunshine-court"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6831,7 +7107,7 @@ dependencies = [
 [[package]]
 name = "sunshine-donate"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6974,7 +7250,7 @@ dependencies = [
 [[package]]
 name = "sunshine-org"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7046,7 +7322,7 @@ dependencies = [
 [[package]]
 name = "sunshine-treasury"
 version = "0.0.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7060,7 +7336,7 @@ dependencies = [
 [[package]]
 name = "sunshine-vote"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty.git#0d0d1adfdca6de4fb71f1968e2818dd5b683fc79"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7324,6 +7600,7 @@ dependencies = [
  "pin-project-lite",
  "signal-hook-registry",
  "slab",
+ "tokio-macros",
  "winapi 0.3.9",
 ]
 
@@ -7400,6 +7677,17 @@ dependencies = [
  "bytes 0.4.12",
  "futures 0.1.29",
  "log",
+]
+
+[[package]]
+name = "tokio-macros"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0c3acc6aa564495a0f2e1d59fab677cd7f81a19994cfc7f3ad0e64301560389"
+dependencies = [
+ "proc-macro2",
+ "quote 1.0.7",
+ "syn 1.0.38",
 ]
 
 [[package]]
@@ -7517,6 +7805,16 @@ dependencies = [
  "futures 0.1.29",
  "slab",
  "tokio-executor 0.1.10",
+]
+
+[[package]]
+name = "tokio-tls"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9a70f4fcd7b3b24fb194f837560168208f669ca8cb70d0c4b862944452396343"
+dependencies = [
+ "native-tls",
+ "tokio 0.2.22",
 ]
 
 [[package]]
@@ -7658,7 +7956,7 @@ version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3bfd5b7557925ce778ff9b9ef90e3ade34c524b5ff10e239c69a42d546d2af56"
 dependencies = [
- "rand 0.7.3",
+ "rand 0.5.6",
 ]
 
 [[package]]
@@ -7802,6 +8100,7 @@ dependencies = [
  "idna 0.2.0",
  "matches",
  "percent-encoding 2.1.0",
+ "serde",
 ]
 
 [[package]]
@@ -7868,6 +8167,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0563a9a4b071746dd5aedbc3a28c6fe9be4586fb3fbadb67c400d4f53c6b16c"
 dependencies = [
  "cfg-if",
+ "serde",
+ "serde_json",
  "wasm-bindgen-macro",
 ]
 
@@ -8073,6 +8374,15 @@ name = "winapi-x86_64-pc-windows-gnu"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
+
+[[package]]
+name = "winreg"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0120db82e8a1e0b9fb3345a539c478767c0048d842860994d96113d5b667bd69"
+dependencies = [
+ "winapi 0.3.9",
+]
 
 [[package]]
 name = "ws"
