@@ -40,7 +40,7 @@ async fn main() -> Result<()> {
             }) => {
                 let account_id = set_key(&mut client, paperkey, suri.as_deref(), force).await?;
                 println!("your device key is {}", account_id.to_string());
-                MintCommand.exec(&mut client).await?;
+                MintCommand.exec(&client).await?;
                 let uid = client.fetch_uid(&account_id).await?.unwrap();
                 println!("your user id is {}", uid);
                 Ok(())
@@ -49,24 +49,24 @@ async fn main() -> Result<()> {
             KeySubCommand::Lock(cmd) => cmd.exec(&mut client).await,
         },
         SubCommand::Account(AccountCommand { cmd }) => match cmd {
-            AccountSubCommand::Create(cmd) => cmd.exec(&mut client).await,
-            AccountSubCommand::Password(cmd) => cmd.exec(&mut client).await,
-            AccountSubCommand::Mint(cmd) => cmd.exec(&mut client).await,
+            AccountSubCommand::Create(cmd) => cmd.exec(&client).await,
+            AccountSubCommand::Password(cmd) => cmd.exec(&client).await,
+            AccountSubCommand::Mint(cmd) => cmd.exec(&client).await,
         },
         SubCommand::Device(DeviceCommand { cmd }) => match cmd {
-            DeviceSubCommand::Add(cmd) => cmd.exec(&mut client).await,
-            DeviceSubCommand::Remove(cmd) => cmd.exec(&mut client).await,
-            DeviceSubCommand::List(cmd) => cmd.exec(&mut client).await,
-            DeviceSubCommand::Paperkey(cmd) => cmd.exec(&mut client).await,
+            DeviceSubCommand::Add(cmd) => cmd.exec(&client).await,
+            DeviceSubCommand::Remove(cmd) => cmd.exec(&client).await,
+            DeviceSubCommand::List(cmd) => cmd.exec(&client).await,
+            DeviceSubCommand::Paperkey(cmd) => cmd.exec(&client).await,
         },
         SubCommand::Id(IdCommand { cmd }) => match cmd {
-            IdSubCommand::List(cmd) => cmd.exec(&mut client).await,
-            IdSubCommand::Prove(cmd) => cmd.exec(&mut client).await,
-            IdSubCommand::Revoke(cmd) => cmd.exec(&mut client).await,
+            IdSubCommand::List(cmd) => cmd.exec(&client).await,
+            IdSubCommand::Prove(cmd) => cmd.exec(&client).await,
+            IdSubCommand::Revoke(cmd) => cmd.exec(&client).await,
         },
         SubCommand::Wallet(WalletCommand { cmd }) => match cmd {
-            WalletSubCommand::Balance(cmd) => cmd.exec(&mut client).await,
-            WalletSubCommand::Transfer(cmd) => cmd.exec(&mut client).await,
+            WalletSubCommand::Balance(cmd) => cmd.exec(&client).await,
+            WalletSubCommand::Transfer(cmd) => cmd.exec(&client).await,
         },
         SubCommand::Org(OrgCommand { cmd }) => match cmd {
             OrgSubCommand::IssueShares(cmd) => cmd.exec(&client).await,

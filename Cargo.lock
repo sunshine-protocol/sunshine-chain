@@ -553,7 +553,7 @@ dependencies = [
  "atomic-waker",
  "futures-lite",
  "once_cell",
- "parking",
+ "parking 1.0.6",
  "waker-fn",
 ]
 
@@ -1367,7 +1367,7 @@ dependencies = [
  "parity-scale-codec",
  "paste",
  "serde",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "sp-arithmetic",
  "sp-core",
  "sp-inherents",
@@ -1561,15 +1561,15 @@ checksum = "de27142b013a8e869c14957e6d2edeef89e97c289e69d042ee3a49acd8b51789"
 
 [[package]]
 name = "futures-lite"
-version = "0.1.10"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bbe71459749b2e8e66fb95df721b22fa08661ad384a0c5b519e11d3893b4692a"
+checksum = "97999970129b808f0ccba93211201d431fcc12d7e1ffae03a61b5cedd1a7ced2"
 dependencies = [
  "fastrand",
  "futures-core",
  "futures-io",
  "memchr",
- "parking",
+ "parking 2.0.0",
  "pin-project-lite",
  "waker-fn",
 ]
@@ -2399,7 +2399,7 @@ dependencies = [
  "rand 0.7.3",
  "serde",
  "serde_json",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "soketto 0.3.2",
  "thiserror",
  "tokio 0.2.22",
@@ -2452,7 +2452,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0315ef2f688e33844400b31f11c263f2b3dc21d8b9355c6891c5f185fae43f9a"
 dependencies = [
  "parity-util-mem",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
 ]
 
 [[package]]
@@ -2480,9 +2480,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "lazycell"
-version = "1.2.1"
+version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b294d6fa9ee409a054354afc4352b0b9ef7ca222c69b8812cbea9e7d2bf3783f"
+checksum = "830d08ce1d1d941e6b30645f1a0eb5643013d835ce3779a5fc208261dbe10f55"
 
 [[package]]
 name = "libc"
@@ -2613,7 +2613,7 @@ dependencies = [
  "parity-multiaddr",
  "parking_lot 0.10.2",
  "pin-project",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "wasm-timer",
 ]
 
@@ -2662,7 +2662,7 @@ dependencies = [
  "ring",
  "rw-stream-sink",
  "sha2 0.8.2",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "thiserror",
  "unsigned-varint 0.4.0",
  "void",
@@ -2702,7 +2702,7 @@ dependencies = [
  "log",
  "prost",
  "prost-build",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "wasm-timer",
 ]
 
@@ -2726,7 +2726,7 @@ dependencies = [
  "prost-build",
  "rand 0.7.3",
  "sha2 0.8.2",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "uint",
  "unsigned-varint 0.4.0",
  "void",
@@ -2750,7 +2750,7 @@ dependencies = [
  "log",
  "net2",
  "rand 0.7.3",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "void",
  "wasm-timer",
 ]
@@ -2848,7 +2848,7 @@ dependencies = [
  "libp2p-core",
  "log",
  "rand 0.7.3",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "void",
  "wasm-timer",
 ]
@@ -3238,7 +3238,7 @@ dependencies = [
  "futures 0.3.5",
  "log",
  "pin-project",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "unsigned-varint 0.4.0",
 ]
 
@@ -3708,7 +3708,7 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "parity-scale-codec",
  "serde",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "sp-core",
  "sp-io",
  "sp-runtime",
@@ -3850,6 +3850,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6cb300f271742d4a2a66c01b6b2fa0c83dfebd2e0bf11addb879a3547b4ed87c"
 
 [[package]]
+name = "parking"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "427c3892f9e783d91cc128285287e70a59e206ca452770ece88a76f7a3eddd72"
+
+[[package]]
 name = "parking_lot"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3906,7 +3912,7 @@ dependencies = [
  "cloudabi 0.0.3",
  "libc",
  "redox_syscall",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "winapi 0.3.9",
 ]
 
@@ -3921,7 +3927,7 @@ dependencies = [
  "instant",
  "libc",
  "redox_syscall",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "winapi 0.3.9",
 ]
 
@@ -5945,9 +5951,9 @@ dependencies = [
 
 [[package]]
 name = "smallvec"
-version = "1.4.1"
+version = "1.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3757cb9d89161a2f24e1cf78efa0c1fcff485d18e3f55e0aa3480824ddaa0f3f"
+checksum = "fbee7696b84bbf3d89a1c2eccff0850e3047ed46bfcd2e92c29a2d074d57e252"
 
 [[package]]
 name = "smol"
@@ -6036,7 +6042,7 @@ dependencies = [
  "log",
  "rand 0.7.3",
  "sha1",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "static_assertions",
  "thiserror",
 ]
@@ -6513,7 +6519,7 @@ dependencies = [
  "parity-scale-codec",
  "parking_lot 0.10.2",
  "rand 0.7.3",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
  "sp-core",
  "sp-externalities",
  "sp-panic-handler",
@@ -6875,7 +6881,7 @@ checksum = "502d53007c02d7605a05df1c1a73ee436952781653da5d0bf57ad608f66932c1"
 [[package]]
 name = "sunshine-bank"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6907,7 +6913,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty"
 version = "0.2.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6921,7 +6927,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-cli"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clap 3.0.0-beta.1",
  "libipld",
@@ -6936,7 +6942,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-client"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "async-std",
  "frame-support",
@@ -6954,7 +6960,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-gbot"
 version = "0.0.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "octocrab",
  "thiserror",
@@ -6963,7 +6969,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-utils"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "derive-new",
@@ -7060,7 +7066,7 @@ dependencies = [
 [[package]]
 name = "sunshine-court"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7107,7 +7113,7 @@ dependencies = [
 [[package]]
 name = "sunshine-donate"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7122,7 +7128,7 @@ dependencies = [
 [[package]]
 name = "sunshine-faucet-cli"
 version = "0.2.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#4481c01ca365cea69992e2db47b5bc421a349625"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#aa9ebe9ab5465fefe048e249a9332beb5976f89a"
 dependencies = [
  "clap 3.0.0-beta.1",
  "substrate-subxt",
@@ -7133,7 +7139,7 @@ dependencies = [
 [[package]]
 name = "sunshine-faucet-client"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#4481c01ca365cea69992e2db47b5bc421a349625"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#aa9ebe9ab5465fefe048e249a9332beb5976f89a"
 dependencies = [
  "parity-scale-codec",
  "substrate-subxt",
@@ -7144,7 +7150,7 @@ dependencies = [
 [[package]]
 name = "sunshine-faucet-pallet"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#4481c01ca365cea69992e2db47b5bc421a349625"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#aa9ebe9ab5465fefe048e249a9332beb5976f89a"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -7158,7 +7164,7 @@ dependencies = [
 [[package]]
 name = "sunshine-identity-cli"
 version = "0.2.3"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#4481c01ca365cea69992e2db47b5bc421a349625"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#aa9ebe9ab5465fefe048e249a9332beb5976f89a"
 dependencies = [
  "clap 3.0.0-beta.1",
  "parity-scale-codec",
@@ -7172,7 +7178,7 @@ dependencies = [
 [[package]]
 name = "sunshine-identity-client"
 version = "0.2.3"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#4481c01ca365cea69992e2db47b5bc421a349625"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#aa9ebe9ab5465fefe048e249a9332beb5976f89a"
 dependencies = [
  "async-std",
  "frame-support",
@@ -7191,7 +7197,7 @@ dependencies = [
 [[package]]
 name = "sunshine-identity-pallet"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#4481c01ca365cea69992e2db47b5bc421a349625"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#aa9ebe9ab5465fefe048e249a9332beb5976f89a"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -7250,7 +7256,7 @@ dependencies = [
 [[package]]
 name = "sunshine-org"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7322,7 +7328,7 @@ dependencies = [
 [[package]]
 name = "sunshine-treasury"
 version = "0.0.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7336,7 +7342,7 @@ dependencies = [
 [[package]]
 name = "sunshine-vote"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c896a2d0c0a8ae0b2c8a3a431e4d7c89427239c5"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -7921,7 +7927,7 @@ dependencies = [
  "hashbrown 0.8.2",
  "log",
  "rustc-hex",
- "smallvec 1.4.1",
+ "smallvec 1.4.2",
 ]
 
 [[package]]
@@ -7956,7 +7962,7 @@ version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3bfd5b7557925ce778ff9b9ef90e3ade34c524b5ff10e239c69a42d546d2af56"
 dependencies = [
- "rand 0.5.6",
+ "rand 0.7.3",
 ]
 
 [[package]]

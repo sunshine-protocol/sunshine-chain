@@ -43,7 +43,7 @@ impl SubstrateCli for Cli {
     }
 
     fn load_spec(&self, chain: &str) -> Result<Box<dyn sc_service::ChainSpec>, String> {
-        Ok(Box::new(Chain::from_str(chain)?.to_chain_spec()?))
+        Ok(Box::new(Chain::from_str(chain)?.into_chain_spec()?))
     }
 
     fn native_runtime_version(_: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {

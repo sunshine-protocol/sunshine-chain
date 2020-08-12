@@ -46,7 +46,7 @@ pub enum Chain {
 }
 
 impl Chain {
-    pub fn to_chain_spec(self) -> Result<ChainSpec, String> {
+    pub fn into_chain_spec(self) -> Result<ChainSpec, String> {
         Ok(match self {
             Self::Dev => dev_chain_spec(),
             Self::Local => local_chain_spec(),
