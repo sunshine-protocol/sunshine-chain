@@ -1,0 +1,10 @@
+[Unit]
+Description=Sunshine Bors
+
+[Service]
+Type=simple
+EnvironmentFile=/sunshine/sunshine-bors-env
+ExecStart=/sunshine/sunshine-bors
+
+[Install]
+WantedBy=multi-user.target
