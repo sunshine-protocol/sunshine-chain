@@ -13,7 +13,7 @@ use sunshine_bounty_client::{
 };
 use sunshine_client::{Client, Runtime};
 use sunshine_client_utils::{Client as _, Result};
-use tokio::task;
+use tokio::{task, time};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -56,6 +56,8 @@ async fn main() -> Result<()> {
         bounty_contrib_sub = bc_sub.await??;
         bounty_submit_sub = bs_sub.await??;
         bounty_approval_sub = ba_sub.await??;
+        // increase depending on expected interaction frequency
+        time::delay_for(std::time::Duration::from_secs(1)).await;
     }
 }
 
