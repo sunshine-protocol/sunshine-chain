@@ -2,27 +2,16 @@ mod subxt;
 use crate::subxt::*;
 use gbot::GBot;
 use ipld_block_builder::ReadonlyCache;
-use substrate_subxt::{
-    sp_core::Decode,
-    EventSubscription,
-};
+use substrate_subxt::{sp_core::Decode, EventSubscription};
 use sunshine_bounty_client::{
     bounty::{
-        BountyPaymentExecutedEvent,
-        BountyPostedEvent,
-        BountyRaiseContributionEvent,
+        BountyPaymentExecutedEvent, BountyPostedEvent, BountyRaiseContributionEvent,
         BountySubmissionPostedEvent,
     },
     BountyBody,
 };
-use sunshine_client_utils::{
-    Client as _,
-    Result,
-};
-use sunshine_client::{
-    Client,
-    Runtime,
-};
+use sunshine_client::{Client, Runtime};
+use sunshine_client_utils::{Client as _, Result};
 use tokio::time;
 
 pub struct Bot {
@@ -38,7 +27,7 @@ async fn main() -> Result<()> {
     env_logger::init();
     let github_bot = GBot::new()?;
     let root = dirs::config_dir().unwrap().join("sunshine-bounty-bot");
-    let client = Client::new(&root, None).await?;
+    let client = Client::new(&root, "ws://127.0.0.1:9944").await?;
     // subscribe to bounty posts
     let bounty_post_sub = bounty_post_subscriber(&client).await?;
     // subscribe to bounty contributions
@@ -66,8 +55,7 @@ async fn run_github_bot(mut bot: Bot, github: GBot) -> Result<Bot> {
         let event = BountyPostedEvent::<Runtime>::decode(&mut &raw.data[..])?;
         // fetch structured data from client
         let event_cid = event.description.to_cid()?;
-        let bounty_body: BountyBody =
-            bot.client.offchain_client().get(&event_cid).await?;
+        let bounty_body: BountyBody = bot.client.offchain_client().get(&event_cid).await?;
         // issue comment
         github
             .issue_comment_bounty_post(
@@ -80,13 +68,10 @@ async fn run_github_bot(mut bot: Bot, github: GBot) -> Result<Bot> {
             .await?;
     } else if let Some(Ok(raw)) = bot.bounty_contrib_sub.next().await {
         // get event data
-        let event = BountyRaiseContributionEvent::<Runtime>::decode(
-            &mut &raw.data[..],
-        )?;
+        let event = BountyRaiseContributionEvent::<Runtime>::decode(&mut &raw.data[..])?;
         // fetch structured data from client
         let event_cid = event.bounty_ref.to_cid()?;
-        let bounty_body: BountyBody =
-            bot.client.offchain_client().get(&event_cid).await?;
+        let bounty_body: BountyBody = bot.client.offchain_client().get(&event_cid).await?;
         // issue comment
         github
             .issue_comment_bounty_contribute(
@@ -100,13 +85,11 @@ async fn run_github_bot(mut bot: Bot, github: GBot) -> Result<Bot> {
             .await?;
     } else if let Some(Ok(raw)) = bot.bounty_submit_sub.next().await {
         // get event data
-        let event =
-            BountySubmissionPostedEvent::<Runtime>::decode(&mut &raw.data[..])?;
+        let event = BountySubmissionPostedEvent::<Runtime>::decode(&mut &raw.data[..])?;
         // fetch structured data from client
         let bounty_event_cid = event.bounty_ref.to_cid()?;
         let submission_event_cid = event.submission_ref.to_cid()?;
-        let bounty_body: BountyBody =
-            bot.client.offchain_client().get(&bounty_event_cid).await?;
+        let bounty_body: BountyBody = bot.client.offchain_client().get(&bounty_event_cid).await?;
         let submission_body: BountyBody = bot
             .client
             .offchain_client()
@@ -128,13 +111,11 @@ async fn run_github_bot(mut bot: Bot, github: GBot) -> Result<Bot> {
             .await?;
     } else if let Some(Ok(raw)) = bot.bounty_approval_sub.next().await {
         // get event data
-        let event =
-            BountyPaymentExecutedEvent::<Runtime>::decode(&mut &raw.data[..])?;
+        let event = BountyPaymentExecutedEvent::<Runtime>::decode(&mut &raw.data[..])?;
         // fetch structured data from client
         let bounty_event_cid = event.bounty_ref.to_cid()?;
         let submission_event_cid = event.submission_ref.to_cid()?;
-        let bounty_body: BountyBody =
-            bot.client.offchain_client().get(&bounty_event_cid).await?;
+        let bounty_body: BountyBody = bot.client.offchain_client().get(&bounty_event_cid).await?;
         let submission_body: BountyBody = bot
             .client
             .offchain_client()
