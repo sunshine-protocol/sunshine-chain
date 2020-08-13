@@ -15,14 +15,6 @@ use sunshine_client::{Client, Runtime};
 use sunshine_client_utils::{Client as _, Result};
 use tokio::task;
 
-pub struct Bot {
-    pub client: Client,
-    pub bounty_post_sub: EventSubscription<Runtime>,
-    pub bounty_contrib_sub: EventSubscription<Runtime>,
-    pub bounty_submit_sub: EventSubscription<Runtime>,
-    pub bounty_approval_sub: EventSubscription<Runtime>,
-}
-
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init();
