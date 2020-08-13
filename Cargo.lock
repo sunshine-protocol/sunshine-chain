@@ -6887,11 +6887,10 @@ dependencies = [
  "dirs",
  "env_logger",
  "ipld-block-builder",
+ "log",
  "substrate-subxt",
- "sunshine-bounty-client",
  "sunshine-bounty-gbot",
  "sunshine-client",
- "sunshine-client-utils",
  "tokio 0.2.22",
 ]
 
