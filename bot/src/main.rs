@@ -49,7 +49,7 @@ async fn main() -> Result<()> {
     }
 }
 
-async move fn poll_bounty_postings(mut bot: Bot, github: GBot) -> Result<()> {
+async fn poll_bounty_postings(mut bot: Bot, github: GBot) -> Result<()> {
     loop {
         if let Some(Ok(raw)) = bot.bounty_post_sub.next().await {
             // get event data
