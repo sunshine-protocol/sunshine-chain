@@ -2,32 +2,20 @@ mod subxt;
 use crate::subxt::*;
 use gbot::GBot;
 use ipld_block_builder::ReadonlyCache;
-use substrate_subxt::{
-    sp_core::Decode,
-    EventSubscription,
-};
+use substrate_subxt::{sp_core::Decode, EventSubscription};
 use sunshine_bounty_client::{
     bounty::{
-        BountyPaymentExecutedEvent,
-        BountyPostedEvent,
-        BountyRaiseContributionEvent,
+        BountyPaymentExecutedEvent, BountyPostedEvent, BountyRaiseContributionEvent,
         BountySubmissionPostedEvent,
     },
     BountyBody,
 };
-use sunshine_client_utils::{
-    Client as _,
-    Result,
-};
-use sunshine_client::{
-    Client,
-    Runtime,
-};
-use std::sync::Arc;
+use sunshine_client::{Client, Runtime};
+use sunshine_client_utils::{Client as _, Result};
 use tokio::task;
 
 pub struct Bot {
-    pub client: Arc<Client>,
+    pub client: Client,
     pub bounty_post_sub: EventSubscription<Runtime>,
     pub bounty_contrib_sub: EventSubscription<Runtime>,
     pub bounty_submit_sub: EventSubscription<Runtime>,
@@ -50,7 +38,7 @@ async fn main() -> Result<()> {
     let bounty_approval_sub = bounty_approval_subscriber(&client).await?;
     // instantiate local bot
     let mut bot = Bot {
-        client: Arc::new(client),
+        client: client,
         bounty_post_sub,
         bounty_contrib_sub,
         bounty_submit_sub,
@@ -61,18 +49,14 @@ async fn main() -> Result<()> {
     }
 }
 
-async fn poll_bounty_postings(
-    mut bot: Bot,
-    github: GBot,
-) -> Result<()> {
+async fn poll_bounty_postings(mut bot: Bot, github: GBot) -> Result<()> {
     loop {
         if let Some(Ok(raw)) = bot.bounty_post_sub.next().await {
             // get event data
             let event = BountyPostedEvent::<Runtime>::decode(&mut &raw.data[..])?;
             // fetch structured data from client
             let event_cid = event.description.to_cid()?;
-            let bounty_body: BountyBody =
-                bot.client.offchain_client().get(&event_cid).await?;
+            let bounty_body: BountyBody = bot.client.offchain_client().get(&event_cid).await?;
             // issue comment
             github
                 .issue_comment_bounty_post(
@@ -84,7 +68,7 @@ async fn poll_bounty_postings(
                 )
                 .await?;
         } else {
-            break
+            break;
         }
     }
     Ok(())
