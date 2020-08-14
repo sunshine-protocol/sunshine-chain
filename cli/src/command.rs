@@ -1,6 +1,6 @@
 use clap::Clap;
 use std::path::PathBuf;
-use sunshine_bounty_cli::{bank, bounty, donate, org, shares, vote};
+use sunshine_bounty_cli::bounty;
 use sunshine_faucet_cli::MintCommand;
 use sunshine_identity_cli::{account, device, id, key, wallet};
 
@@ -21,10 +21,6 @@ pub enum SubCommand {
     Device(DeviceCommand),
     Id(IdCommand),
     Wallet(WalletCommand),
-    Org(OrgCommand),
-    Vote(VoteCommand),
-    Donate(DonateCommand),
-    Bank(BankCommand),
     Bounty(BountyCommand),
     Run,
 }
@@ -92,64 +88,6 @@ pub struct WalletCommand {
 pub enum WalletSubCommand {
     Balance(wallet::WalletBalanceCommand),
     Transfer(wallet::WalletTransferCommand),
-}
-
-#[derive(Clone, Debug, Clap)]
-pub struct OrgCommand {
-    #[clap(subcommand)]
-    pub cmd: OrgSubCommand,
-}
-
-#[derive(Clone, Debug, Clap)]
-pub enum OrgSubCommand {
-    // share stuff
-    IssueShares(shares::SharesIssueCommand),
-    BurnShares(shares::SharesBurnCommand),
-    BatchIssueShares(shares::SharesBatchIssueCommand),
-    BatchBurnShares(shares::SharesBatchBurnCommand),
-    ReserveShares(shares::SharesReserveCommand),
-    UnreserveShares(shares::SharesUnReserveCommand),
-    LockShares(shares::SharesLockCommand),
-    UnlockShares(shares::SharesUnLockCommand),
-    // full org stuff
-    RegisterFlatOrg(org::OrgRegisterFlatCommand),
-    RegisterWeightedOrg(org::OrgRegisterWeightedCommand),
-}
-
-#[derive(Clone, Debug, Clap)]
-pub struct VoteCommand {
-    #[clap(subcommand)]
-    pub cmd: VoteSubCommand,
-}
-
-#[derive(Clone, Debug, Clap)]
-pub enum VoteSubCommand {
-    CreateSignalThresholdVote(vote::VoteCreateSignalThresholdCommand),
-    CreatePercentThresholdVote(vote::VoteCreatePercentThresholdCommand),
-    SubmitVote(vote::VoteSubmitCommand),
-}
-
-#[derive(Clone, Debug, Clap)]
-pub struct DonateCommand {
-    #[clap(subcommand)]
-    pub cmd: DonateSubCommand,
-}
-
-#[derive(Clone, Debug, Clap)]
-pub enum DonateSubCommand {
-    PropDonate(donate::PropDonateCommand),
-    EqualDonate(donate::EqualDonateCommand),
-}
-
-#[derive(Clone, Debug, Clap)]
-pub struct BankCommand {
-    #[clap(subcommand)]
-    pub cmd: BankSubCommand,
-}
-
-#[derive(Clone, Debug, Clap)]
-pub enum BankSubCommand {
-    OpenAccount(bank::BankOpenOrgAccountCommand),
 }
 
 #[derive(Clone, Debug, Clap)]

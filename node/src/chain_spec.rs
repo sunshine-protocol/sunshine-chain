@@ -9,8 +9,8 @@ use sp_runtime::traits::{IdentifyAccount, Verify};
 use std::path::PathBuf;
 use std::str::FromStr;
 use sunshine_runtime::{
-    AccountId, AuraConfig, Balance, BalancesConfig, BlockNumber, Cid, GenesisConfig, GrandpaConfig,
-    OrgConfig, Signature, SystemConfig, TreasuryConfig, WASM_BINARY,
+    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SystemConfig,
+    WASM_BINARY,
 };
 
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.getsunshine.com/submit/";
@@ -83,17 +83,6 @@ pub fn dev_chain_spec() -> ChainSpec {
                     seed_to_account_id::<sr25519::Public>("//Alice"),
                     seed_to_account_id::<sr25519::Public>("//Alice/stash"),
                 ],
-                // first org supervisor
-                seed_to_account_id::<sr25519::Public>("//Alice"),
-                // first org value constitution
-                Cid::default(),
-                // flat share membership
-                &[
-                    seed_to_account_id::<sr25519::Public>("//Alice"),
-                    seed_to_account_id::<sr25519::Public>("//Alice/stash"),
-                ],
-                // treasury mint rate
-                (10, 10),
             )
         },
         vec![],
@@ -123,17 +112,6 @@ pub fn local_chain_spec() -> ChainSpec {
                     seed_to_account_id::<sr25519::Public>("//Bob"),
                     seed_to_account_id::<sr25519::Public>("//Bob/stash"),
                 ],
-                // first org supervisor
-                seed_to_account_id::<sr25519::Public>("//Alice"),
-                // first org value constitution
-                Cid::default(),
-                // flat share membership
-                &[
-                    seed_to_account_id::<sr25519::Public>("//Alice"),
-                    seed_to_account_id::<sr25519::Public>("//Bob"),
-                ],
-                // treasury mint rate
-                (10, 10),
             )
         },
         vec![],
@@ -199,21 +177,6 @@ fn staging_chain_spec_genesis() -> GenesisConfig {
         ],
         // endowed accounts
         &[],
-        // first org supervisor
-        seed_to_account_id::<sr25519::Public>("//Alice"),
-        // first org value constitution
-        Cid::default(),
-        // first org flat membership
-        &[
-            seed_to_account_id::<sr25519::Public>("//Alice"),
-            seed_to_account_id::<sr25519::Public>("//Bob"),
-            seed_to_account_id::<sr25519::Public>("//Charlie"),
-            seed_to_account_id::<sr25519::Public>("//Dave"),
-            seed_to_account_id::<sr25519::Public>("//Eve"),
-            seed_to_account_id::<sr25519::Public>("//Ferdie"),
-        ],
-        // treasury mint rate
-        (10, 10),
     )
 }
 
@@ -256,10 +219,6 @@ pub fn staging_chain_spec() -> ChainSpec {
 fn testnet_genesis(
     initial_authorities: &[(AccountId, AccountId, AuraId, GrandpaId)],
     endowed_accounts: &[AccountId],
-    first_org_supervisor: AccountId,
-    first_org_value_constitution: Cid,
-    first_org_flat_membership: &[AccountId],
-    treasury_mint_rate: (BlockNumber, Balance),
 ) -> GenesisConfig {
     GenesisConfig {
         frame_system: Some(SystemConfig {
@@ -282,26 +241,5 @@ fn testnet_genesis(
                 .map(|x| (x.3.clone(), 1))
                 .collect(),
         }),
-        sunshine_org: Some(OrgConfig {
-            first_organization_supervisor: first_org_supervisor,
-            first_organization_value_constitution: first_org_value_constitution,
-            first_organization_flat_membership: first_org_flat_membership.to_vec(),
-        }),
-        sunshine_treasury: Some(TreasuryConfig {
-            minting_interval: treasury_mint_rate.0,
-            mint_amount: treasury_mint_rate.1,
-        }),
-        /*pallet_session: Some(SessionConfig {
-            keys: initial_authorities
-                .iter()
-                .map(|x| {
-                    (
-                        x.0.clone(),
-                        x.0.clone(),
-                        SessionKeys { aura: x.2.clone(), grandpa: x.3.clone() },
-                    )
-                })
-                .collect::<Vec<_>>(),
-        }),*/
     }
 }

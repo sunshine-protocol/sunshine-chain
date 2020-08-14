@@ -5,9 +5,7 @@ use substrate_subxt::balances::{AccountData, Balances};
 use substrate_subxt::sp_runtime::traits::{IdentifyAccount, Verify};
 use substrate_subxt::system::System;
 use substrate_subxt::{extrinsic, sp_core, sp_runtime};
-use sunshine_bounty_client::{
-    bank::Bank, bounty::Bounty, donate::Donate, org::Org, vote::Vote, TextBlock,
-};
+use sunshine_bounty_client::bounty::Bounty;
 use sunshine_client_utils::cid::CidBytes;
 use sunshine_client_utils::client::{GenericClient, KeystoreImpl, OffchainStoreImpl};
 use sunshine_client_utils::crypto::keychain::KeyType;
@@ -55,29 +53,6 @@ impl Identity for Runtime {
     type IdAccountData = AccountData<<Self as Balances>::Balance>;
 }
 
-impl Org for Runtime {
-    type IpfsReference = CidBytes;
-    type OrgId = u64;
-    type Shares = u64;
-    type Constitution = TextBlock;
-}
-
-impl Vote for Runtime {
-    type VoteId = u64;
-    type Signal = u64;
-    type Percent = sp_runtime::Permill;
-    type VoteTopic = TextBlock;
-    type VoterView = utils::vote::VoterView;
-    type VoteJustification = TextBlock;
-}
-
-impl Donate for Runtime {}
-
-impl Bank for Runtime {
-    type BankId = u64;
-    type SpendId = u64;
-}
-
 impl Bounty for Runtime {
     type IpfsReference = CidBytes;
     type BountyId = u64;
@@ -94,7 +69,6 @@ impl substrate_subxt::Runtime for Runtime {
 pub struct OffchainClient<S> {
     claims: IpldCache<S, Codec, Claim>,
     bounties: IpldCache<S, Codec, BountyBody>,
-    texts: IpldCache<S, Codec, TextBlock>,
 }
 
 impl<S: Store> OffchainClient<S> {
@@ -102,14 +76,12 @@ impl<S: Store> OffchainClient<S> {
         Self {
             claims: IpldCache::new(store.clone(), Codec::new(), 64),
             bounties: IpldCache::new(store.clone(), Codec::new(), 64),
-            texts: IpldCache::new(store, Codec::new(), 64),
         }
     }
 }
 
 derive_cache!(OffchainClient, claims, Codec, Claim);
 derive_cache!(OffchainClient, bounties, Codec, BountyBody);
-derive_cache!(OffchainClient, texts, Codec, TextBlock);
 
 impl<S: Store> From<S> for OffchainClient<S> {
     fn from(store: S) -> Self {

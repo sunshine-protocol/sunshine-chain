@@ -6864,23 +6864,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "502d53007c02d7605a05df1c1a73ee436952781653da5d0bf57ad608f66932c1"
 
 [[package]]
-name = "sunshine-bank"
-version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
-dependencies = [
- "clear_on_drop",
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "sp-runtime",
- "sp-std",
- "sunshine-bounty-utils",
- "sunshine-donate",
- "sunshine-org",
- "sunshine-vote",
-]
-
-[[package]]
 name = "sunshine-bors"
 version = "0.0.1"
 dependencies = [
@@ -7048,22 +7031,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "sunshine-court"
-version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
-dependencies = [
- "clear_on_drop",
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "sp-runtime",
- "sp-std",
- "sunshine-bounty-utils",
- "sunshine-org",
- "sunshine-vote",
-]
-
-[[package]]
 name = "sunshine-crypto"
 version = "0.1.0"
 source = "git+https://github.com/sunshine-protocol/sunshine-core#6c900d6722c821cf5f9657b8b6c7f4f3d00ef7b1"
@@ -7092,21 +7059,6 @@ dependencies = [
  "thiserror",
  "x25519-dalek",
  "zeroize",
-]
-
-[[package]]
-name = "sunshine-donate"
-version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
-dependencies = [
- "clear_on_drop",
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "sp-runtime",
- "sp-std",
- "sunshine-bounty-utils",
- "sunshine-org",
 ]
 
 [[package]]
@@ -7238,22 +7190,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "sunshine-org"
-version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
-dependencies = [
- "clear_on_drop",
- "frame-support",
- "frame-system",
- "orml-utilities",
- "parity-scale-codec",
- "serde",
- "sp-runtime",
- "sp-std",
- "sunshine-bounty-utils",
-]
-
-[[package]]
 name = "sunshine-pallet-utils"
 version = "0.1.0"
 source = "git+https://github.com/sunshine-protocol/sunshine-core#6c900d6722c821cf5f9657b8b6c7f4f3d00ef7b1"
@@ -7295,46 +7231,11 @@ dependencies = [
  "sp-transaction-pool",
  "sp-version",
  "substrate-wasm-builder-runner",
- "sunshine-bank",
  "sunshine-bounty",
  "sunshine-bounty-utils",
- "sunshine-court",
- "sunshine-donate",
  "sunshine-faucet-pallet",
  "sunshine-identity-pallet",
- "sunshine-org",
  "sunshine-pallet-utils",
- "sunshine-treasury",
- "sunshine-vote",
-]
-
-[[package]]
-name = "sunshine-treasury"
-version = "0.0.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
-dependencies = [
- "clear_on_drop",
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "serde",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "sunshine-vote"
-version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#a54f99af6c0ac91b3b59c2de0b7da88a177029c4"
-dependencies = [
- "clear_on_drop",
- "frame-support",
- "frame-system",
- "parity-scale-codec",
- "sp-runtime",
- "sp-std",
- "sunshine-bounty-utils",
- "sunshine-org",
 ]
 
 [[package]]
