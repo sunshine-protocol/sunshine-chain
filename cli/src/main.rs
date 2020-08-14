@@ -74,30 +74,6 @@ async fn main() -> Result<()> {
             WalletSubCommand::Balance(cmd) => cmd.exec(&client).await,
             WalletSubCommand::Transfer(cmd) => cmd.exec(&client).await,
         },
-        SubCommand::Org(OrgCommand { cmd }) => match cmd {
-            OrgSubCommand::IssueShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::BurnShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::BatchIssueShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::BatchBurnShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::ReserveShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::UnreserveShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::LockShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::UnlockShares(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::RegisterFlatOrg(cmd) => cmd.exec(&client).await,
-            OrgSubCommand::RegisterWeightedOrg(cmd) => cmd.exec(&client).await,
-        },
-        SubCommand::Vote(VoteCommand { cmd }) => match cmd {
-            VoteSubCommand::CreateSignalThresholdVote(cmd) => cmd.exec(&client).await,
-            VoteSubCommand::CreatePercentThresholdVote(cmd) => cmd.exec(&client).await,
-            VoteSubCommand::SubmitVote(cmd) => cmd.exec(&client).await,
-        },
-        SubCommand::Donate(DonateCommand { cmd }) => match cmd {
-            DonateSubCommand::PropDonate(cmd) => cmd.exec(&client).await,
-            DonateSubCommand::EqualDonate(cmd) => cmd.exec(&client).await,
-        },
-        SubCommand::Bank(BankCommand { cmd }) => match cmd {
-            BankSubCommand::OpenAccount(cmd) => cmd.exec(&client).await,
-        },
         SubCommand::Bounty(BountyCommand { cmd }) => match cmd {
             BountySubCommand::PostBounty(cmd) => cmd.exec(&client).await,
             BountySubCommand::ContributeToBounty(cmd) => cmd.exec(&client).await,
