@@ -706,9 +706,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "2.33.2"
+version = "2.33.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "10040cdf04294b565d9e0319955430099ec3813a64c952b86a41200ad714ae48"
+checksum = "37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002"
 dependencies = [
  "ansi_term 0.11.0",
  "atty",
@@ -6711,7 +6711,7 @@ version = "0.3.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "de5472fb24d7e80ae84a7801b7978f95a19ec32cb1876faea59ab711eb901976"
 dependencies = [
- "clap 2.33.2",
+ "clap 2.33.3",
  "lazy_static",
  "structopt-derive",
 ]
@@ -6880,7 +6880,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty"
 version = "0.2.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#b470a6802069d2b6ba31bcac4bc52e02bd8763aa"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c02b9cb943a306fbcccaaf98aaa4719a85c53189"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6894,7 +6894,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-cli"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#b470a6802069d2b6ba31bcac4bc52e02bd8763aa"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c02b9cb943a306fbcccaaf98aaa4719a85c53189"
 dependencies = [
  "clap 3.0.0-beta.1",
  "libipld",
@@ -6909,7 +6909,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-client"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#b470a6802069d2b6ba31bcac4bc52e02bd8763aa"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c02b9cb943a306fbcccaaf98aaa4719a85c53189"
 dependencies = [
  "async-std",
  "frame-support",
@@ -6929,7 +6929,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-gbot"
 version = "0.0.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#b470a6802069d2b6ba31bcac4bc52e02bd8763aa"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c02b9cb943a306fbcccaaf98aaa4719a85c53189"
 dependencies = [
  "octocrab",
  "thiserror",
@@ -6938,7 +6938,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-utils"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#b470a6802069d2b6ba31bcac4bc52e02bd8763aa"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#c02b9cb943a306fbcccaaf98aaa4719a85c53189"
 dependencies = [
  "clear_on_drop",
  "derive-new",
@@ -6968,7 +6968,7 @@ dependencies = [
 [[package]]
 name = "sunshine-cli-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#b15fa47a17ea53107598332f9fc8c99d0b9dab75"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
 dependencies = [
  "async-std",
  "clap 3.0.0-beta.1",
@@ -6997,7 +6997,7 @@ dependencies = [
 [[package]]
 name = "sunshine-client-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#b15fa47a17ea53107598332f9fc8c99d0b9dab75"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
 dependencies = [
  "anyhow",
  "async-std",
@@ -7022,7 +7022,7 @@ dependencies = [
 [[package]]
 name = "sunshine-codec"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#b15fa47a17ea53107598332f9fc8c99d0b9dab75"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
 dependencies = [
  "anyhow",
  "hash-db",
@@ -7034,7 +7034,7 @@ dependencies = [
 [[package]]
 name = "sunshine-crypto"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#b15fa47a17ea53107598332f9fc8c99d0b9dab75"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
 dependencies = [
  "aead 0.2.0",
  "anyhow",
@@ -7148,7 +7148,7 @@ dependencies = [
 [[package]]
 name = "sunshine-keystore"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#b15fa47a17ea53107598332f9fc8c99d0b9dab75"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
 dependencies = [
  "anyhow",
  "async-std",
@@ -7193,7 +7193,7 @@ dependencies = [
 [[package]]
 name = "sunshine-pallet-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#b15fa47a17ea53107598332f9fc8c99d0b9dab75"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
 dependencies = [
  "blake2-rfc",
  "hash-db",
