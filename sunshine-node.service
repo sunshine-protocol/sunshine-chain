@@ -1,0 +1,9 @@
+[Unit]
+Description=Sunshine Node
+
+[Service]
+Type=simple
+ExecStart=/sunshine/sunshine-node --base-path /sunshine/db --keystore-path /sunshine/keystore --node-key-file /sunshine/node-key --chain /sunshine/chain.json --validator --unsafe-ws-external --ws-port 9944 --rpc-cors all
+
+[Install]
+WantedBy=multi-user.target

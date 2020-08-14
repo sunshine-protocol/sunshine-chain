@@ -18,6 +18,7 @@ use sunshine_identity_client::{Claim, Identity};
 
 pub use sunshine_bounty_client::*;
 pub use sunshine_client_utils as client;
+pub use sunshine_client_utils::client::Config;
 pub use sunshine_faucet_client as faucet;
 pub use sunshine_identity_client as identity;
 
