@@ -1,8 +1,6 @@
-use sc_cli::{Database, RunCmd, RuntimeVersion, Subcommand, SubstrateCli};
-use sc_service::{ChainSpec, Role, ServiceParams};
-use std::str::FromStr;
+use sc_cli::{RunCmd, Runner, RuntimeVersion, Subcommand, SubstrateCli};
+use sc_service::{ChainSpec, DatabaseConfig, Role, ServiceParams};
 use structopt::StructOpt;
-use sunshine_node::{chain_spec::Chain, service};
 
 #[derive(Debug, StructOpt)]
 pub struct Cli {
@@ -42,8 +40,12 @@ impl SubstrateCli for Cli {
         sunshine_node::EXECUTABLE_NAME.into()
     }
 
-    fn load_spec(&self, chain: &str) -> Result<Box<dyn sc_service::ChainSpec>, String> {
-        Ok(Box::new(Chain::from_str(chain)?.into_chain_spec()?))
+    fn load_spec(&self, id: &str) -> Result<Box<dyn sc_service::ChainSpec>, String> {
+        Ok(match id {
+            "dev" => Box::new(sunshine_node::dev_chain_spec()),
+            "" | "local" => Box::new(sunshine_node::local_chain_spec()),
+            path => Box::new(sunshine_node::ChainSpec::from_json_file(path.into())?),
+        })
     }
 
     fn native_runtime_version(_: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
@@ -52,18 +54,11 @@ impl SubstrateCli for Cli {
 }
 
 fn main() -> sc_cli::Result<()> {
-    let mut cli = <Cli as SubstrateCli>::from_args();
-    let db = cli
-        .run
-        .import_params
-        .database_params
-        .database
-        .unwrap_or(Database::ParityDb);
-    cli.run.import_params.database_params.database = Some(db);
-
+    let cli = <Cli as SubstrateCli>::from_args();
     match &cli.subcommand {
         Some(subcommand) => {
-            let runner = cli.create_runner(subcommand)?;
+            let mut runner = cli.create_runner(subcommand)?;
+            force_parity_db(&mut runner);
             runner.run_subcommand(subcommand, |config| {
                 let ServiceParams {
                     client,
@@ -71,19 +66,26 @@ fn main() -> sc_cli::Result<()> {
                     task_manager,
                     import_queue,
                     ..
-                } = service::new_full_params(config)?.0;
+                } = sunshine_node::new_full_params(config)?.0;
                 Ok((client, backend, import_queue, task_manager))
             })
         }
         None => {
-            let runner = cli.create_runner(&cli.run)?;
+            let mut runner = cli.create_runner(&cli.run)?;
+            force_parity_db(&mut runner);
             runner.run_node_until_exit(|config| {
                 match config.role {
-                    Role::Light => service::new_light(config),
-                    _ => service::new_full(config),
+                    Role::Light => sunshine_node::new_light(config),
+                    _ => sunshine_node::new_full(config),
                 }
                 .map(|service| service.0)
             })
         }
     }
+}
+
+fn force_parity_db(runner: &mut Runner<Cli>) {
+    let config = runner.config_mut();
+    let path = config.database.path().unwrap().to_path_buf();
+    config.database = DatabaseConfig::ParityDb { path };
 }

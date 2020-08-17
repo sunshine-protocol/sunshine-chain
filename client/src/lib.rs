@@ -93,7 +93,7 @@ impl<S: Store> From<S> for OffchainClient<S> {
 pub struct Node;
 
 impl NodeConfig for Node {
-    type ChainSpec = sunshine_node::chain_spec::ChainSpec;
+    type ChainSpec = sunshine_node::ChainSpec;
     type Runtime = Runtime;
 
     fn impl_name() -> &'static str {
@@ -113,7 +113,7 @@ impl NodeConfig for Node {
     }
 
     fn chain_spec_dev() -> Self::ChainSpec {
-        sunshine_node::chain_spec::dev_chain_spec()
+        sunshine_node::dev_chain_spec()
     }
 
     fn chain_spec_from_json_bytes(json: Vec<u8>) -> Result<Self::ChainSpec, ChainSpecError> {
@@ -121,11 +121,11 @@ impl NodeConfig for Node {
     }
 
     fn new_light(config: Configuration) -> Result<(TaskManager, Arc<RpcHandlers>), ScServiceError> {
-        Ok(sunshine_node::service::new_light(config)?)
+        Ok(sunshine_node::new_light(config)?)
     }
 
     fn new_full(config: Configuration) -> Result<(TaskManager, Arc<RpcHandlers>), ScServiceError> {
-        Ok(sunshine_node::service::new_full(config)?)
+        Ok(sunshine_node::new_full(config)?)
     }
 }
 

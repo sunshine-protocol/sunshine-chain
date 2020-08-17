@@ -5578,27 +5578,10 @@ dependencies = [
 [[package]]
 name = "schnorrkel"
 version = "0.9.1"
-source = "git+https://github.com/w3f/schnorrkel#fa76d8becb45c60a9a7872a9a80f6e0597017356"
-dependencies = [
- "aead 0.2.0",
- "arrayref",
- "arrayvec 0.5.1",
- "curve25519-dalek",
- "getrandom",
- "merlin",
- "rand 0.7.3",
- "rand_core 0.5.1",
- "sha2 0.8.2",
- "subtle 2.2.3",
- "zeroize",
-]
-
-[[package]]
-name = "schnorrkel"
-version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "021b403afe70d81eea68f6ea12f6b3c9588e5d536a94c3bf80f15e7faa267862"
 dependencies = [
+ "aead 0.2.0",
  "arrayref",
  "arrayvec 0.5.1",
  "curve25519-dalek",
@@ -6248,7 +6231,7 @@ dependencies = [
  "primitive-types",
  "rand 0.7.3",
  "regex",
- "schnorrkel 0.9.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "schnorrkel",
  "secrecy 0.6.0",
  "serde",
  "sha2 0.8.2",
@@ -6758,7 +6741,7 @@ checksum = "c004e8166d6e0aa3a9d5fa673e5b7098ff25f930de1013a21341988151e681bb"
 dependencies = [
  "hmac",
  "pbkdf2",
- "schnorrkel 0.9.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "schnorrkel",
  "sha2 0.8.2",
 ]
 
@@ -6970,7 +6953,7 @@ dependencies = [
 [[package]]
 name = "sunshine-cli-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "async-std",
  "clap 3.0.0-beta.1",
@@ -6999,7 +6982,7 @@ dependencies = [
 [[package]]
 name = "sunshine-client-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "anyhow",
  "async-std",
@@ -7024,7 +7007,7 @@ dependencies = [
 [[package]]
 name = "sunshine-codec"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "anyhow",
  "hash-db",
@@ -7036,7 +7019,7 @@ dependencies = [
 [[package]]
 name = "sunshine-crypto"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "aead 0.2.0",
  "anyhow",
@@ -7051,7 +7034,7 @@ dependencies = [
  "hash256-std-hasher",
  "parity-scale-codec",
  "rand 0.7.3",
- "schnorrkel 0.9.1 (git+https://github.com/w3f/schnorrkel)",
+ "schnorrkel",
  "secrecy 0.7.0",
  "sha2 0.9.1",
  "sp-core",
@@ -7150,7 +7133,7 @@ dependencies = [
 [[package]]
 name = "sunshine-keystore"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "anyhow",
  "async-std",
@@ -7166,18 +7149,29 @@ dependencies = [
 name = "sunshine-node"
 version = "0.1.0"
 dependencies = [
- "futures 0.3.5",
  "hex-literal",
- "log",
- "sc-basic-authorship",
  "sc-cli",
+ "sc-executor",
+ "sc-service",
+ "sp-core",
+ "sp-runtime",
+ "structopt",
+ "substrate-build-script-utils",
+ "sunshine-node-utils",
+ "sunshine-runtime",
+]
+
+[[package]]
+name = "sunshine-node-utils"
+version = "0.1.0"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
+dependencies = [
+ "sc-basic-authorship",
  "sc-client-api",
  "sc-client-db",
  "sc-consensus",
  "sc-consensus-aura",
- "sc-executor",
  "sc-finality-grandpa",
- "sc-network",
  "sc-service",
  "sc-transaction-pool",
  "sp-consensus",
@@ -7185,17 +7179,12 @@ dependencies = [
  "sp-core",
  "sp-finality-grandpa",
  "sp-inherents",
- "sp-runtime",
- "sp-transaction-pool",
- "structopt",
- "substrate-build-script-utils",
- "sunshine-runtime",
 ]
 
 [[package]]
 name = "sunshine-pallet-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "blake2-rfc",
  "hash-db",
@@ -7849,7 +7838,7 @@ version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3bfd5b7557925ce778ff9b9ef90e3ade34c524b5ff10e239c69a42d546d2af56"
 dependencies = [
- "rand 0.7.3",
+ "rand 0.5.6",
 ]
 
 [[package]]
