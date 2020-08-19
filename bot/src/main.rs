@@ -53,7 +53,6 @@ async fn main() -> Result<()> {
 pub struct Subscription<R: subxt::Runtime, E: subxt::Event<R>> {
     _marker: PhantomData<E>,
     subscription: subxt::EventSubscription<R>,
-    open: bool,
 }
 
 impl<R: subxt::Runtime + Bounty, E: subxt::Event<R>> Subscription<R, E> {
@@ -66,15 +65,7 @@ impl<R: subxt::Runtime + Bounty, E: subxt::Event<R>> Subscription<R, E> {
         Ok(Self {
             _marker: PhantomData,
             subscription,
-            open: true,
         })
-    }
-
-    pub async fn close(&mut self) {
-        self.open = false;
-    }
-    async fn closed(&self) -> bool {
-        !self.open
     }
 
     async fn next(&mut self) -> Option<Result<E>> {
@@ -91,17 +82,9 @@ async fn process_subscription<E: subxt::Event<Runtime> + Into<Event>>(
     github: GBot,
     mut subscription: Subscription<Runtime, E>,
 ) {
-    loop {
-        if subscription.closed().await {
-            // occurs if `close` is called on the subscription
-            break;
-        } else if let Some(res) = subscription.next().await {
-            if let Err(err) = process_event(&client, &github, res.map(Into::into)).await {
-                log::error!("{:?}", err);
-            }
-        } else {
-            // should never happen
-            break;
+    while let Some(res) = subscription.next().await {
+        if let Err(err) = process_event(&client, &github, res.map(Into::into)).await {
+            log::error!("{:?}", err);
         }
     }
 }
@@ -225,67 +208,4 @@ async fn process_event(client: &Client, github: &GBot, event: Result<Event>) -> 
         }
     }
     Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::{process_subscription, Subscription};
-    use std::sync::Arc;
-    use sunshine_bounty_gbot::GBot;
-    use sunshine_client::{
-        bounty::{BountyClient, BountyPostedEvent},
-        client::Client as _,
-        mock::AccountKeyring,
-        Client, GithubIssue, Runtime,
-    };
-    use sunshine_crypto::{keychain::TypedPair, secrecy::SecretString};
-
-    #[tokio::test]
-    async fn bounty_post_test() {
-        env_logger::init();
-        let github = GBot::new().expect("Initialize Github Env Var");
-        let alice_root = dirs::config_dir().unwrap().join("demo-alice");
-        let mut alice_client = Client::new(&alice_root, "ws://127.0.0.1:9944")
-            .await
-            .expect("Must Connect to Running Node");
-        alice_client
-            .set_key(
-                TypedPair::from_suri(&AccountKeyring::Alice.to_seed()).unwrap(),
-                &SecretString::new("password".to_string()),
-                true,
-            )
-            .await
-            .expect("Keystore Must Be Available");
-        alice_client
-            .unlock(&SecretString::new("password".to_string()))
-            .await
-            .expect("Keystore Must Be Available");
-        let arc_alice = Arc::new(alice_client);
-        // run bot post subscriber
-        let mut post =
-            Subscription::<_, BountyPostedEvent<Runtime>>::subscribe(arc_alice.chain_client())
-                .await
-                .unwrap();
-        let post_task = tokio::task::spawn(process_subscription(
-            arc_alice.clone(),
-            github.clone(),
-            post,
-        ));
-        let bounty = GithubIssue {
-            repo_owner: "sunshine-protocol".to_string(),
-            repo_name: "sunshine".to_string(),
-            issue_number: 8,
-        };
-        let event = arc_alice.clone().post_bounty(bounty, 10u128).await.unwrap();
-        let expected_event = BountyPostedEvent {
-            depositer: AccountKeyring::Alice.to_account_id(),
-            amount: 10,
-            id: 1,
-            description: event.description.clone(),
-        };
-        assert_eq!(event, expected_event);
-        post_task.await.unwrap();
-        // attempt to close post subscriber to end test scope
-        post.close().await;
-    }
 }

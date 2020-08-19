@@ -76,7 +76,7 @@ impl<S: Store> OffchainClient<S> {
     pub fn new(store: S) -> Self {
         Self {
             claims: IpldCache::new(store.clone(), Codec::new(), 64),
-            bounties: IpldCache::new(store.clone(), Codec::new(), 64),
+            bounties: IpldCache::new(store, Codec::new(), 64),
         }
     }
 }
