@@ -70,10 +70,10 @@ impl<R: subxt::Runtime + Bounty, E: subxt::Event<R>> Subscription<R, E> {
         })
     }
 
-    pub fn close(&mut self) {
+    pub async fn close(&mut self) {
         self.open = false;
     }
-    fn closed(&self) -> bool {
+    async fn closed(&self) -> bool {
         !self.open
     }
 
@@ -92,7 +92,7 @@ async fn process_subscription<E: subxt::Event<Runtime> + Into<Event>>(
     mut subscription: Subscription<Runtime, E>,
 ) {
     loop {
-        if subscription.closed() {
+        if subscription.closed().await {
             // occurs if `close` is called on the subscription
             break;
         } else if let Some(res) = subscription.next().await {
@@ -262,15 +262,14 @@ mod tests {
             .expect("Keystore Must Be Available");
         let arc_alice = Arc::new(alice_client);
         // run bot post subscriber
-        let mut post = Arc::new(
+        let mut post =
             Subscription::<_, BountyPostedEvent<Runtime>>::subscribe(arc_alice.chain_client())
                 .await
-                .unwrap(),
-        );
+                .unwrap();
         let post_task = tokio::task::spawn(process_subscription(
             arc_alice.clone(),
             github.clone(),
-            *(post.clone()),
+            post,
         ));
         let bounty = GithubIssue {
             repo_owner: "sunshine-protocol".to_string(),
@@ -287,6 +286,6 @@ mod tests {
         assert_eq!(event, expected_event);
         post_task.await.unwrap();
         // attempt to close post subscriber to end test scope
-        *post.close();
+        post.close().await;
     }
 }
