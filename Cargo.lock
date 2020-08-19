@@ -6838,11 +6838,14 @@ version = "0.0.1"
 dependencies = [
  "dirs",
  "env_logger",
+ "ipfs-embed",
  "ipld-block-builder",
  "log",
  "substrate-subxt",
  "sunshine-bounty-gbot",
  "sunshine-client",
+ "sunshine-crypto",
+ "sunshine-keystore",
  "tokio 0.2.22",
 ]
 

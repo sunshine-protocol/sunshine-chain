@@ -9,8 +9,8 @@ use sp_runtime::traits::{IdentifyAccount, Verify};
 use std::path::PathBuf;
 use std::str::FromStr;
 use sunshine_runtime::{
-    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig,
-    Signature, SystemConfig, WASM_BINARY,
+    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SystemConfig,
+    WASM_BINARY,
 };
 
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.getsunshine.com/submit/";

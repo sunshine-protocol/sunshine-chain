@@ -10,6 +10,11 @@ env_logger = "0.7.1"
 ipld-block-builder = "0.4.1"
 log = "0.4.11"
 sunshine-bounty-gbot = { git = "https://github.com/sunshine-protocol/sunshine-bounty" }
-sunshine-client = { path = "../client" }
+sunshine-client = { path = "../client", features = ["mock"] }
 substrate-subxt = "0.11.0"
 tokio = { version = "0.2.22", default-features = false, features = ["macros"] }
+
+[dev-dependencies]
+ipfs-embed = "0.3.1"
+sunshine-keystore = { git = "https://github.com/sunshine-protocol/sunshine-core" }
+sunshine-crypto = { git = "https://github.com/sunshine-protocol/sunshine-core" }
