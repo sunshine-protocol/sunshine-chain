@@ -200,6 +200,7 @@ async fn process_event(client: &Client, github: &GBot, event: Result<Event>) -> 
                     submission_body.issue_number,
                 )
                 .await?;
+            // update existing bounty comment
             github
                 .update_bounty_issue(
                     event.new_total,
