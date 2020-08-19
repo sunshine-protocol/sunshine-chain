@@ -186,7 +186,7 @@ async fn process_event(client: &Client, github: &GBot, event: Result<Event>) -> 
             let bounty_body: GithubIssue = client.offchain_client().get(&bounty_event_cid).await?;
             let submission_body: GithubIssue =
                 client.offchain_client().get(&submission_event_cid).await?;
-            // issue comment
+            // new issue comment
             github
                 .approve_submission_issue(
                     event.amount,
