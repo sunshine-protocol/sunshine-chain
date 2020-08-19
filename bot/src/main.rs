@@ -74,7 +74,7 @@ impl<R: subxt::Runtime + Bounty, E: subxt::Event<R>> Subscription<R, E> {
         self.open = false;
     }
     fn closed(&self) -> bool {
-        self.open
+        !self.open
     }
 
     async fn next(&mut self) -> Option<Result<E>> {
