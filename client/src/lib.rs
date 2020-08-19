@@ -57,9 +57,9 @@ impl Identity for Runtime {
 impl Bounty for Runtime {
     type IpfsReference = CidBytes;
     type BountyId = u64;
-    type BountyPost = BountyBody;
+    type BountyPost = GithubIssue;
     type SubmissionId = u64;
-    type BountySubmission = BountyBody;
+    type BountySubmission = GithubIssue;
 }
 
 impl substrate_subxt::Runtime for Runtime {
@@ -69,7 +69,7 @@ impl substrate_subxt::Runtime for Runtime {
 
 pub struct OffchainClient<S> {
     claims: IpldCache<S, Codec, Claim>,
-    bounties: IpldCache<S, Codec, BountyBody>,
+    bounties: IpldCache<S, Codec, GithubIssue>,
 }
 
 impl<S: Store> OffchainClient<S> {
@@ -82,7 +82,7 @@ impl<S: Store> OffchainClient<S> {
 }
 
 derive_cache!(OffchainClient, claims, Codec, Claim);
-derive_cache!(OffchainClient, bounties, Codec, BountyBody);
+derive_cache!(OffchainClient, bounties, Codec, GithubIssue);
 
 impl<S: Store> From<S> for OffchainClient<S> {
     fn from(store: S) -> Self {

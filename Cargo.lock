@@ -319,16 +319,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df097e3f506bec0e1a24f06bb3c962c228f36671de841ff579cb99f371772634"
 dependencies = [
  "futures 0.3.5",
- "rustls 0.18.0",
+ "rustls 0.18.1",
  "webpki",
  "webpki-roots 0.19.0",
 ]
 
 [[package]]
 name = "async-trait"
-version = "0.1.37"
+version = "0.1.38"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "caae68055714ff28740f310927e04f2eba76ff580b16fb18ed90073ee71646f7"
+checksum = "6e1a4a2f97ce50c9d0282c1468816208588441492b40d813b2e0419c22c05e7f"
 dependencies = [
  "proc-macro2",
  "quote 1.0.7",
@@ -636,9 +636,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.0.58"
+version = "1.0.59"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f9a06fb2e53271d7c279ec1efea6ab691c35a2ae67ec0d91d7acec0caf13b518"
+checksum = "66120af515773fb005778dc07c261bd201ec8ce50bd6e7144c927753fe013381"
 
 [[package]]
 name = "cfg-if"
@@ -677,9 +677,9 @@ checksum = "17cc5e6b5ab06331c33589842070416baa137e8b0eb912b008cfd4a78ada7919"
 
 [[package]]
 name = "chrono"
-version = "0.4.13"
+version = "0.4.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c74d84029116787153e02106bf53e66828452a4b325cc8652b788b5967c0a0b6"
+checksum = "942f72db697d8767c22d46a598e01f2d3b475501ea43d0db4f16d90259182d0b"
 dependencies = [
  "num-integer",
  "num-traits 0.2.12",
@@ -1265,9 +1265,9 @@ checksum = "37ab347416e802de484e4d03c7316c48f1ecb56574dfd4a46a80f173ce1de04d"
 
 [[package]]
 name = "flate2"
-version = "1.0.16"
+version = "1.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68c90b0fc46cf89d227cc78b40e494ff81287a92dd07631e5af0d06fe3cf885e"
+checksum = "766d0e77a2c1502169d4a93ff3b8c15a71fd946cd0126309752104e5f3c46d94"
 dependencies = [
  "cfg-if",
  "crc32fast",
@@ -2040,7 +2040,7 @@ dependencies = [
  "futures-util",
  "hyper 0.13.7",
  "log",
- "rustls 0.18.0",
+ "rustls 0.18.1",
  "rustls-native-certs",
  "tokio 0.2.22",
  "tokio-rustls",
@@ -2895,7 +2895,7 @@ dependencies = [
  "libp2p-core",
  "log",
  "quicksink",
- "rustls 0.18.0",
+ "rustls 0.18.1",
  "rw-stream-sink",
  "soketto 0.4.1",
  "url 2.1.1",
@@ -2934,12 +2934,11 @@ dependencies = [
 
 [[package]]
 name = "libz-sys"
-version = "1.0.25"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2eb5e43362e38e2bca2fd5f5134c4d4564a23a5c28e9b95411652021a8675ebe"
+checksum = "af67924b8dd885cccea261866c8ce5b74d239d272e154053ff927dae839f5ae9"
 dependencies = [
  "cc",
- "libc",
  "pkg-config",
  "vcpkg",
 ]
@@ -3425,9 +3424,9 @@ checksum = "1ab52be62400ca80aa00285d25253d7f7c437b7375c4de678f5405d3afe82ca5"
 
 [[package]]
 name = "octocrab"
-version = "0.5.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63d3ac5571f6f610e3b58713bbeaa9ddb5532e89ab3467165b91d7ecb258c275"
+checksum = "a315f443b7b54de70cf158955bd7a29896a3d8d9a0d2c9c006194401a2e05257"
 dependencies = [
  "arc-swap",
  "async-trait",
@@ -3446,11 +3445,11 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.4.0"
+version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b631f7e854af39a1739f401cf34a8a013dfe09eac4fa4dba91e9768bd28168d"
+checksum = "260e51e7efe62b592207e9e13a68e43692a7a279171d6ba57abd208bf23645ad"
 dependencies = [
- "parking_lot 0.10.2",
+ "parking_lot 0.11.0",
 ]
 
 [[package]]
@@ -4735,22 +4734,9 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.17.0"
+version = "0.18.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0d4a31f5d68413404705d6982529b0e11a9aacd4839d1d6222ee3b8cb4015e1"
-dependencies = [
- "base64 0.11.0",
- "log",
- "ring",
- "sct",
- "webpki",
-]
-
-[[package]]
-name = "rustls"
-version = "0.18.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cac94b333ee2aac3284c5b8a1b7fb4dd11cba88c244e3fe33cdbd047af0eb693"
+checksum = "5d1126dcf58e93cee7d098dbda643b5f92ed724f1f6a63007c1116eed6700c81"
 dependencies = [
  "base64 0.12.3",
  "log",
@@ -4766,7 +4752,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "629d439a7672da82dd955498445e496ee2096fe2117b9f796558a43fdb9e59b8"
 dependencies = [
  "openssl-probe",
- "rustls 0.18.0",
+ "rustls 0.18.1",
  "schannel",
  "security-framework 1.0.0",
 ]
@@ -5578,27 +5564,10 @@ dependencies = [
 [[package]]
 name = "schnorrkel"
 version = "0.9.1"
-source = "git+https://github.com/w3f/schnorrkel#fa76d8becb45c60a9a7872a9a80f6e0597017356"
-dependencies = [
- "aead 0.2.0",
- "arrayref",
- "arrayvec 0.5.1",
- "curve25519-dalek",
- "getrandom",
- "merlin",
- "rand 0.7.3",
- "rand_core 0.5.1",
- "sha2 0.8.2",
- "subtle 2.2.3",
- "zeroize",
-]
-
-[[package]]
-name = "schnorrkel"
-version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "021b403afe70d81eea68f6ea12f6b3c9588e5d536a94c3bf80f15e7faa267862"
 dependencies = [
+ "aead 0.2.0",
  "arrayref",
  "arrayvec 0.5.1",
  "curve25519-dalek",
@@ -6248,7 +6217,7 @@ dependencies = [
  "primitive-types",
  "rand 0.7.3",
  "regex",
- "schnorrkel 0.9.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "schnorrkel",
  "secrecy 0.6.0",
  "serde",
  "sha2 0.8.2",
@@ -6758,7 +6727,7 @@ checksum = "c004e8166d6e0aa3a9d5fa673e5b7098ff25f930de1013a21341988151e681bb"
 dependencies = [
  "hmac",
  "pbkdf2",
- "schnorrkel 0.9.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "schnorrkel",
  "sha2 0.8.2",
 ]
 
@@ -6880,7 +6849,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty"
 version = "0.2.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#e6395c9b08c9a4fc2b5314f5dd33e2a7ca9631d8"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#14ee55294b73a99a7ef0664fae0a02b15a342172"
 dependencies = [
  "clear_on_drop",
  "frame-support",
@@ -6894,7 +6863,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-cli"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#e6395c9b08c9a4fc2b5314f5dd33e2a7ca9631d8"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#14ee55294b73a99a7ef0664fae0a02b15a342172"
 dependencies = [
  "clap 3.0.0-beta.1",
  "ipld-block-builder",
@@ -6911,7 +6880,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-client"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#e6395c9b08c9a4fc2b5314f5dd33e2a7ca9631d8"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#14ee55294b73a99a7ef0664fae0a02b15a342172"
 dependencies = [
  "async-std",
  "frame-support",
@@ -6931,8 +6900,10 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-gbot"
 version = "0.0.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#e6395c9b08c9a4fc2b5314f5dd33e2a7ca9631d8"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#14ee55294b73a99a7ef0664fae0a02b15a342172"
 dependencies = [
+ "chrono",
+ "lazy_static",
  "octocrab",
  "thiserror",
 ]
@@ -6940,7 +6911,7 @@ dependencies = [
 [[package]]
 name = "sunshine-bounty-utils"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-bounty#e6395c9b08c9a4fc2b5314f5dd33e2a7ca9631d8"
+source = "git+https://github.com/sunshine-protocol/sunshine-bounty#14ee55294b73a99a7ef0664fae0a02b15a342172"
 dependencies = [
  "clear_on_drop",
  "derive-new",
@@ -6970,7 +6941,7 @@ dependencies = [
 [[package]]
 name = "sunshine-cli-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "async-std",
  "clap 3.0.0-beta.1",
@@ -6999,7 +6970,7 @@ dependencies = [
 [[package]]
 name = "sunshine-client-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "anyhow",
  "async-std",
@@ -7024,7 +6995,7 @@ dependencies = [
 [[package]]
 name = "sunshine-codec"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "anyhow",
  "hash-db",
@@ -7036,7 +7007,7 @@ dependencies = [
 [[package]]
 name = "sunshine-crypto"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "aead 0.2.0",
  "anyhow",
@@ -7051,7 +7022,7 @@ dependencies = [
  "hash256-std-hasher",
  "parity-scale-codec",
  "rand 0.7.3",
- "schnorrkel 0.9.1 (git+https://github.com/w3f/schnorrkel)",
+ "schnorrkel",
  "secrecy 0.7.0",
  "sha2 0.9.1",
  "sp-core",
@@ -7067,7 +7038,7 @@ dependencies = [
 [[package]]
 name = "sunshine-faucet-cli"
 version = "0.2.1"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#73795b06d34b5082ec298a5a726107d87c1dfd91"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#0a71a62a2c77897edca4d4848e2b92eb57d13a64"
 dependencies = [
  "clap 3.0.0-beta.1",
  "substrate-subxt",
@@ -7078,7 +7049,7 @@ dependencies = [
 [[package]]
 name = "sunshine-faucet-client"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#73795b06d34b5082ec298a5a726107d87c1dfd91"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#0a71a62a2c77897edca4d4848e2b92eb57d13a64"
 dependencies = [
  "parity-scale-codec",
  "substrate-subxt",
@@ -7089,7 +7060,7 @@ dependencies = [
 [[package]]
 name = "sunshine-faucet-pallet"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#73795b06d34b5082ec298a5a726107d87c1dfd91"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#0a71a62a2c77897edca4d4848e2b92eb57d13a64"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -7103,7 +7074,7 @@ dependencies = [
 [[package]]
 name = "sunshine-identity-cli"
 version = "0.2.3"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#73795b06d34b5082ec298a5a726107d87c1dfd91"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#0a71a62a2c77897edca4d4848e2b92eb57d13a64"
 dependencies = [
  "clap 3.0.0-beta.1",
  "parity-scale-codec",
@@ -7117,7 +7088,7 @@ dependencies = [
 [[package]]
 name = "sunshine-identity-client"
 version = "0.2.3"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#73795b06d34b5082ec298a5a726107d87c1dfd91"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#0a71a62a2c77897edca4d4848e2b92eb57d13a64"
 dependencies = [
  "async-std",
  "frame-support",
@@ -7136,7 +7107,7 @@ dependencies = [
 [[package]]
 name = "sunshine-identity-pallet"
 version = "0.2.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-identity#73795b06d34b5082ec298a5a726107d87c1dfd91"
+source = "git+https://github.com/sunshine-protocol/sunshine-identity#0a71a62a2c77897edca4d4848e2b92eb57d13a64"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -7150,7 +7121,7 @@ dependencies = [
 [[package]]
 name = "sunshine-keystore"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "anyhow",
  "async-std",
@@ -7195,7 +7166,7 @@ dependencies = [
 [[package]]
 name = "sunshine-pallet-utils"
 version = "0.1.0"
-source = "git+https://github.com/sunshine-protocol/sunshine-core#c0ebde51041ba66bb0a4ad14daf67d2f7e8f3834"
+source = "git+https://github.com/sunshine-protocol/sunshine-core#9c0212f5d167519fe6d03cdb1a8a8415eee3503f"
 dependencies = [
  "blake2-rfc",
  "hash-db",
@@ -7622,7 +7593,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "228139ddd4fea3fa345a29233009635235833e52807af7ea6448ead03890d6a9"
 dependencies = [
  "futures-core",
- "rustls 0.18.0",
+ "rustls 0.18.1",
  "tokio 0.2.22",
  "webpki",
 ]
@@ -7786,9 +7757,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-attributes"
-version = "0.1.10"
+version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1fe233f4227389ab7df5b32649239da7ebe0b281824b4e84b342d04d3fd8c25e"
+checksum = "80e0ccfc3378da0cce270c946b676a376943f5cd16aeba64568e7939806f4ada"
 dependencies = [
  "proc-macro2",
  "quote 1.0.7",
@@ -7957,20 +7928,20 @@ checksum = "a156c684c91ea7d62626509bce3cb4e1d9ed5c4d978f7b4352658f96a4c26b4a"
 
 [[package]]
 name = "ureq"
-version = "1.3.0"
+version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "677df6896edc382f1a2abcbb3e4058edfe973cdc4e1ed764b11891a7a289bfc0"
+checksum = "b770aa61edaa144d3af86a8b0ccbb1bf8ca9dd0c1ac2a17081f35943aae6eb82"
 dependencies = [
  "base64 0.12.3",
  "chunked_transfer",
  "lazy_static",
  "qstring",
- "rustls 0.17.0",
+ "rustls 0.18.1",
  "serde",
  "serde_json",
  "url 2.1.1",
  "webpki",
- "webpki-roots 0.19.0",
+ "webpki-roots 0.20.0",
 ]
 
 [[package]]
@@ -8203,6 +8174,15 @@ name = "webpki-roots"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8eff4b7516a57307f9349c64bf34caa34b940b66fed4b2fb3136cb7386e5739"
+dependencies = [
+ "webpki",
+]
+
+[[package]]
+name = "webpki-roots"
+version = "0.20.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0f20dea7535251981a9670857150d571846545088359b28e4951d350bdaf179f"
 dependencies = [
  "webpki",
 ]
