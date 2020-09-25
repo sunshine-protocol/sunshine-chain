@@ -1,5 +1,6 @@
-use ipld_block_builder::ReadonlyCache;
+use libipld::cache::Cache;
 use std::marker::PhantomData;
+use std::path::PathBuf;
 use std::sync::Arc;
 use substrate_subxt as subxt;
 use sunshine_bounty_gbot::GBot;
@@ -19,7 +20,8 @@ async fn main() -> Result<()> {
     env_logger::init();
     let github = GBot::new()?;
     let root = dirs::config_dir().unwrap().join("sunshine-bounty-bot");
-    let client = Arc::new(Client::new(&root, "ws://127.0.0.1:9944").await?);
+    let chain_spec: PathBuf = Default::default();
+    let client = Arc::new(Client::new(&root, &chain_spec).await?);
 
     let post =
         Subscription::<_, BountyPostedEvent<Runtime>>::subscribe(client.chain_client()).await?;
@@ -124,7 +126,7 @@ async fn process_event(client: &Client, github: &GBot, event: Result<Event>) -> 
     match event? {
         Event::BountyPosted(event) => {
             // fetch structured data from client
-            let event_cid = event.description.to_cid()?;
+            let event_cid = event.description;
             let bounty_body: GithubIssue = client.offchain_client().get(&event_cid).await?;
             // new issue comment
             github
@@ -139,7 +141,7 @@ async fn process_event(client: &Client, github: &GBot, event: Result<Event>) -> 
         }
         Event::RaiseContribution(event) => {
             // fetch structured data from client
-            let event_cid = event.bounty_ref.to_cid()?;
+            let event_cid = event.bounty_ref;
             let bounty_body: GithubIssue = client.offchain_client().get(&event_cid).await?;
             // update existing bounty comment
             github
@@ -154,8 +156,8 @@ async fn process_event(client: &Client, github: &GBot, event: Result<Event>) -> 
         }
         Event::SubmissionPosted(event) => {
             // fetch structured data from client
-            let bounty_event_cid = event.bounty_ref.to_cid()?;
-            let submission_event_cid = event.submission_ref.to_cid()?;
+            let bounty_event_cid = event.bounty_ref;
+            let submission_event_cid = event.submission_ref;
             let bounty_body: GithubIssue = client.offchain_client().get(&bounty_event_cid).await?;
             let submission_body: GithubIssue =
                 client.offchain_client().get(&submission_event_cid).await?;
@@ -176,8 +178,8 @@ async fn process_event(client: &Client, github: &GBot, event: Result<Event>) -> 
         }
         Event::PaymentExecuted(event) => {
             // fetch structured data from client
-            let bounty_event_cid = event.bounty_ref.to_cid()?;
-            let submission_event_cid = event.submission_ref.to_cid()?;
+            let bounty_event_cid = event.bounty_ref;
+            let submission_event_cid = event.submission_ref;
             let bounty_body: GithubIssue = client.offchain_client().get(&bounty_event_cid).await?;
             let submission_body: GithubIssue =
                 client.offchain_client().get(&submission_event_cid).await?;

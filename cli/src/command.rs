@@ -8,12 +8,10 @@ use sunshine_identity_cli::{account, device, id, key, wallet};
 pub struct Opts {
     #[clap(subcommand)]
     pub cmd: SubCommand,
-    #[clap(short = "p", long = "path")]
+    #[clap(short = 'p', long = "path")]
     pub path: Option<PathBuf>,
-    #[clap(short = "c", long = "chain-spec")]
+    #[clap(short = 'c', long = "chain-spec")]
     pub chain_spec: Option<PathBuf>,
-    #[clap(short = "u", long = "url")]
-    pub url: Option<String>,
 }
 
 #[derive(Clone, Debug, Clap)]

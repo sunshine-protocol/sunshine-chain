@@ -3,7 +3,7 @@ use async_std::task;
 use clap::Clap;
 use std::time::Duration;
 use sunshine_cli_utils::{set_key, Client as _, ConfigDirNotFound, Result};
-use sunshine_client::{identity::IdentityClient, Client, Config};
+use sunshine_client::{identity::IdentityClient, Client};
 use sunshine_faucet_cli::MintCommand;
 use sunshine_identity_cli::key::KeySetCommand;
 
@@ -20,14 +20,13 @@ async fn main() -> Result<()> {
             .ok_or(ConfigDirNotFound)?
             .join("sunshine")
     };
+    let chain_spec = if let Some(chain_spec) = opts.chain_spec {
+        chain_spec
+    } else {
+        unimplemented!();
+    };
 
-    let config: Config = opts
-        .chain_spec
-        .as_deref()
-        .map(Into::into)
-        .unwrap_or_else(|| opts.url.as_deref().unwrap_or("ws://127.0.0.1:9944").into());
-
-    let mut client = Client::new(&root, config).await?;
+    let mut client = Client::new(&root, &chain_spec).await?;
 
     let mut password_changes = if client.chain_signer().is_ok() {
         let sub = client.subscribe_password_changes().await?;

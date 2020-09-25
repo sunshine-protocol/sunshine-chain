@@ -10,12 +10,11 @@ mock = [
 ]
 
 [dependencies]
-async-trait = "0.1.36"
-ipld-block-builder = "0.4.1"
-libipld = { version = "0.3.1", default-features = false }
-substrate-subxt = "0.11.0"
-sunshine-bounty-client = { git = "https://github.com/sunshine-protocol/sunshine-bounty.git" }
-sunshine-bounty-utils = { git = "https://github.com/sunshine-protocol/sunshine-bounty.git" }
+async-trait = "0.1.40"
+libipld = { version = "0.6.1", default-features = false }
+substrate-subxt = "0.12.0"
+sunshine-bounty-client = { git = "https://github.com/sunshine-protocol/sunshine-bounty" }
+sunshine-bounty-utils = { git = "https://github.com/sunshine-protocol/sunshine-bounty" }
 sunshine-client-utils = { git = "https://github.com/sunshine-protocol/sunshine-core" }
 sunshine-faucet-client = { git = "https://github.com/sunshine-protocol/sunshine-identity" }
 sunshine-identity-client = { git = "https://github.com/sunshine-protocol/sunshine-identity" }

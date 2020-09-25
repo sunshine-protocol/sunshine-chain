@@ -1,24 +1,26 @@
-use ipld_block_builder::{derive_cache, Codec, IpldCache};
+use libipld::cache::IpldCache;
+use libipld::cbor::DagCborCodec;
+use libipld::derive_cache;
 use libipld::store::Store;
-use std::sync::Arc;
+use sc_service::{Configuration, RpcHandlers, TaskManager};
+use std::ops::Deref;
 use substrate_subxt::balances::{AccountData, Balances};
 use substrate_subxt::sp_runtime::traits::{IdentifyAccount, Verify};
 use substrate_subxt::system::System;
 use substrate_subxt::{extrinsic, sp_core, sp_runtime};
 use sunshine_bounty_client::bounty::Bounty;
-use sunshine_client_utils::cid::CidBytes;
-use sunshine_client_utils::client::{GenericClient, KeystoreImpl, OffchainStoreImpl};
+use sunshine_client_utils::codec::hasher::BLAKE2B_256;
+use sunshine_client_utils::codec::Cid;
 use sunshine_client_utils::crypto::keychain::KeyType;
 use sunshine_client_utils::crypto::sr25519;
-use sunshine_client_utils::node::{
-    ChainSpecError, Configuration, NodeConfig, RpcHandlers, ScServiceError, TaskManager,
+use sunshine_client_utils::{
+    sc_service, ChainSpecError, GenericClient, Network, Node as NodeT, OffchainStore,
 };
 use sunshine_faucet_client::Faucet;
 use sunshine_identity_client::{Claim, Identity};
 
 pub use sunshine_bounty_client::*;
 pub use sunshine_client_utils as client;
-pub use sunshine_client_utils::client::Config;
 pub use sunshine_faucet_client as faucet;
 pub use sunshine_identity_client as identity;
 
@@ -48,14 +50,14 @@ impl Faucet for Runtime {}
 
 impl Identity for Runtime {
     type Uid = Uid;
-    type Cid = CidBytes;
+    type Cid = Cid;
     type Mask = [u8; 32];
     type Gen = u16;
     type IdAccountData = AccountData<<Self as Balances>::Balance>;
 }
 
 impl Bounty for Runtime {
-    type IpfsReference = CidBytes;
+    type IpfsReference = Cid;
     type BountyId = u64;
     type BountyPost = GithubIssue;
     type SubmissionId = u64;
@@ -68,21 +70,23 @@ impl substrate_subxt::Runtime for Runtime {
 }
 
 pub struct OffchainClient<S> {
-    claims: IpldCache<S, Codec, Claim>,
-    bounties: IpldCache<S, Codec, GithubIssue>,
+    store: S,
+    claims: IpldCache<S, DagCborCodec, Claim>,
+    bounties: IpldCache<S, DagCborCodec, GithubIssue>,
 }
 
 impl<S: Store> OffchainClient<S> {
     pub fn new(store: S) -> Self {
         Self {
-            claims: IpldCache::new(store.clone(), Codec::new(), 64),
-            bounties: IpldCache::new(store, Codec::new(), 64),
+            claims: IpldCache::new(store.clone(), DagCborCodec, BLAKE2B_256, 64),
+            bounties: IpldCache::new(store.clone(), DagCborCodec, BLAKE2B_256, 64),
+            store,
         }
     }
 }
 
-derive_cache!(OffchainClient, claims, Codec, Claim);
-derive_cache!(OffchainClient, bounties, Codec, GithubIssue);
+derive_cache!(OffchainClient, claims, DagCborCodec, Claim);
+derive_cache!(OffchainClient, bounties, DagCborCodec, GithubIssue);
 
 impl<S: Store> From<S> for OffchainClient<S> {
     fn from(store: S) -> Self {
@@ -90,11 +94,23 @@ impl<S: Store> From<S> for OffchainClient<S> {
     }
 }
 
+impl<S> Deref for OffchainClient<S> {
+    type Target = S;
+
+    fn deref(&self) -> &Self::Target {
+        &self.store
+    }
+}
+
+impl<S: Store> sunshine_client_utils::OffchainClient<S> for OffchainClient<S> {}
+
+#[derive(Clone, Copy)]
 pub struct Node;
 
-impl NodeConfig for Node {
+impl NodeT for Node {
     type ChainSpec = sunshine_node::ChainSpec;
     type Runtime = Runtime;
+    type Block = sunshine_node::OpaqueBlock;
 
     fn impl_name() -> &'static str {
         sunshine_node::IMPL_NAME
@@ -120,11 +136,15 @@ impl NodeConfig for Node {
         Self::ChainSpec::from_json_bytes(json).map_err(ChainSpecError)
     }
 
-    fn new_light(config: Configuration) -> Result<(TaskManager, Arc<RpcHandlers>), ScServiceError> {
+    fn new_light(
+        config: Configuration,
+    ) -> Result<(TaskManager, RpcHandlers, Network<Self>), sc_service::Error> {
         Ok(sunshine_node::new_light(config)?)
     }
 
-    fn new_full(config: Configuration) -> Result<(TaskManager, Arc<RpcHandlers>), ScServiceError> {
+    fn new_full(
+        config: Configuration,
+    ) -> Result<(TaskManager, RpcHandlers, Network<Self>), sc_service::Error> {
         Ok(sunshine_node::new_full(config)?)
     }
 }
@@ -136,30 +156,4 @@ impl KeyType for UserDevice {
     type Pair = sr25519::Pair;
 }
 
-pub type Client =
-    GenericClient<Node, UserDevice, KeystoreImpl<UserDevice>, OffchainClient<OffchainStoreImpl>>;
-
-#[cfg(feature = "mock")]
-pub mod mock {
-    use super::*;
-    use sunshine_client_utils::mock::{self, build_test_node, OffchainStoreImpl};
-    pub use sunshine_client_utils::mock::{AccountKeyring, TempDir, TestNode};
-
-    pub type Client = GenericClient<
-        Node,
-        UserDevice,
-        mock::KeystoreImpl<UserDevice>,
-        OffchainClient<OffchainStoreImpl>,
-    >;
-
-    pub type ClientWithKeystore = GenericClient<
-        Node,
-        UserDevice,
-        KeystoreImpl<UserDevice>,
-        OffchainClient<OffchainStoreImpl>,
-    >;
-
-    pub fn test_node() -> (TestNode, TempDir) {
-        build_test_node::<Node>()
-    }
-}
+pub type Client = GenericClient<Node, UserDevice, OffchainClient<OffchainStore<Node>>>;

@@ -7,9 +7,9 @@ edition = "2018"
 [dependencies]
 dirs = "3.0.1"
 env_logger = "0.7.1"
-ipld-block-builder = "0.4.1"
+libipld = { version = "0.6.1", default-features = false }
 log = "0.4.11"
 sunshine-bounty-gbot = { git = "https://github.com/sunshine-protocol/sunshine-bounty" }
 sunshine-client = { path = "../client" }
-substrate-subxt = "0.11.0"
+substrate-subxt = "0.12.0"
 tokio = { version = "0.2.22", default-features = false, features = ["macros"] }
